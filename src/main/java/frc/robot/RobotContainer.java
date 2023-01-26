@@ -7,8 +7,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 
 import frc.robot.subsystems.VisionSubsystem;
+
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
@@ -71,6 +75,16 @@ public class RobotContainer {
 
     makeSubsystems();
 
+    // CAN bus ok?
+    Set<CANDeviceFinder.NamedCANDevice> missingDevices = canDeviceFinder.getMissingDeviceSet();
+    if (missingDevices.size() > 0) {
+      SmartDashboard.putBoolean("can.ok", false);
+      SmartDashboard.putString("can.missing", missingDevices.toString());
+    } else {
+      SmartDashboard.putBoolean("can.ok", true);
+      SmartDashboard.putString("can.missing", "");
+    }
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -97,15 +111,23 @@ public class RobotContainer {
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A)
             .whileTrue(new XModeCommand(driveSubsystem));
+
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
+            .onTrue(new ResetNavXCommand());
   }
 
   private void setupSmartDashboardCommands() {
     SmartDashboard.putData("Strafe to target", new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));  }
+    SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+  }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
   public void setupAutonomousCommands() {
+    SmartDashboard.putData("Auto mode", chooser);
+    chooser.setDefaultOption("Do nothing", new LogCommand("no autonomous specified, did nothing"));
+    chooser.addOption("April Tag Auto Test", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
   }
 
   static double driverStrafeDeadzone = 0.1;

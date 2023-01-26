@@ -99,7 +99,6 @@ public class VisionSubsystem extends SubsystemBase {
 
         if(detection.getId() == 1)
         {
-          System.out.println (detection.getCenterX());
           temp = detection.getCenterX()/(width-1);
           SmartDashboard.putNumber("x-value", detection.getCenterX());
           tag1Transform = atagPoseEstimator.estimate(detection);

@@ -15,9 +15,12 @@ public class AprilTagAutoTestCommand extends SequentialCommandGroup {
 
   public AprilTagAutoTestCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
     addCommands(
+      new LogCommand(logger, "Locating April Tag"),
       new LocateAprilTagCommand(driveSubsystem, visionSubsystem),
+      new LogCommand(logger, "Strafing to April Tag"),
       new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem),
-      // strafes from april tag to cone stick 10in
+      // strafes from april tag to cone stick 22in
+      new LogCommand(logger, "Strafing to cone stick"),
       new AutoDriveCommand(22, 90, 0.3, 0, driveSubsystem),
       new LogCommand(logger, "All done")
     );
