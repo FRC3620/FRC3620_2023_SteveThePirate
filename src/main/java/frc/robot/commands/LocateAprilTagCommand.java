@@ -1,5 +1,9 @@
 package frc.robot.commands;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -8,6 +12,8 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class LocateAprilTagCommand extends CommandBase {
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
   boolean end = false;
   boolean iAmDriving = false;
   DriveSubsystem driveSubsystem;
@@ -59,6 +65,7 @@ public class LocateAprilTagCommand extends CommandBase {
         SmartDashboard.putNumber("LAT.Strafe Angle", angle);
 
         iAmDriving = true;
+        logger.info ("setting up AutoDrive for distance={}, angle={}, speed={}", distance, angle, speed);
         autoDriveCommand = new AutoDriveCommand(distance, angle, speed, 0, driveSubsystem);
         autoDriveCommand.initialize();
       }
