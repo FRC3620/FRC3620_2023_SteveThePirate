@@ -3,15 +3,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import frc.robot.commands.*;
+
+import frc.robot.subsystems.VisionSubsystem;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
-import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.NavXNavigationSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -40,6 +44,7 @@ public class RobotContainer {
   // subsystems here
   public static DriveSubsystem driveSubsystem;
   public static INavigationSubsystem navigationSubsystem;
+  public static VisionSubsystem visionSubsystem;
 
   // joysticks here....
   public static Joystick driverJoystick;
@@ -77,6 +82,7 @@ public class RobotContainer {
   private void makeSubsystems() {
     navigationSubsystem = new NavXNavigationSubsystem();
     driveSubsystem = new DriveSubsystem(navigationSubsystem);
+    visionSubsystem = new VisionSubsystem();
   }
 
   /**
@@ -90,13 +96,13 @@ public class RobotContainer {
     operatorJoystick = new Joystick(1);
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A)
-      .onTrue(new LogCommand("'A' button hit"));
-
+            .whileTrue(new XModeCommand(driveSubsystem));
   }
 
   private void setupSmartDashboardCommands() {
-    // SmartDashboard.putData(new xxxxCommand());
-  }
+    SmartDashboard.putData("Strafe to target", new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));  }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
   public void setupAutonomousCommands() {

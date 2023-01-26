@@ -3,55 +3,65 @@
     "name": "2022 competition",
     "macAddress": "00-80-2F-21-E4-EA",
     "makeAllCANDevices": true,
-    "swerveParameters": {
-      // azimuth home encoders
-      "he.rf": -52.9,   // right front
-      "he.lf": 86.4,  // left front
-      "he.lb": 82.9, // left back
-      "he.rb": 90.6,  // right back
-      //
-      "chassis_width": 23.00,  // inches
-      "chassis_length": 23.00
-    }
+    // azimuth home encoders
+    "swerve.he.rf": -52.6,   // right front
+    "swerve.he.lf": 86.4,  // left front
+    "swerve.he.lb": 82.9, // left back
+    "swerve.he.rb": -95.1,  // right back
+    //
+    "swerve.chassis_width": 23.00,  // inches
+    "swerve.chassis_length": 23.00,
+
+    "has_climber": true,
+    "has_intake": true,
+    "has_shooter": true,
+    "has_turret": true,
+
+    "should_run_compressor": true
   },
   {
     "name": "2021 competition",
     "macAddress": "00-80-2F-17-EB-08",
     "makeAllCANDevices": false,
-    "swerveParameters": {
-      // azimuth home encoders
-      "he.rf": 38.75,   // right front
-      "he.lf": -92.19,  // left front
-      "he.lb": -121.72, // left back
-      "he.rb": -61.72,  // right back
-      //
-      "chassis_width": 22.25,  // inches
-      "chassis_length": 24.25
-    }
+    // azimuth home encoders
+    "swerve.he.rf": 38.75,   // right front
+    "swerve.he.lf": -92.19,  // left front
+    "swerve.he.lb": -121.72, // left back
+    "swerve.he.rb": -61.72,  // right back
+    //
+    "swerve.chassis_width": 22.25,  // inches
+    "swerve.chassis_length": 24.25
   },
   {
     "name": "TOAD",
     "macAddress": "00-80-2F-18-5C-5F",
     "makeAllCANDevices": false,
-    "swerveParameters": {
-      // azimuth home encoders
-      "he.rf": -173.67, // right front
-      "he.lf": 73.65,   // left front
-      "he.lb": -29.79,  // left back
-      "he.rb": 62.05,   // right back
-      //
-      "chassis_width": 22.25,  // inches
-      "chassis_length": 24.25
-    }
+    // azimuth home encoders
+    "swerve.he.rf": -173.67, // right front
+    "swerve.he.lf": 73.65,   // left front
+    "swerve.he.lb": -29.79,  // left back
+    "swerve.he.rb": 62.05,   // right back
+    //
+    "swerve.chassis_width": 22.25,  // inches
+    "swerve.chassis_length": 24.25
   },
   {
     "name": "Fancy Mule Board",
     "macAddress": "00-80-2F-21-B0-58",
-    "makeAllCANDevices": false
+    "makeAllCANDevices": false,
+    "has_intake": true,
+    "has_climber": true
   },
   {
     "name": "simulator",
     "macAddress": "(simulation)",
-    "makeAllCANDevices": true
-  }
+    "makeAllCANDevices": true,
+
+    "has_climber": true,
+    "has_intake": true,
+    "has_shooter": true,
+    "has_turret": true,
+
+    "should_run_compressor": true
+ }
 ]

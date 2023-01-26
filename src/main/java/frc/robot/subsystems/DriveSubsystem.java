@@ -357,17 +357,17 @@ public class DriveSubsystem extends SubsystemBase {
 		return rv;
 	}
 
-	public void testDrive(double x, double y){
+	public void testDrive(double azimuthPower, double drivePower){
 		if (rightFrontDrive != null) {
-			rightFrontDrive.set(y);
-			leftFrontDrive.set(y);
-			rightBackDrive.set(y);
-			leftBackDrive.set(y);
+			rightFrontDrive.set(drivePower);
+			leftFrontDrive.set(drivePower);
+			rightBackDrive.set(drivePower);
+			leftBackDrive.set(drivePower);
 
-			rightFrontAzimuth.set(x);
-			leftFrontAzimuth.set(x);
-			rightBackAzimuth.set(x);
-			leftBackAzimuth.set(x);
+			rightFrontAzimuth.set(azimuthPower);
+			leftFrontAzimuth.set(azimuthPower);
+			rightBackAzimuth.set(azimuthPower);
+			leftBackAzimuth.set(azimuthPower);
 		}
 	}
 
@@ -826,8 +826,8 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 	}
 
-	public double getFixedPosition(RelativeEncoder encoder){
-  		if (encoder != null) {
+	public double getFixedPosition(RelativeEncoder encoder) {
+		if (encoder != null) {
 			double azimuth = encoder.getPosition();
 			azimuth = azimuth % 360;
 			if (azimuth > 180) {
@@ -842,7 +842,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 			return azimuth;
 		} else {
-  			return 0;
+			return 0;
 		}
 	}
 
