@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -35,6 +37,7 @@ public class VisionSubsystem extends SubsystemBase {
   public boolean getTargetTransform = true;
 
   public static Double targetOneX = null;
+  public static AllAprilTagsInPicture allAprilTagsInPicture = null;
 
   @Override
   public void periodic() {
@@ -93,17 +96,15 @@ public class VisionSubsystem extends SubsystemBase {
 
       AprilTagDetection[] detections = detector.detect(grayMat);
       tags.clear();
+
+      AllAprilTagsInPicture allAprilTagsInPictureUnderConstruction = new AllAprilTagsInPicture();
       Double temp = null;
       for (AprilTagDetection detection : detections) {
         tags.add(detection.getId());
 
-        if(detection.getId() == 1)
-        {
-          temp = detection.getCenterX()/(width-1);
-          SmartDashboard.putNumber("x-value", detection.getCenterX());
-          tag1Transform = atagPoseEstimator.estimate(detection);
+        Transform3d transform3d = atagPoseEstimator.estimate(detection);
 
-        }
+        allAprilTagsInPictureUnderConstruction.add(detection, transform3d);
 
         for (var i = 0; i <= 3; i++) {
           var j = (i + 1) % 4;
@@ -120,9 +121,12 @@ public class VisionSubsystem extends SubsystemBase {
         Imgproc.putText(mat, Integer.toString(detection.getId()), new Point (cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
       }
 
-      targetOneX = temp;
+      
+      AprilTagDetection tag1Detection = allAprilTagsInPictureUnderConstruction.getDetection(1);
+      if (tag1Detection != null) {
+        targetOneX = tag1Detection.getCenterX()/(width-1);
+        tag1Transform = allAprilTagsInPictureUnderConstruction.getTransform3d(1);
 
-      if (tag1Transform != null) {
         SmartDashboard.putNumber("LAT.tag1posex", tag1Transform.getX()*39.3701);
         SmartDashboard.putNumber("LAT.tag1posey", tag1Transform.getY()*39.3701);
         SmartDashboard.putNumber("LAT.tag1posez", tag1Transform.getZ()*39.3701);
@@ -131,6 +135,8 @@ public class VisionSubsystem extends SubsystemBase {
       }
 
       SmartDashboard.putString("tag", tags.toString());
+
+      allAprilTagsInPicture = allAprilTagsInPictureUnderConstruction;
 
       // Give the output stream a new image to display
       outputStream.putFrame(mat);
@@ -145,6 +151,44 @@ public class VisionSubsystem extends SubsystemBase {
 
   public void clearTag1Transform() {
     tag1Transform = null;
+  }
+
+  public static class AllAprilTagsInPicture{
+    Map<Integer, AprilTagDetection> detections;
+    Map<Integer, Transform3d> transforms;
+
+    AllAprilTagsInPicture() {
+      detections = new HashMap<>();
+      transforms = new HashMap<>();
+    }
+
+    void add (AprilTagDetection detection, Transform3d transform) {
+      Integer id = detection.getId();
+      detections.put(id, detection);
+      transforms.put(id, transform);
+    }
+
+    public int size() {
+      return detections.size();
+    }
+
+    public AprilTagDetection getDetection(int i) {
+      return detections.get(i);
+    }
+
+    public Transform3d getTransform3d(int i){
+      return transforms.get(i);
+    }
+
+    public Integer getIdOfClosestTag() {
+      int size = size();
+      if (size == 0) return null;
+      var keys = new ArrayList<>(transforms.keySet());
+      var key0 = keys.get(0);
+      // TODO NEEDS WORK!
+      return key0;
+    }
+
   }
 
 }

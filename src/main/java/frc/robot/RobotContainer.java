@@ -121,6 +121,7 @@ public class RobotContainer {
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("WhereAmICommand", new WhereAmI());
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
