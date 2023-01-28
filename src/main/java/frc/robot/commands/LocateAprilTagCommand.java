@@ -84,15 +84,17 @@ public class LocateAprilTagCommand extends CommandBase {
     // driveSubsystem.stopDrive();
     if (autoDriveCommand != null) {
       autoDriveCommand.end(false);
+      autoDriveCommand = null;
     }
 
   }
+
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
 
-    if (autoDriveCommand != null) {
+    if (iAmDriving) {
       if (autoDriveCommand.isFinished()) {
         return true;
       } else {
