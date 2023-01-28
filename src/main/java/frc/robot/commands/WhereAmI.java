@@ -4,6 +4,11 @@
 
 package frc.robot.commands;
 
+import java.util.Observer;
+import java.util.Optional;
+
+import edu.wpi.first.math.estimator.KalmanFilterLatencyCompensator.ObserverSnapshot;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,13 +26,20 @@ public class WhereAmI extends CommandBase {
   @Override
   public void execute() {
     VisionSubsystem.AllAprilTagsInPicture allAprilTagsInPicture = VisionSubsystem.allAprilTagsInPicture;
-    Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
-    if(idOfClosetTag != null){
-      Transform3d transform3d = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
-      SmartDashboard.putNumber("closest tag id", idOfClosetTag);
-      SmartDashboard.putNumber("closest tag distance x", transform3d.getX());
-      SmartDashboard.putNumber("closest tag distance y", transform3d.getY());
-      SmartDashboard.putNumber("closest tag distance z", transform3d.getZ());
+    if(allAprilTagsInPicture != null)
+    {
+      Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
+      if(idOfClosetTag != null)
+      {
+        Transform3d transform3d = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
+        SmartDashboard.putNumber("whereami.closest tag id", idOfClosetTag);
+        SmartDashboard.putNumber("whereami.closest tag distance x", transform3d.getX());
+        SmartDashboard.putNumber("whereami.closest tag distance y", transform3d.getY());
+        SmartDashboard.putNumber("whereami.closest tag distance z", transform3d.getZ());
+
+        VisionSubsystem.foo(idOfClosetTag);
+      }
+
     }
   }
 

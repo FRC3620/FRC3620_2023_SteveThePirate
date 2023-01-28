@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -11,6 +13,8 @@ import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.apriltag.AprilTagDetector;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagPoseEstimator;
 import edu.wpi.first.apriltag.AprilTagPoseEstimator.Config;
 
@@ -18,6 +22,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,6 +39,7 @@ public class VisionSubsystem extends SubsystemBase {
   public double atag1TransformX;
   public double atag1TransformY;
   public double atag1TransformZ;
+  public static double metersToInches = 39.3701;
   public boolean getTargetTransform = true;
 
   public static Double targetOneX = null;
@@ -62,6 +68,7 @@ public class VisionSubsystem extends SubsystemBase {
     UsbCamera camera = CameraServer.startAutomaticCapture();
     // Set the resolution
     camera.setResolution(640, 360);
+    camera.setBrightness(50);
 
     // Get a CvSink. This will capture Mats from the camera
     CvSink cvSink = CameraServer.getVideo();
@@ -191,4 +198,33 @@ public class VisionSubsystem extends SubsystemBase {
 
   }
 
+  public static void foo(int tag) {
+        AprilTagFieldLayout fieldLayout;
+    try {
+      fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+
+      System.out.println (fieldLayout.getTagPose(tag));
+      var footemp = fieldLayout.getTagPose(tag);
+      if (footemp.isPresent()) 
+      {
+        Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
+        if(idOfClosetTag != null)
+        {
+          Transform3d transform3d = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
+          Pose3d p = footemp.get();
+          SmartDashboard.putNumber("whereami.TagPosex", p.getX());
+          SmartDashboard.putNumber("whereami.TagPosey", p.getY());
+          SmartDashboard.putNumber("whereami.TagPosez", p.getZ());
+                    
+          double botPositionX = p.getX() - transform3d.getZ();
+          double botPositionY = p.getY() + transform3d.getX();
+          SmartDashboard.putNumber("whereami.botX", botPositionX);
+          SmartDashboard.putNumber("whereami.botY", botPositionY);
+        }
+      }
+
+    } catch (IOException ex) {
+      System.out.println("unable to load file");
+    }
+  }
 }
