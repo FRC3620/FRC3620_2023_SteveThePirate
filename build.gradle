@@ -9,6 +9,12 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+// FRC3620 ********************************************************************
+compileJava.options.encoding = 'UTF-8' 
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+// ****************************************************************************
+
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
@@ -103,9 +109,9 @@ test {
 
         // includeTestsMatching 'DummyTest'
 
-        includeTestsMatching 'SwerveCalcTest'
+        // includeTestsMatching 'SwerveCalcTest'
 
-        includeTestsMatching 'RobotParametersTest'
+        // includeTestsMatching 'RobotParametersTest'
     }
     // ****************************************************************************
 }
