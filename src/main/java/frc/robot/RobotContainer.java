@@ -19,7 +19,7 @@ import org.usfirst.frc3620.misc.CANDeviceFinder;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.NavXNavigationSubsystem;
-
+import frc.robot.subsystems.OdometrySubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -49,6 +49,7 @@ public class RobotContainer {
   public static DriveSubsystem driveSubsystem;
   public static INavigationSubsystem navigationSubsystem;
   public static VisionSubsystem visionSubsystem;
+  public static OdometrySubsystem odometrySubsystem;
 
   // joysticks here....
   public static Joystick driverJoystick;
@@ -97,6 +98,7 @@ public class RobotContainer {
     navigationSubsystem = new NavXNavigationSubsystem();
     driveSubsystem = new DriveSubsystem(navigationSubsystem);
     visionSubsystem = new VisionSubsystem();
+    odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
   }
 
   /**
@@ -121,6 +123,7 @@ public class RobotContainer {
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData(new ResetOdometryCommand());
     SmartDashboard.putData("WhereAmICommand", new WhereAmI());
   }
 
@@ -135,7 +138,7 @@ public class RobotContainer {
 
   public static double getDriveVerticalJoystick() {
     double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y);
-    SmartDashboard.putNumber("driver.raw.y", axisValue);
+    SmartDashboard.putNumber("driver.y.raw", axisValue);
     if (Math.abs(axisValue) < driverStrafeDeadzone) {
       return 0;
     }
@@ -147,7 +150,7 @@ public class RobotContainer {
 
   public static double getDriveHorizontalJoystick() {
     double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X);
-    SmartDashboard.putNumber("driver.raw.x", axisValue);
+    SmartDashboard.putNumber("driver.x.raw", axisValue);
     if (Math.abs(axisValue) < driverStrafeDeadzone) {
       return 0;
     }
@@ -160,14 +163,16 @@ public class RobotContainer {
   static double driverSpinDeadzone = 0.1;
   public static double getDriveSpinJoystick() {
     double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X);
-    SmartDashboard.putNumber("driver.raw.spin", axisValue);
-    if (Math.abs(axisValue) < driverSpinDeadzone) {
-      return 0;
+    SmartDashboard.putNumber("driver.spin.raw", axisValue);
+    double rv = 0;
+    if (Math.abs(axisValue) >= driverSpinDeadzone) {
+      rv = axisValue*axisValue;
+      if (axisValue < 0){
+        rv = -rv;
+      }
     }
-    if (axisValue < 0){
-      return -(axisValue*axisValue);
-    }
-    return axisValue*axisValue;
+    SmartDashboard.putNumber("driver.spin.processed", rv);
+    return rv;
   }
 
   /**
