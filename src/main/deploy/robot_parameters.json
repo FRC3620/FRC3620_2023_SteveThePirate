@@ -11,7 +11,8 @@
       "he.rb": 90.0,  // right back
       //
       "chassis_width": 23.00,  // inches
-      "chassis_length": 23.00
+      "chassis_length": 23.00,
+      "drive_gear_ratio": 8.31
     }
   },
   {
@@ -26,7 +27,8 @@
       "he.rb": -41.7,  // right back
       //
       "chassis_width": 22.25,  // inches
-      "chassis_length": 24.25
+      "chassis_length": 24.25,
+      "drive_gear_ratio": 5.85
     }
   },
   {
