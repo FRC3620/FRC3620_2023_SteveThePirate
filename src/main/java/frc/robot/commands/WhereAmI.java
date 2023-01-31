@@ -7,12 +7,19 @@ package frc.robot.commands;
 import java.util.Observer;
 import java.util.Optional;
 
+import org.usfirst.frc3620.misc.FieldCalculations;
+
 import edu.wpi.first.math.estimator.KalmanFilterLatencyCompensator.ObserverSnapshot;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.VisionSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -31,13 +38,29 @@ public class WhereAmI extends CommandBase {
       Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
       if(idOfClosetTag != null)
       {
-        Transform3d transform3d = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
+        Transform3d vectorFromCameraToTag = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
         SmartDashboard.putNumber("whereami.closest tag id", idOfClosetTag);
-        SmartDashboard.putNumber("whereami.closest tag distance x", transform3d.getX());
-        SmartDashboard.putNumber("whereami.closest tag distance y", transform3d.getY());
-        SmartDashboard.putNumber("whereami.closest tag distance z", transform3d.getZ());
+        SmartDashboard.putNumber("whereami.closest tag distance x", vectorFromCameraToTag.getX());
+        SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
+        SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
 
-        VisionSubsystem.foo(idOfClosetTag);
+        Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
+
+        SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
+        SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
+
+        Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfClosetTag);
+
+        Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
+        SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
+        Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+        SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
+        SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
+
+
+
+      
+
       }
 
     }

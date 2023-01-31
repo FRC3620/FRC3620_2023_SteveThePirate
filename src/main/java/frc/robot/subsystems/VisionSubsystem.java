@@ -24,12 +24,19 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
   public VisionSubsystem() {
     super();
+    try {
+      fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+    } catch (IOException ex) {
+      System.out.println("unable to load file");
+    }
     Thread visionThread = new Thread(() -> apriltagVisionThreadProc());
     visionThread.setDaemon(true);
     visionThread.start();
@@ -44,6 +51,9 @@ public class VisionSubsystem extends SubsystemBase {
 
   public static Double targetOneX = null;
   public static AllAprilTagsInPicture allAprilTagsInPicture = null;
+
+  static AprilTagFieldLayout fieldLayout;
+
 
   @Override
   public void periodic() {
@@ -198,33 +208,17 @@ public class VisionSubsystem extends SubsystemBase {
 
   }
 
-  public static void foo(int tag) {
-        AprilTagFieldLayout fieldLayout;
-    try {
-      fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
-
-      System.out.println (fieldLayout.getTagPose(tag));
-      var footemp = fieldLayout.getTagPose(tag);
-      if (footemp.isPresent()) 
-      {
-        Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
-        if(idOfClosetTag != null)
-        {
-          Transform3d transform3d = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
-          Pose3d p = footemp.get();
-          SmartDashboard.putNumber("whereami.TagPosex", p.getX());
-          SmartDashboard.putNumber("whereami.TagPosey", p.getY());
-          SmartDashboard.putNumber("whereami.TagPosez", p.getZ());
-                    
-          double botPositionX = p.getX() - transform3d.getZ();
-          double botPositionY = p.getY() + transform3d.getX();
-          SmartDashboard.putNumber("whereami.botX", botPositionX);
-          SmartDashboard.putNumber("whereami.botY", botPositionY);
-        }
-      }
-
-    } catch (IOException ex) {
-      System.out.println("unable to load file");
+  public static Translation3d getTranslation3dForTag(int tag) {
+    System.out.println (fieldLayout.getTagPose(tag));
+    var footemp = fieldLayout.getTagPose(tag);
+    if (footemp.isPresent()) 
+    {
+      Translation3d transform3d = footemp.get().getTranslation();
+      SmartDashboard.putNumber("whereami.TagPosex", transform3d.getX());
+      SmartDashboard.putNumber("whereami.TagPosey", transform3d.getY());
+      SmartDashboard.putNumber("whereami.TagPosez", transform3d.getZ());
+      return transform3d;
     }
+    return null;
   }
 }
