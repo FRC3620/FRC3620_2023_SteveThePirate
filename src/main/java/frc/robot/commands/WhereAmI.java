@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -50,17 +51,15 @@ public class WhereAmI extends CommandBase {
         SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
 
         Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfClosetTag);
-
         Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
         SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
-        Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
-        SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
-        SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
 
-
-
-      
-
+        if (vectorFromOriginToTag != null){
+          Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+          Translation2d whereIsTheCameraInches = whereIsTheCamera.times(Units.metersToInches(1));
+          SmartDashboard.putNumber("camera X", whereIsTheCameraInches.getX());
+          SmartDashboard.putNumber("camera Y", whereIsTheCameraInches.getY());
+        }
       }
 
     }

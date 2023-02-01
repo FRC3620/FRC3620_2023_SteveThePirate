@@ -46,7 +46,6 @@ public class VisionSubsystem extends SubsystemBase {
   public double atag1TransformX;
   public double atag1TransformY;
   public double atag1TransformZ;
-  public static double metersToInches = 39.3701;
   public boolean getTargetTransform = true;
 
   public static Double targetOneX = null;

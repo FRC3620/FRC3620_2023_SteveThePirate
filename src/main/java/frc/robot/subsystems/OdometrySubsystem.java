@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class OdometrySubsystem extends SubsystemBase {
 
-    SwerveDriveOdometry sdo;
-    INavigationSubsystem navigationSubsystem;
-    Supplier<SwerveModulePosition[]> modulePositionProvider;
+    static SwerveDriveOdometry sdo;
+    static INavigationSubsystem navigationSubsystem;
+    static Supplier<SwerveModulePosition[]> modulePositionProvider;
 
     static public boolean putSwerveModulePositionsOnDashboard = false;
 
@@ -44,13 +44,15 @@ public class OdometrySubsystem extends SubsystemBase {
         sdo = new SwerveDriveOdometry(kinematics, getOdometryHeading(alliance), modulePositionProvider.get());
     }
 
-    public void resetPosition (Alliance alliance, Translation2d currentPosition) {
+
+    public static void resetPosition (Alliance alliance, Translation2d currentPosition) {
         Rotation2d r2d = getOdometryHeading(alliance);
         Pose2d pose2d = new Pose2d(currentPosition, r2d);
+        Pose2d pose2dInches = pose2d.times(Units.metersToInches(1));
         sdo.resetPosition(r2d, getPositions(), pose2d);
     }
 
-    SwerveModulePosition[] getPositions() {
+    static SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] sp = modulePositionProvider.get();
         if (putSwerveModulePositionsOnDashboard) {
             for (int i = 0; i < sp.length; i++) {
@@ -74,11 +76,15 @@ public class OdometrySubsystem extends SubsystemBase {
         Pose2d whereIIs = update(DriverStation.getAlliance());
         SmartDashboard.putNumber("odometry.x", whereIIs.getX());
         SmartDashboard.putNumber("odometry.y", whereIIs.getY());
+        SmartDashboard.putNumber("odometry.x inches", whereIIs.getX());
+        SmartDashboard.putNumber("odometry.y inches", whereIIs.getY());
     }
 
-    public Rotation2d getOdometryHeading(Alliance alliance) {
+    public static Rotation2d getOdometryHeading(Alliance alliance) {
         Rotation2d rv = navigationSubsystem.getOdometryHeading(alliance);
         SmartDashboard.putNumber ("odometry.heading", rv.getDegrees());
         return rv;
     }
+
+    
 }
