@@ -63,7 +63,7 @@ public class OdometrySubsystem extends SubsystemBase {
         return sp;
     }
 
-    public Pose2d getPoseMeters() {
+    public static Pose2d getPoseMeters() {
         return sdo.getPoseMeters();
     }
 

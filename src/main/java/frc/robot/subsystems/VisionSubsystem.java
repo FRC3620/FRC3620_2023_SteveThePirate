@@ -208,7 +208,6 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public static Translation3d getTranslation3dForTag(int tag) {
-    System.out.println (fieldLayout.getTagPose(tag));
     var footemp = fieldLayout.getTagPose(tag);
     if (footemp.isPresent()) 
     {

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,6 +11,8 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.VisionSubsystem;
 
 import java.util.Set;
+
+import javax.print.attribute.standard.Destination;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -126,6 +130,7 @@ public class RobotContainer {
     SmartDashboard.putData(new ResetOdometryCommand());
     SmartDashboard.putData("WhereAmICommand", new WhereAmI());
     SmartDashboard.putData("Reset Odometry", new ResetOdometryCommand());
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(new Translation2d(9, 4.5), driveSubsystem));
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();

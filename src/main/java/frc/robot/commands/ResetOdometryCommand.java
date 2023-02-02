@@ -32,17 +32,21 @@ public class ResetOdometryCommand extends CommandBase {
   @Override
   public void execute() {
     VisionSubsystem.AllAprilTagsInPicture allAprilTagsInPicture = VisionSubsystem.allAprilTagsInPicture;
-    Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
-    Transform3d vectorFromCameraToTag = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
-    Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
+    if(allAprilTagsInPicture != null){
+      Integer idOfClosetTag = allAprilTagsInPicture.getIdOfClosestTag();
+      if(idOfClosetTag != null){
+        Transform3d vectorFromCameraToTag = allAprilTagsInPicture.getTransform3d(idOfClosetTag);
+        Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
 
-    Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfClosetTag);
-    Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
+        Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfClosetTag);
+        Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
 
-    if (vectorFromOriginToTag != null){
-      Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
-      Translation2d whereIsTheCameraInches = whereIsTheCamera.times(Units.metersToInches(1));
-      OdometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+        if (vectorFromOriginToTag != null){
+          Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+          Translation2d whereIsTheCameraInches = whereIsTheCamera.times(Units.metersToInches(1));
+          OdometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+        }
+      }
     }
   }
 
@@ -54,5 +58,10 @@ public class ResetOdometryCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  @Override
+  public boolean runsWhenDisabled(){
+    return true;
   }
 }
