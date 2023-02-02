@@ -19,11 +19,15 @@ import frc.robot.subsystems.OdometrySubsystem;
 public class DriveToCoordinateCommand extends CommandBase {
   Translation2d destination;
   double distance;
+  double maxSpeed;
+  double accuracy;
   DriveSubsystem driveSubsystem;
   /** Creates a new DriveToCoordinateCommand. */
-  public DriveToCoordinateCommand(Translation2d destination, DriveSubsystem driveSubsystem) {
+  public DriveToCoordinateCommand(Translation2d destination, double maxSpeed, double accuracy, DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.destination = destination;
+    this.maxSpeed = maxSpeed;
+    this.accuracy = accuracy;
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
   }
@@ -60,11 +64,11 @@ public class DriveToCoordinateCommand extends CommandBase {
     double speed = 0;
 
     if(distance > 1){
-      speed = 0.5;
+      speed = maxSpeed;
     }
     
     if(distance < 1){
-      speed = 0.1;
+      speed = 0.2;
     }
 
     // need to correct for what direction we are heading
@@ -80,7 +84,7 @@ public class DriveToCoordinateCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(distance < .2){
+    if(distance < accuracy){
       return true;
     } else {
       return false;

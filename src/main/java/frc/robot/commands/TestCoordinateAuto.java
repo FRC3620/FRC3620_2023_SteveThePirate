@@ -20,13 +20,13 @@ public class TestCoordinateAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveToCoordinateCommand(bigStu, driveSubsystem)
+      new DriveToCoordinateCommand(bigStu, 0.5, 1, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(dougyBoi, driveSubsystem)
+      new DriveToCoordinateCommand(dougyBoi, 0.5, 0.2, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(bigStu, driveSubsystem)
+      new DriveToCoordinateCommand(bigStu, 0.5, 0.5, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(fred, driveSubsystem)
+      new DriveToCoordinateCommand(fred, 0.5, 0.2, driveSubsystem)
     );
 
   }

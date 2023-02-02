@@ -130,7 +130,7 @@ public class RobotContainer {
     SmartDashboard.putData(new ResetOdometryCommand());
     SmartDashboard.putData("WhereAmICommand", new WhereAmI());
     SmartDashboard.putData("Reset Odometry", new ResetOdometryCommand());
-    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(new Translation2d(9, 4.5), driveSubsystem));
+    //SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(new Translation2d(9, 4.5), driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
   }
 
