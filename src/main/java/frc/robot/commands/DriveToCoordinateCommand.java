@@ -57,9 +57,19 @@ public class DriveToCoordinateCommand extends CommandBase {
 
     double spinX = driveSubsystem.getSpinPower();
 
+    double speed = 0;
+
+    if(distance > 1){
+      speed = 0.5;
+    }
+    
+    if(distance < 1){
+      speed = 0.1;
+    }
+
     // need to correct for what direction we are heading
     double desiredAngleRelativeToRobot = angle - RobotContainer.navigationSubsystem.getCorrectedHeading();
-    driveSubsystem.autoDrive(desiredAngleRelativeToRobot, 0.2, spinX);
+    driveSubsystem.autoDrive(desiredAngleRelativeToRobot, speed, spinX);
 
   }
 
