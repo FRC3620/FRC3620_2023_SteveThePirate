@@ -12,16 +12,23 @@ import frc.robot.subsystems.DriveSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TestCoordinateAuto extends SequentialCommandGroup {
+public class LongerTestCoordinateAuto extends SequentialCommandGroup {
+  Translation2d greggyBoi = new Translation2d(14.6, 1.1);
   Translation2d fred = new Translation2d(13.6, 4.6);
+  Translation2d disturbedFred = new Translation2d(14.5, 4.6);
   Translation2d bigStu = new Translation2d(10.8, 4.7);
   Translation2d dougyBoi = new Translation2d(9.4, 2.0);
   /** Creates a new TestCoordinateAuto. */
-  public TestCoordinateAuto(DriveSubsystem driveSubsystem) {
+  public LongerTestCoordinateAuto(DriveSubsystem driveSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
+      //TODO: create/add WaitForSaneOdometryCommand
+      ,
+      new DriveToCoordinateCommand(greggyBoi, 0.1, 0.1, driveSubsystem)
+      ,
+      new DriveToCoordinateCommand(disturbedFred, 0.2, 0.2, driveSubsystem)
       ,
       new DriveToCoordinateCommand(bigStu, 0.5, 1, driveSubsystem)
       ,
@@ -29,7 +36,9 @@ public class TestCoordinateAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(bigStu, 0.5, 0.5, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(fred, 0.5, 0.2, driveSubsystem)
+      new DriveToCoordinateCommand(disturbedFred, 0.5, 0.2, driveSubsystem)
+      ,
+      new DriveToCoordinateCommand(greggyBoi, 0.2, 0.1, driveSubsystem)
     );
 
   }
