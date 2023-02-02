@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class OdometrySubsystem extends SubsystemBase {
 
-    static SwerveDriveOdometry sdo;
-    static INavigationSubsystem navigationSubsystem;
-    static Supplier<SwerveModulePosition[]> modulePositionProvider;
+    SwerveDriveOdometry sdo;
+    INavigationSubsystem navigationSubsystem;
+    Supplier<SwerveModulePosition[]> modulePositionProvider;
 
     static public boolean putSwerveModulePositionsOnDashboard = false;
 
@@ -28,8 +28,12 @@ public class OdometrySubsystem extends SubsystemBase {
         this.navigationSubsystem = ns;
         this.modulePositionProvider = modulePositionProvider;
 
-        double halfChassisWidthInMeters = Units.inchesToMeters(swerveParameters.getChassisWidth()) / 2.0;
-        double halfChassisLengthInMeters = Units.inchesToMeters(swerveParameters.getChassisLength()) / 2.0;
+        double halfChassisWidthInMeters = 1;
+        double halfChassisLengthInMeters = 1;
+        if (swerveParameters != null) {
+            if (swerveParameters.getChassisWidth() != null) halfChassisWidthInMeters = Units.inchesToMeters(swerveParameters.getChassisWidth()) / 2.0;
+            if (swerveParameters.getChassisLength() != null) halfChassisLengthInMeters = Units.inchesToMeters(swerveParameters.getChassisLength()) / 2.0;
+        }
         // +x is towards the front of the robot, +y is towards the left of the robot
         SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(+halfChassisLengthInMeters, +halfChassisWidthInMeters) // LF
@@ -45,14 +49,13 @@ public class OdometrySubsystem extends SubsystemBase {
     }
 
 
-    public static void resetPosition (Alliance alliance, Translation2d currentPosition) {
+    public void resetPosition (Alliance alliance, Translation2d currentPosition) {
         Rotation2d r2d = getOdometryHeading(alliance);
         Pose2d pose2d = new Pose2d(currentPosition, r2d);
-        Pose2d pose2dInches = pose2d.times(Units.metersToInches(1));
         sdo.resetPosition(r2d, getPositions(), pose2d);
     }
 
-    static SwerveModulePosition[] getPositions() {
+    SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] sp = modulePositionProvider.get();
         if (putSwerveModulePositionsOnDashboard) {
             for (int i = 0; i < sp.length; i++) {
@@ -80,7 +83,7 @@ public class OdometrySubsystem extends SubsystemBase {
         SmartDashboard.putNumber("odometry.y inches", whereIIs.getY());
     }
 
-    public static Rotation2d getOdometryHeading(Alliance alliance) {
+    public Rotation2d getOdometryHeading(Alliance alliance) {
         Rotation2d rv = navigationSubsystem.getOdometryHeading(alliance);
         SmartDashboard.putNumber ("odometry.heading", rv.getDegrees());
         return rv;
