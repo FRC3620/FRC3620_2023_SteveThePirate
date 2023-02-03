@@ -24,8 +24,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
-  PhotonCamera camera1;
-  PhotonPoseEstimator camera1PoseEstimator;
+  PhotonCamera lifecam;
+  PhotonPoseEstimator lifecamPoseEstimator;
 
   public VisionSubsystem() {
     super();
@@ -35,9 +35,9 @@ public class VisionSubsystem extends SubsystemBase {
       System.out.println("unable to load file");
     }
 
-    camera1 = new PhotonCamera("camera1");
+    lifecam = new PhotonCamera("Lifecam");
     Transform3d camera1_mounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
-    camera1PoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, camera1, camera1_mounting);
+    lifecamPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, lifecam, camera1_mounting);
   }
 
   public double atag1TransformX;
@@ -53,7 +53,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    var result = camera1.getLatestResult();
+    var result = lifecam.getLatestResult();
     tags.clear();
     if (result.hasTargets()) {
       PhotonTrackedTarget bestTarget = result.getBestTarget();
@@ -64,27 +64,32 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
       SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
 
-      Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
+      //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
+      Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
 
       SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
       SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
         
       Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfBestTag);
-      Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
-      SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
+      if (vectorFromOriginToTag != null) {
+        SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
+        SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
+        SmartDashboard.putNumber("whereami.TagPosez", vectorFromOriginToTag.getZ());
 
-      if (vectorFromOriginToTag != null){
+        Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
+        SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
+
         Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
-        Translation2d whereIsTheCameraInches = whereIsTheCamera.times(Units.metersToInches(1));
-        SmartDashboard.putNumber("camera X", whereIsTheCameraInches.getX());
-        SmartDashboard.putNumber("camera Y", whereIsTheCameraInches.getY());
+        SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
+        SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
+        RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
       }
 
       for (var target : result.targets) {
         tags.add(target.getFiducialId());
       }
     }
-    SmartDashboard.putString("tag", tags.toString());
+    SmartDashboard.putString("tags", tags.toString());
   }
 
   public Transform3d tag1Transform;
@@ -102,10 +107,6 @@ public class VisionSubsystem extends SubsystemBase {
     var tagPoseOptional = fieldLayout.getTagPose(tag);
     if (tagPoseOptional.isPresent()) {
       Translation3d transform3d = tagPoseOptional.get().getTranslation();
-      SmartDashboard.putNumber("whereami.TagId", tag);
-      SmartDashboard.putNumber("whereami.TagPosex", transform3d.getX());
-      SmartDashboard.putNumber("whereami.TagPosey", transform3d.getY());
-      SmartDashboard.putNumber("whereami.TagPosez", transform3d.getZ());
       return transform3d;
     }
     return null;
