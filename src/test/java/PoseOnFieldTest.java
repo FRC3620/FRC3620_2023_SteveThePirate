@@ -37,7 +37,7 @@ public class PoseOnFieldTest {
   }
 
   void testOneCenterLine(double x, double y) {
-    PoseOnField p = PoseOnField.makePoseFromCenterLineInMeters(new Translation2d(x, y));
+    PoseOnField p = PoseOnField.fromCenterLineInMeters(new Translation2d(x, y));
 
     Translation2d rt = p.getTranslationInMeters(DriverStation.Alliance.Red);
     Assertions.assertEquals (Constants.FIELD_LENGTH_IN_METERS/2 + x, rt.getX());
@@ -57,7 +57,7 @@ public class PoseOnFieldTest {
   }
 
   void testOneWall(double x, double y) {
-    PoseOnField p = PoseOnField.makePoseFromMyWallInMeters(new Translation2d(x, y));
+    PoseOnField p = PoseOnField.fromMyWallInMeters(new Translation2d(x, y));
 
     Translation2d rt = p.getTranslationInMeters(DriverStation.Alliance.Red);
     Assertions.assertEquals (Constants.FIELD_LENGTH_IN_METERS - x, rt.getX());

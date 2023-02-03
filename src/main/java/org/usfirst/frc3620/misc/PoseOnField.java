@@ -1,6 +1,5 @@
 package org.usfirst.frc3620.misc;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
@@ -70,11 +69,11 @@ abstract public class PoseOnField {
         }
     }
 
-    public static PoseOnField makePoseFromCenterLineInInches (Translation2d t) {
+    public static PoseOnField fromCenterLineInInches (Translation2d t) {
         return new PoseOnFieldSetFromCenterLine(t, UnitsOfLength.INCH, null);
     }
 
-    public static PoseOnField makePoseFromCenterLineInMeters (Translation2d t) {
+    public static PoseOnField fromCenterLineInMeters (Translation2d t) {
         return new PoseOnFieldSetFromCenterLine(t, UnitsOfLength.METER, null);
     }
 
@@ -101,12 +100,43 @@ abstract public class PoseOnField {
         }
     }
 
-    public static PoseOnField makePoseFromMyWallInInches (Translation2d t) {
+    public static PoseOnField fromMyWallInInches (Translation2d t) {
         return new PoseOnFieldSetFromMyWall(t, UnitsOfLength.INCH, null);
     }
 
-    public static PoseOnField makePoseFromMyWallInMeters (Translation2d t) {
+    public static PoseOnField fromMyWallInMeters (Translation2d t) {
         return new PoseOnFieldSetFromMyWall(t, UnitsOfLength.METER, null);
+    }
+
+    static class PoseOnFieldSetFromRedAlliance extends PoseOnField {
+        public PoseOnFieldSetFromRedAlliance(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
+            super(where, uol, angleInDegrees);
+        }
+
+        @Override
+        public Translation2d getTranslationInMeters(Alliance alliance) {
+            double x;
+            switch (alliance) {
+                case Red:
+                    x = translationInMeters.getX();
+                    break;
+                case Blue:
+                    x = Constants.FIELD_LENGTH_IN_METERS - translationInMeters.getX();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported enum value");
+            }
+            return new Translation2d(x, translationInMeters.getY());
+        }
+    }
+
+    public static PoseOnField fromRedAlliancePositionInMeters(double x, double y) {
+        Translation2d t = new Translation2d(x, y);
+        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null);
+    }
+
+    public static PoseOnField fromRedAlliancePositionInMeters(Translation2d t) {
+        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null);
     }
 
 }
