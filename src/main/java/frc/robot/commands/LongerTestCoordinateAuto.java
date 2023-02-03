@@ -25,7 +25,7 @@ public class LongerTestCoordinateAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-      new WaitForSaneOdometryCommand()
+      new WaitForAccurateOdometryCommand(greggyBoi)
       ,
       new DriveToCoordinateCommand(greggyBoi, 0.1, 0.1, driveSubsystem)
       ,

@@ -23,7 +23,7 @@ public class TestCoordinateAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-      new WaitForSaneOdometryCommand()
+      new WaitForAccurateOdometryCommand(fred)
       ,
       new DriveToCoordinateCommand(bigStu, 0.5, 1, driveSubsystem)
       ,
