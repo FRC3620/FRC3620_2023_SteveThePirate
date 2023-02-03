@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
 
@@ -130,7 +131,7 @@ public class RobotContainer {
     SmartDashboard.putData(new ResetOdometryCommand());
     SmartDashboard.putData("WhereAmICommand", new WhereAmI());
     SmartDashboard.putData("Reset Odometry", new ResetOdometryCommand());
-    //SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(new Translation2d(9, 4.5), driveSubsystem));
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
   }

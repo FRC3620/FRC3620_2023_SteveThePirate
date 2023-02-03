@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.usfirst.frc3620.misc.PoseOnField;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
@@ -13,9 +15,9 @@ import frc.robot.subsystems.DriveSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestCoordinateAuto extends SequentialCommandGroup {
-  Translation2d fred = new Translation2d(13.6, 4.6);
-  Translation2d bigStu = new Translation2d(10.8, 4.7);
-  Translation2d dougyBoi = new Translation2d(9.4, 2.0);
+  PoseOnField fred = PoseOnField.fromRedAlliancePositionInMeters(13.6, 4.6);
+  PoseOnField bigStu = PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7);
+  PoseOnField dougyBoi = PoseOnField.fromRedAlliancePositionInMeters(9.4, 2.0);
   /** Creates a new TestCoordinateAuto. */
   public TestCoordinateAuto(DriveSubsystem driveSubsystem) {
     // Add your commands in the addCommands() call, e.g.

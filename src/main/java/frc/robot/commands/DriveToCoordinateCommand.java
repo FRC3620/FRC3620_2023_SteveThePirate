@@ -4,9 +4,8 @@
 
 package frc.robot.commands;
 
-import javax.print.attribute.standard.Destination;
+import org.usfirst.frc3620.misc.PoseOnField;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -17,15 +16,16 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.OdometrySubsystem;
 
 public class DriveToCoordinateCommand extends CommandBase {
+  PoseOnField destinationPoseOnField;
   Translation2d destination;
   double distance;
   double maxSpeed;
   double accuracy;
   DriveSubsystem driveSubsystem;
   /** Creates a new DriveToCoordinateCommand. */
-  public DriveToCoordinateCommand(Translation2d destination, double maxSpeed, double accuracy, DriveSubsystem driveSubsystem) {
+  public DriveToCoordinateCommand(PoseOnField destination, double maxSpeed, double accuracy, DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.destination = destination;
+    this.destinationPoseOnField = destination;
     this.maxSpeed = maxSpeed;
     this.accuracy = accuracy;
     this.driveSubsystem = driveSubsystem;
@@ -35,6 +35,7 @@ public class DriveToCoordinateCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    destination = destinationPoseOnField.getTranslationInMeters();
     driveSubsystem.setAutoSpinMode();
     driveSubsystem.setTargetHeading(RobotContainer.navigationSubsystem.getCorrectedHeading());
   }
