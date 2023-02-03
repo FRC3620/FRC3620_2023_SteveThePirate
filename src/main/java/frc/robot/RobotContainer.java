@@ -16,6 +16,7 @@ import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.NavXNavigationSubsystem;
@@ -50,6 +51,7 @@ public class RobotContainer {
   public static INavigationSubsystem navigationSubsystem;
   public static VisionSubsystem visionSubsystem;
   public static OdometrySubsystem odometrySubsystem;
+  public static CannonSubsystem cannonSubsystem;
 
   // joysticks here....
   public static Joystick driverJoystick;
@@ -99,6 +101,7 @@ public class RobotContainer {
     driveSubsystem = new DriveSubsystem(navigationSubsystem);
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
+    cannonSubsystem = new CannonSubsystem();
   }
 
   /**

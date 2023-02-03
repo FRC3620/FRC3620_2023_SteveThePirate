@@ -1195,7 +1195,6 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		  
 		  MotorSetup.resetMaxToKnownState(rightBackAzimuth, false);
 		  rightBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
 		}
 	
 	}
