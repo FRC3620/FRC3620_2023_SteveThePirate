@@ -4,22 +4,27 @@
 
 package frc.robot.commands;
 
+import org.usfirst.frc3620.misc.PoseOnField;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.OdometrySubsystem;
 
 public class WaitForAccurateOdometryCommand extends CommandBase {
+  PoseOnField destinationPoseOnField;
   double distance;
   Translation2d desiredCoord;
   /** Creates a new WaitForSaneOdometryCommand. */
-  public WaitForAccurateOdometryCommand(Translation2d desiredCoord) {
+  public WaitForAccurateOdometryCommand(PoseOnField destinationPoseOnField) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.desiredCoord = desiredCoord;
+    this.destinationPoseOnField = destinationPoseOnField;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    desiredCoord = destinationPoseOnField.getTranslationInMeters();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
