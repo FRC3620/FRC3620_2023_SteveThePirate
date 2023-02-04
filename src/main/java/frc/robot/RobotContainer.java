@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -127,6 +128,8 @@ public class RobotContainer {
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData(new ResetOdometryCommand());
+    SmartDashboard.putData("ExtendCommand1" , new CannonExtendCommand(cannonSubsystem, 12));
+    SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 5));
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
