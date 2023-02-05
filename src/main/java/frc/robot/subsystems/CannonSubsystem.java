@@ -19,6 +19,8 @@ import frc.robot.RobotContainer;
 public class CannonSubsystem extends SubsystemBase {
   public CannonExtendMechanism cannonExtendMechanism;
   public CannonElevateMechanism cannonElevateMechanism;
+  public CannonRollMechanism cannonRollMechanism;
+  public CannonPitchMechanism cannonPitchMechanism;
   
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationEncoder;
@@ -27,11 +29,21 @@ public class CannonSubsystem extends SubsystemBase {
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
   public AnalogInput extendHomeEncoder;
+
+  public CANSparkMaxSendable roll;
+  public RelativeEncoder rollEncoder;
+  public AnalogInput rollHomeEncoder;
+
+  public CANSparkMaxSendable pitch;
+  public RelativeEncoder pitchEncoder;
+  public AnalogInput pitchHomeEncoder;
   /** Creates a new ArmSubsystem. */
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
     cannonElevateMechanism = new CannonElevateMechanism(elevation);
+    cannonRollMechanism = new CannonRollMechanism(roll);
+    cannonPitchMechanism = new CannonPitchMechanism(pitch);
   }
 
   @Override
@@ -39,6 +51,8 @@ public class CannonSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     cannonExtendMechanism.periodic();
     cannonElevateMechanism.periodic();
+    cannonRollMechanism.periodic();
+    cannonPitchMechanism.periodic();
   }
 
   public void setLength(double length) {
@@ -47,6 +61,15 @@ public class CannonSubsystem extends SubsystemBase {
 
   public void setHeight(double height) {
     cannonElevateMechanism.setHeight(height);
+  }
+
+  public void setRoll(double roll) {
+    cannonRollMechanism.setRoll(roll);
+  }
+
+  public void setPitch(double pitch)
+  {
+    cannonPitchMechanism.setPitch(pitch);
   }
 
   //Sets length of arm for movement. (Endgame?)
@@ -58,12 +81,17 @@ public class CannonSubsystem extends SubsystemBase {
     CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
 		boolean shouldMakeAllCANDevices = RobotContainer.shouldMakeAllCANDevices();
 
-    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Elevation");
-		elevation = new CANSparkMaxSendable(10, MotorType.kBrushless);
+    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation");
+		elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
 
-		canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Extend");
-		extend = new CANSparkMaxSendable(9, MotorType.kBrushless);
+		canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 69, "Extend");
+		extend = new CANSparkMaxSendable(69, MotorType.kBrushless);
 
+    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 420, "Roll");
+    roll = new CANSparkMaxSendable(420, MotorType.kBrushless);
+
+    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Pitch");
+    pitch = new CANSparkMaxSendable(10, MotorType.kBrushless);
   }
 }
 

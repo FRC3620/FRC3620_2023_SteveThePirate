@@ -71,7 +71,7 @@ public class CannonElevateMechanism  {
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
-            extendCannon(0.03);
+            elevateCannon(0.03);
           
             if (calibrationTimer == null) {
               calibrationTimer = new Timer();
@@ -81,7 +81,7 @@ public class CannonElevateMechanism  {
               if (calibrationTimer.get() > 0.5){
                 if (Math.abs(elevateSpeed) < 2) {
                   encoderIsValid = true;
-                  extendCannon(0.0);
+                  elevateCannon(0.0);
                   encoder.setPosition(0.0);
                   if (requestedPositionWhileCalibrating != null) {
                     setHeight(requestedPositionWhileCalibrating);
@@ -120,7 +120,7 @@ public class CannonElevateMechanism  {
     }
   }
 
-  public void extendCannon(double speed) {
+  public void elevateCannon(double speed) {
       motor.set(speed);
   }
 }
