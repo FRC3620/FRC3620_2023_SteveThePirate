@@ -28,8 +28,12 @@ public class OdometrySubsystem extends SubsystemBase {
         this.navigationSubsystem = ns;
         this.modulePositionProvider = modulePositionProvider;
 
-        double halfChassisWidthInMeters = Units.inchesToMeters(swerveParameters.getChassisWidth()) / 2.0;
-        double halfChassisLengthInMeters = Units.inchesToMeters(swerveParameters.getChassisLength()) / 2.0;
+        double halfChassisWidthInMeters = 1;
+        double halfChassisLengthInMeters = 1;
+        if (swerveParameters != null) {
+            if (swerveParameters.getChassisWidth() != null) halfChassisWidthInMeters = Units.inchesToMeters(swerveParameters.getChassisWidth()) / 2.0;
+            if (swerveParameters.getChassisLength() != null) halfChassisLengthInMeters = Units.inchesToMeters(swerveParameters.getChassisLength()) / 2.0;
+        }
         // +x is towards the front of the robot, +y is towards the left of the robot
         SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(+halfChassisLengthInMeters, +halfChassisWidthInMeters) // LF
@@ -43,6 +47,7 @@ public class OdometrySubsystem extends SubsystemBase {
 
         sdo = new SwerveDriveOdometry(kinematics, getOdometryHeading(alliance), modulePositionProvider.get());
     }
+
 
     public void resetPosition (Alliance alliance, Translation2d currentPosition) {
         Rotation2d r2d = getOdometryHeading(alliance);
@@ -74,6 +79,8 @@ public class OdometrySubsystem extends SubsystemBase {
         Pose2d whereIIs = update(DriverStation.getAlliance());
         SmartDashboard.putNumber("odometry.x", whereIIs.getX());
         SmartDashboard.putNumber("odometry.y", whereIIs.getY());
+        SmartDashboard.putNumber("odometry.x inches", whereIIs.getX());
+        SmartDashboard.putNumber("odometry.y inches", whereIIs.getY());
     }
 
     public Rotation2d getOdometryHeading(Alliance alliance) {
@@ -81,4 +88,6 @@ public class OdometrySubsystem extends SubsystemBase {
         SmartDashboard.putNumber ("odometry.heading", rv.getDegrees());
         return rv;
     }
+
+    
 }

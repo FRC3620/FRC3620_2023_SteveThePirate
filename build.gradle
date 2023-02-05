@@ -107,11 +107,8 @@ test {
         // https://stackoverflow.com/a/52879530/17887564
         setFailOnNoMatchingTests(false)
 
-        // includeTestsMatching 'DummyTest'
+        includeTestsMatching 'PoseOnFieldTest'
 
-        // includeTestsMatching 'SwerveCalcTest'
-
-        // includeTestsMatching 'RobotParametersTest'
     }
     // ****************************************************************************
 }
