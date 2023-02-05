@@ -18,6 +18,7 @@ import frc.robot.RobotContainer;
 
 public class CannonSubsystem extends SubsystemBase {
   public CannonExtendMechanism cannonExtendMechanism;
+  public CannonElevateMechanism cannonElevateMechanism;
   
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationEncoder;
@@ -30,16 +31,22 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     cannonExtendMechanism.periodic();
+    cannonElevateMechanism.periodic();
   }
 
   public void setLength(double length) {
     cannonExtendMechanism.setLength(length);
+  }
+
+  public void setHeight(double height) {
+    cannonElevateMechanism.setHeight(height);
   }
 
   //Sets length of arm for movement. (Endgame?)
@@ -51,11 +58,77 @@ public class CannonSubsystem extends SubsystemBase {
     CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
 		boolean shouldMakeAllCANDevices = RobotContainer.shouldMakeAllCANDevices();
 
-    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation");
-		elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
+    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Elevation");
+		elevation = new CANSparkMaxSendable(10, MotorType.kBrushless);
 
-		canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend");
-		extend = new CANSparkMaxSendable(10, MotorType.kBrushless);
+		canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Extend");
+		extend = new CANSparkMaxSendable(9, MotorType.kBrushless);
 
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//:D
