@@ -1,7 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,6 +65,7 @@ public class RobotContainer {
     logger.info ("got parameters for chassis '{}'", robotParameters.getName());
 
     practiceBotJumper = new DigitalInput(0);
+    SendableRegistry.add(practiceBotJumper, "RobotContainer", "Practice Bot Jumper");
     boolean iAmACompetitionRobot = amIACompBot();
     if (!iAmACompetitionRobot) {
       logger.warn("this is a test chassis, will try to deal with missing hardware!");
