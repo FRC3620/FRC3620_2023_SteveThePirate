@@ -35,7 +35,6 @@ public class CannonPitchMechanism  {
     this.motor = motor;
     if (motor != null) {
       this.encoder = motor.getEncoder();
-      SendableRegistry.addLW(motor, "CannonSubsystem", motor.getDeviceId());
 
       PID = motor.getPIDController();
 

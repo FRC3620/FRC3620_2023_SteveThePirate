@@ -25,7 +25,7 @@ public class CannonPitchCommand extends CommandBase {
   @Override
   public void initialize() 
   {
-    cannonSubsystem.setHeight(desiredPitch);
+    cannonSubsystem.setPitch(desiredPitch);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

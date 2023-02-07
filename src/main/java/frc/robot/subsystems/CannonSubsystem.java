@@ -12,6 +12,9 @@ import com.revrobotics.AnalogInput;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -25,6 +28,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationEncoder;
   public AnalogInput elevationHomeEncoder;
+  public Encoder elevateEncoder;
+
 
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
@@ -44,6 +49,7 @@ public class CannonSubsystem extends SubsystemBase {
     cannonElevateMechanism = new CannonElevateMechanism(elevation);
     cannonRollMechanism = new CannonRollMechanism(roll);
     cannonPitchMechanism = new CannonPitchMechanism(pitch);
+    elevateEncoder.setDistancePerPulse(1/.256);
   }
 
   @Override
@@ -53,6 +59,7 @@ public class CannonSubsystem extends SubsystemBase {
     cannonElevateMechanism.periodic();
     cannonRollMechanism.periodic();
     cannonPitchMechanism.periodic();
+    SmartDashboard.putNumber("elevate encoder distance", elevateEncoder.getDistance());
   }
 
   public void setLength(double length) {
@@ -77,21 +84,34 @@ public class CannonSubsystem extends SubsystemBase {
     
   }
 
+
   void setupMotors() {
     CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
 		boolean shouldMakeAllCANDevices = RobotContainer.shouldMakeAllCANDevices();
 
-    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation");
-		elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation") || shouldMakeAllCANDevices) {
+      elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
+      addChild("elevation", elevation);
+    }
 
-		canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 69, "Extend");
-		extend = new CANSparkMaxSendable(69, MotorType.kBrushless);
+		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 69, "Extend") || shouldMakeAllCANDevices) {
+      extend = new CANSparkMaxSendable(69, MotorType.kBrushless);
+      addChild("extend", extend);
+    }
 
-    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 420, "Roll");
-    roll = new CANSparkMaxSendable(420, MotorType.kBrushless);
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 420, "Roll") || shouldMakeAllCANDevices) {
+      roll = new CANSparkMaxSendable(420, MotorType.kBrushless);
+      addChild("roll", roll);
+    }
 
-    canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Pitch");
-    pitch = new CANSparkMaxSendable(10, MotorType.kBrushless);
+    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Pitch") || shouldMakeAllCANDevices) {
+      pitch = new CANSparkMaxSendable(10, MotorType.kBrushless);
+      addChild("pitch", pitch);
+    }
+
+    elevateEncoder = new Encoder(1, 2);
+    addChild("elevateEncoder", elevateEncoder);
+
   }
 }
 
