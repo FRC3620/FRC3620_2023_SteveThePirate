@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 import org.usfirst.frc3620.misc.CANDeviceType;
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
+import org.usfirst.frc3620.misc.MotorSetup;
 
 import com.revrobotics.AnalogInput;
 import com.revrobotics.RelativeEncoder;
@@ -91,16 +92,17 @@ public class CannonSubsystem extends SubsystemBase {
 
     if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation") || shouldMakeAllCANDevices) {
       elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(elevation, true);
       addChild("elevation", elevation);
     }
 
-		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 69, "Extend") || shouldMakeAllCANDevices) {
-      extend = new CANSparkMaxSendable(69, MotorType.kBrushless);
+		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 61, "Extend") || shouldMakeAllCANDevices) {
+      extend = new CANSparkMaxSendable(61, MotorType.kBrushless);
       addChild("extend", extend);
     }
 
-    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 420, "Roll") || shouldMakeAllCANDevices) {
-      roll = new CANSparkMaxSendable(420, MotorType.kBrushless);
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 60, "Roll") || shouldMakeAllCANDevices) {
+      roll = new CANSparkMaxSendable(60, MotorType.kBrushless);
       addChild("roll", roll);
     }
 

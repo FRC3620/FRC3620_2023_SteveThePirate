@@ -41,10 +41,10 @@ public class CannonElevateMechanism  {
       // set up PID for turretPID here
       PID.setP(0.1);   //0.1
       PID.setI(0.0);     //0.0
-      PID.setD(10);    //10
+      PID.setD(0);    //10
       PID.setFF(0.0);      //0.0
 
-      PID.setOutputRange(-0.1, 0.1);
+      PID.setOutputRange(-0.4, 0.4);
     }
 
     if (encoder != null) {
@@ -70,15 +70,15 @@ public class CannonElevateMechanism  {
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
-            elevateCannon(0.03);
+            elevateCannon(-0.02);
           
             if (calibrationTimer == null) {
               calibrationTimer = new Timer();
               calibrationTimer.reset();
               calibrationTimer.start();
             } else {
-              if (calibrationTimer.get() > 0.5){
-                if (Math.abs(elevateSpeed) < 2) {
+              if (calibrationTimer.get() > 1){
+                if (Math.abs(elevateSpeed) < 40) {
                   encoderIsValid = true;
                   elevateCannon(0.0);
                   encoder.setPosition(0.0);
@@ -107,8 +107,8 @@ public class CannonElevateMechanism  {
     if(height < 0) {
       height = 0;
     }
-    if(height > 24) {
-      height = 24;
+    if(height > 90) {
+      height = 90;
     }
     SmartDashboard.putNumber(name + ".requestedHeight", height);
     requestedPosition = height;
