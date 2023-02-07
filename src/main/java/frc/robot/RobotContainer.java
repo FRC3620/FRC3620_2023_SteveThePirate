@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -126,7 +124,7 @@ public class RobotContainer {
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-    //SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, driveSubsystem));
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, -135, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
   }
