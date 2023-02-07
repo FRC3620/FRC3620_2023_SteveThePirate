@@ -360,12 +360,14 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	}
 
 	void fillSwerveModulePosition(int index, RelativeEncoder driveEncoder, RelativeEncoder azimuthEncoder) {
-		double distanceInInches = driveEncoder.getPosition();
+		double distanceInInches = 0;
+		if (driveEncoder != null) distanceInInches = driveEncoder.getPosition();
+		double distanceInMeters = - Units.inchesToMeters(distanceInInches);
+		swerveModulePositions[index].distanceMeters = distanceInMeters;
+
 		double azimuthInDegrees0ToRight = getFixedPosition(azimuthEncoder);
 		// I don't know why we have to negate this, but we do
-		double distanceInMeters = - Units.inchesToMeters(distanceInInches);
 		double azimuthInRadians0InFront = Units.degreesToRadians(azimuthInDegrees0ToRight + 90);
-		swerveModulePositions[index].distanceMeters = distanceInMeters;
 		swerveModulePositions[index].angle = new Rotation2d(azimuthInRadians0InFront);
 	}
 
