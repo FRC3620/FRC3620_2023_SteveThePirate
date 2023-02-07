@@ -37,8 +37,8 @@
       // azimuth home encoders
       "he.rf": -134.82, // right front
       "he.lf": 75.32,   // left front
-      "he.lb": 77.16,  // left back
-      "he.rb": -21.26,   // right back
+      "he.lb": 16.92,  // left back
+      "he.rb": -20.91,   // right back
       //
       "chassis_width": 19.00,  // inches
       "chassis_length": 19.00

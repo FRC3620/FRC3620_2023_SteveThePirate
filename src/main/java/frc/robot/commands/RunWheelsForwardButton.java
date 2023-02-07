@@ -5,6 +5,7 @@
 package frc.robot.commands;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -25,14 +26,16 @@ public class RunWheelsForwardButton extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putBoolean("DiagnosticsDriveMotorTest", false);
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     driveSubsystem.testDrive(0, .25);
-
-
+    SmartDashboard.putBoolean("DiagnosticsDriveMotorTest", areAllwheelsok());
   }
 
   // Called once the command ends or is interrupted.
