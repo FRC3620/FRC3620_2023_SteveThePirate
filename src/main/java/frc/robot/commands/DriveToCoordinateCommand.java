@@ -21,13 +21,15 @@ public class DriveToCoordinateCommand extends CommandBase {
   double distance;
   double maxSpeed;
   double accuracy;
+  double heading;
   DriveSubsystem driveSubsystem;
   /** Creates a new DriveToCoordinateCommand. */
-  public DriveToCoordinateCommand(PoseOnField destination, double maxSpeed, double accuracy, DriveSubsystem driveSubsystem) {
+  public DriveToCoordinateCommand(PoseOnField destination, double maxSpeed, double accuracy, double heading, DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.destinationPoseOnField = destination;
     this.maxSpeed = maxSpeed;
     this.accuracy = accuracy;
+    this.heading = heading;
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
   }
@@ -35,9 +37,15 @@ public class DriveToCoordinateCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(DriverStation.getAlliance() == Alliance.Blue){
+      heading = -heading;
+    } else {
+      heading = 180 - heading;
+    }
+
     destination = destinationPoseOnField.getTranslationInMeters();
     driveSubsystem.setAutoSpinMode();
-    driveSubsystem.setTargetHeading(RobotContainer.navigationSubsystem.getCorrectedHeading());
+    driveSubsystem.setTargetHeading(heading); //RobotContainer.navigationSubsystem.getCorrectedHeading()
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,7 +54,7 @@ public class DriveToCoordinateCommand extends CommandBase {
     Translation2d whereIAm = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
     Translation2d ourPath = destination.minus(whereIAm);
     double angle = ourPath.getAngle().getDegrees();
-    
+
     if(DriverStation.getAlliance() == Alliance.Red){
       angle = 180 - angle;
     } else if(DriverStation.getAlliance() == Alliance.Blue){
