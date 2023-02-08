@@ -129,8 +129,8 @@ public class RobotContainer {
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData(new ResetOdometryCommand());
-    SmartDashboard.putData("ExtendCommand1" , new CannonExtendCommand(cannonSubsystem, 12));
-    SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 5));
+    SmartDashboard.putData("ExtendCommand1" , new CannonExtendCommand(cannonSubsystem, 3));
+    SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 15));
     SmartDashboard.putData("ElevateCommand1", new CannonElevateCommand(cannonSubsystem, 21));
     SmartDashboard.putData("ElevateCommand2", new CannonElevateCommand(cannonSubsystem, 46));
     SmartDashboard.putData("RollCommand1", new CannonRollCommand(cannonSubsystem, 12));

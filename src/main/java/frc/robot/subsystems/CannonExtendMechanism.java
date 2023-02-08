@@ -45,14 +45,14 @@ public class CannonExtendMechanism  {
       // set up PID for turretPID here
       PID.setP(0.1);   //0.1
       PID.setI(0.0);     //0.0
-      PID.setD(10);    //10
+      PID.setD(0);    //10
       PID.setFF(0.0);      //0.0
 
       PID.setOutputRange(-0.1, 0.1);
     }
 
     if (encoder != null) {
-      //encoder.setPositionConversionFactor(90.0/115.0);
+      encoder.setPositionConversionFactor((30.25-4.125)/(16.4-4.8));
       //encoder.setVelocityConversionFactor(1);
     }
   }
@@ -73,7 +73,7 @@ public class CannonExtendMechanism  {
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
-            extendCannon(0.03);
+            extendCannon(-0.03);
           
             if (calibrationTimer == null) {
               calibrationTimer = new Timer();

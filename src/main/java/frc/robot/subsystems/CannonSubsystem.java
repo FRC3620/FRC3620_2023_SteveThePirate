@@ -50,7 +50,6 @@ public class CannonSubsystem extends SubsystemBase {
     cannonElevateMechanism = new CannonElevateMechanism(elevation);
     cannonRollMechanism = new CannonRollMechanism(roll);
     cannonPitchMechanism = new CannonPitchMechanism(pitch);
-    elevateEncoder.setDistancePerPulse(1/.256);
   }
 
   @Override
@@ -96,23 +95,26 @@ public class CannonSubsystem extends SubsystemBase {
       addChild("elevation", elevation);
     }
 
-		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 61, "Extend") || shouldMakeAllCANDevices) {
-      extend = new CANSparkMaxSendable(61, MotorType.kBrushless);
+		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {
+      extend = new CANSparkMaxSendable(10, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(extend, true);
       addChild("extend", extend);
     }
 
-    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 60, "Roll") || shouldMakeAllCANDevices) {
-      roll = new CANSparkMaxSendable(60, MotorType.kBrushless);
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Roll") || shouldMakeAllCANDevices) {
+      roll = new CANSparkMaxSendable(11, MotorType.kBrushless);
       addChild("roll", roll);
     }
 
-    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Pitch") || shouldMakeAllCANDevices) {
-      pitch = new CANSparkMaxSendable(10, MotorType.kBrushless);
+    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Pitch") || shouldMakeAllCANDevices) {
+      pitch = new CANSparkMaxSendable(12, MotorType.kBrushless);
       addChild("pitch", pitch);
     }
 
     elevateEncoder = new Encoder(1, 2);
     addChild("elevateEncoder", elevateEncoder);
+    elevateEncoder.setDistancePerPulse(-360/256.0);
+
 
   }
 }
