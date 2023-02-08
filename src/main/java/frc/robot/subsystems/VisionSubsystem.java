@@ -7,17 +7,27 @@ import java.util.List;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.common.dataflow.structures.Packet;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.usfirst.frc3620.logger.AsyncDataLogger;
+import org.usfirst.frc3620.logger.AsyncDataLoggerDatum;
 import org.usfirst.frc3620.misc.FieldCalculations;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.FieldLayout;
@@ -27,6 +37,10 @@ public class VisionSubsystem extends SubsystemBase {
   PhotonCamera lifecam;
   PhotonPoseEstimator lifecamPoseEstimator;
   static AprilTagFieldLayout fieldLayout;
+
+  AsyncDataLogger<VisionData> visionDataLogger;
+
+  static ObjectMapper objectMapper = new ObjectMapper();
 
   public VisionSubsystem() {
     super();
@@ -39,6 +53,8 @@ public class VisionSubsystem extends SubsystemBase {
     lifecam = new PhotonCamera("Lifecam");
     Transform3d camera1_mounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
     lifecamPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, lifecam, camera1_mounting);
+
+    visionDataLogger = new AsyncDataLogger<>("odometry.json", 1000);
   }
 
   public double atag1TransformX;
@@ -89,6 +105,12 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
     SmartDashboard.putString("tags", tags.toString());
+
+    if (visionDataLogger != null) {
+      VisionData visionData = new VisionData(result);
+      visionDataLogger.send(visionData);
+    }
+      
   }
 
   public Transform3d tag1Transform;
@@ -109,5 +131,39 @@ public class VisionSubsystem extends SubsystemBase {
       return transform3d;
     }
     return null;
+  }
+
+  public static class VisionData implements AsyncDataLoggerDatum {
+    public double when;
+
+    public Integer bestTarget;
+
+    public List<PhotonTrackedTarget> targets;
+
+    public Translation2d odometry;
+    
+    public double robotHeading;
+
+    VisionData(PhotonPipelineResult photonPipelineResult) {
+      this.when = Timer.getFPGATimestamp();
+      this.targets = photonPipelineResult.getTargets();
+      this.bestTarget = photonPipelineResult.getBestTarget().getFiducialId();
+      this.odometry = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
+      this.robotHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+    }
+
+    @Override
+    @JsonIgnore
+    public byte[] getAsyncDataLoggerBytes() {
+      String s = "";
+      try {
+        s = objectMapper.writeValueAsString(this);
+      } catch (JsonProcessingException e) {
+        s = e.toString();
+      }
+      s += "\n";
+      return s.getBytes();
+    }
+
   }
 }
