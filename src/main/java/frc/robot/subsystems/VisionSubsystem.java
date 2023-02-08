@@ -27,6 +27,8 @@ public class VisionSubsystem extends SubsystemBase {
   PhotonCamera lifecam;
   PhotonPoseEstimator lifecamPoseEstimator;
 
+  boolean doingAprilTags = false;
+
   public VisionSubsystem() {
     super();
     try {
@@ -49,47 +51,72 @@ public class VisionSubsystem extends SubsystemBase {
 
   static AprilTagFieldLayout fieldLayout;
 
+  double targetPitch;
+  double targetYaw;
+  double targetX;
+  double targetY;
+
   List<Integer> tags = new ArrayList<>();
 
   @Override
   public void periodic() {
     var result = lifecam.getLatestResult();
-    tags.clear();
-    if (result.hasTargets()) {
-      PhotonTrackedTarget bestTarget = result.getBestTarget();
-      Transform3d vectorFromCameraToTag = bestTarget.getBestCameraToTarget();
-      int idOfBestTag = bestTarget.getFiducialId();
-      SmartDashboard.putNumber("whereami.closest tag id", bestTarget.getFiducialId());
-      SmartDashboard.putNumber("whereami.closest tag distance x", vectorFromCameraToTag.getX());
-      SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
-      SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
+    if (doingAprilTags) {
+      // do this if we are looking for
+      tags.clear();
+      if (result.hasTargets()) {
+        PhotonTrackedTarget bestTarget = result.getBestTarget();
+        Transform3d vectorFromCameraToTag = bestTarget.getBestCameraToTarget();
+        int idOfBestTag = bestTarget.getFiducialId();
+        SmartDashboard.putNumber("whereami.closest tag id", bestTarget.getFiducialId());
+        SmartDashboard.putNumber("whereami.closest tag distance x", vectorFromCameraToTag.getX());
+        SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
+        SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
 
-      //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
-      Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
+        //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
+        Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
 
-      SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
-      SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
-        
-      Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfBestTag);
-      if (vectorFromOriginToTag != null) {
-        SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
-        SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
-        SmartDashboard.putNumber("whereami.TagPosez", vectorFromOriginToTag.getZ());
+        SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
+        SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
+          
+        Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfBestTag);
+        if (vectorFromOriginToTag != null) {
+          SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
+          SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
+          SmartDashboard.putNumber("whereami.TagPosez", vectorFromOriginToTag.getZ());
 
-        Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
-        SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
+          Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
+          SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
 
-        Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
-        SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
-        SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
-        RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+          Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+          SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
+          SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
+          RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+        }
+
+        for (var target : result.targets) {
+          tags.add(target.getFiducialId());
+        }
       }
+      SmartDashboard.putString("tags", tags.toString());
+    } else{
+      // game pieces
+      if(result.getBestTarget() != null){
+      var target = result.getBestTarget();
+      SmartDashboard.putNumber("gamepiece.yaw", target.getYaw());
 
-      for (var target : result.targets) {
-        tags.add(target.getFiducialId());
+      targetPitch = target.getPitch();
+      targetYaw = target.getYaw();
       }
     }
-    SmartDashboard.putString("tags", tags.toString());
+  }
+
+  public double getTargetPitch(){
+    return targetPitch;
+  }
+
+  public double getTargetYaw(){
+    return targetYaw;
   }
 
   public Transform3d tag1Transform;
