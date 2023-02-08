@@ -2,21 +2,23 @@ package frc.robot.subsystems;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.common.dataflow.structures.Packet;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.usfirst.frc3620.logger.AsyncDataLogger;
 import org.usfirst.frc3620.logger.AsyncDataLoggerDatum;
+import org.usfirst.frc3620.logger.LoggingMaster;
 import org.usfirst.frc3620.misc.FieldCalculations;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,10 +40,6 @@ public class VisionSubsystem extends SubsystemBase {
   PhotonPoseEstimator lifecamPoseEstimator;
   static AprilTagFieldLayout fieldLayout;
 
-  AsyncDataLogger<VisionData> visionDataLogger;
-
-  static ObjectMapper objectMapper = new ObjectMapper();
-
   public VisionSubsystem() {
     super();
     try {
@@ -53,8 +51,6 @@ public class VisionSubsystem extends SubsystemBase {
     lifecam = new PhotonCamera("Lifecam");
     Transform3d camera1_mounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
     lifecamPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, lifecam, camera1_mounting);
-
-    visionDataLogger = new AsyncDataLogger<>("odometry.json", 1000);
   }
 
   public double atag1TransformX;
@@ -66,55 +62,98 @@ public class VisionSubsystem extends SubsystemBase {
 
   List<Integer> tags = new ArrayList<>();
 
+  AsyncDataLogger<VisionData> visionDataLogger;
+  double visionDataLoggerT0;
+
+  static ObjectMapper objectMapper = new ObjectMapper();
+
+  public void startVisionDataLogger() {
+    String filename = "visionandodometry_" + LoggingMaster.convertTimestampToString(new Date()) + ".json";
+    visionDataLogger = new AsyncDataLogger<>(filename, 1000);
+    visionDataLoggerT0 = Timer.getFPGATimestamp();
+  }
+
+  public void doneWithVisionDataLogger() {
+    visionDataLogger.close();
+    visionDataLogger = null;
+  }
+
+  double lastAprilTagTimestamp = -1.0;
+
   @Override
   public void periodic() {
     var result = lifecam.getLatestResult();
-    tags.clear();
-    if (result.hasTargets()) {
-      PhotonTrackedTarget bestTarget = result.getBestTarget();
-      Transform3d vectorFromCameraToTag = bestTarget.getBestCameraToTarget();
-      int idOfBestTag = bestTarget.getFiducialId();
-      SmartDashboard.putNumber("whereami.closest tag id", bestTarget.getFiducialId());
-      SmartDashboard.putNumber("whereami.closest tag distance x", vectorFromCameraToTag.getX());
-      SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
-      SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
+    var ts = result.getTimestampSeconds();
+    if (lastAprilTagTimestamp != ts) {
+      lastAprilTagTimestamp = ts;
+      VisionData visionData = null;
+      if (visionDataLogger != null) {
+        visionData = new VisionData(Timer.getFPGATimestamp() - visionDataLoggerT0, result);
+      }
 
-      //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
-      Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
-
-      SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
-      SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
-        
-      Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(idOfBestTag);
-      if (vectorFromOriginToTag != null) {
-        SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
-        SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
-        SmartDashboard.putNumber("whereami.TagPosez", vectorFromOriginToTag.getZ());
-
+      tags.clear();
+      if (result.hasTargets()) {
         Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
-        SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
 
-        Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
-        SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
-        SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
-        RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
-      }
+        PhotonTrackedTarget bestTarget = result.getBestTarget();
+        int bestTargetId = bestTarget.getFiducialId();
+        List<PhotonTrackedTarget> targetsToProcess;
+        if (visionDataLogger != null) {
+          targetsToProcess = result.targets;
+        } else {
+          targetsToProcess = Collections.singletonList(bestTarget);
+        }
 
-      for (var target : result.targets) {
-        tags.add(target.getFiducialId());
-      }
-    }
-    SmartDashboard.putString("tags", tags.toString());
+        for (var target : targetsToProcess) {
+          int targetId = bestTarget.getFiducialId();
+          Transform3d vectorFromCameraToTag = target.getBestCameraToTarget();
+          //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
+          Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
+          Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(bestTargetId);
 
-    if (visionDataLogger != null) {
-      VisionData visionData = new VisionData(result);
-      visionDataLogger.send(visionData);
-    }
+          if (targetId == bestTargetId) {
+            SmartDashboard.putNumber("whereami.closest tag id", targetId);
+            SmartDashboard.putNumber("whereami.closest tag distance x", vectorFromCameraToTag.getX());
+            SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
+            SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
       
+            SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
+            SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
+          }
+
+          if (vectorFromOriginToTag != null) {
+            Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+            if (targetId == bestTargetId) {
+              RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+
+              SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
+              SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
+              SmartDashboard.putNumber("whereami.TagPosez", vectorFromOriginToTag.getZ());
+      
+              SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
+      
+              SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
+              SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
+            }
+            if (visionData != null) {
+              visionData.addCameraPosition(targetId, whereIsTheCamera);
+            }
+          }
+        }
+
+        for (var target : result.targets) {
+          tags.add(target.getFiducialId());
+        }
+      }
+      SmartDashboard.putString("tags", tags.toString());
+
+      if (visionDataLogger != null) {
+        visionDataLogger.send(visionData);
+      }
+    }      
   }
 
   public Transform3d tag1Transform;
-
 
   public Transform3d getTag1Transform() {
     return tag1Transform;
@@ -134,22 +173,37 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public static class VisionData implements AsyncDataLoggerDatum {
-    public double when;
+    final public double when;
 
-    public Integer bestTarget;
+    final public double photonVisionTimestamp;
 
-    public List<PhotonTrackedTarget> targets;
+    final public Integer bestTargetId;
 
-    public Translation2d odometry;
+    final public List<PhotonTrackedTarget> targets;
+
+    final public Map<Integer, Translation2d> cameraPositions = new HashMap<>();
+
+    final public Translation2d odometry, blind_odometry;
     
-    public double robotHeading;
+    final public double robotHeading;
 
-    VisionData(PhotonPipelineResult photonPipelineResult) {
-      this.when = Timer.getFPGATimestamp();
-      this.targets = photonPipelineResult.getTargets();
-      this.bestTarget = photonPipelineResult.getBestTarget().getFiducialId();
+    VisionData(double t, PhotonPipelineResult photonPipelineResult) {
+      this.when = t;
+      this.photonVisionTimestamp = photonPipelineResult.getTimestampSeconds();
+      if (photonPipelineResult.hasTargets()) {
+        this.targets = photonPipelineResult.getTargets();
+        this.bestTargetId = photonPipelineResult.getBestTarget().getFiducialId();
+      } else {
+        this.targets = null;
+        this.bestTargetId = null;
+      }
       this.odometry = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
+      this.blind_odometry = RobotContainer.odometrySubsystem.getBlindPoseMeters().getTranslation();
       this.robotHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+    }
+
+    void addCameraPosition(int id, Translation2d t2d) {
+      cameraPositions.put(id, t2d);
     }
 
     @Override

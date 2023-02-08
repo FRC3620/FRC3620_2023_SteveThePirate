@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
     robotDataLogger.setInterval(0.25);
     robotDataLogger.start();
 
-    FileSaver.add("networktables.ini");
+    FileSaver.add("/home/lvuser/networktables.json");
   }
 
   /**

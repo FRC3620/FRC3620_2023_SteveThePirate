@@ -18,9 +18,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class OdometrySubsystem extends SubsystemBase {
 
-    SwerveDriveOdometry sdo;
-    INavigationSubsystem navigationSubsystem;
-    Supplier<SwerveModulePosition[]> modulePositionProvider;
+    final SwerveDriveOdometry sdo;
+    final INavigationSubsystem navigationSubsystem;
+    final Supplier<SwerveModulePosition[]> modulePositionProvider;
+
+    final SwerveDriveKinematics kinematics;
+
+    SwerveDriveOdometry blind_sdo;
 
     static public boolean putSwerveModulePositionsOnDashboard = false;
 
@@ -35,7 +39,7 @@ public class OdometrySubsystem extends SubsystemBase {
             if (swerveParameters.getChassisLength() != null) halfChassisLengthInMeters = Units.inchesToMeters(swerveParameters.getChassisLength()) / 2.0;
         }
         // +x is towards the front of the robot, +y is towards the left of the robot
-        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+        kinematics = new SwerveDriveKinematics(
             new Translation2d(+halfChassisLengthInMeters, +halfChassisWidthInMeters) // LF
             ,
             new Translation2d(+halfChassisLengthInMeters, -halfChassisWidthInMeters) // RF
@@ -47,7 +51,6 @@ public class OdometrySubsystem extends SubsystemBase {
 
         sdo = new SwerveDriveOdometry(kinematics, getOdometryHeading(alliance), modulePositionProvider.get());
     }
-
 
     public void resetPosition (Alliance alliance, Translation2d currentPosition) {
         Rotation2d r2d = getOdometryHeading(alliance);
@@ -71,6 +74,7 @@ public class OdometrySubsystem extends SubsystemBase {
     }
 
     public Pose2d update(Alliance alliance) {
+        if (blind_sdo != null) blind_sdo.update(getOdometryHeading(alliance), getPositions());
         return sdo.update(getOdometryHeading(alliance), getPositions());
     }
 
@@ -89,5 +93,20 @@ public class OdometrySubsystem extends SubsystemBase {
         return rv;
     }
 
+    public void makeBlindOdometry(Alliance alliance) {
+        blind_sdo = new SwerveDriveOdometry(kinematics, getOdometryHeading(alliance), modulePositionProvider.get());
+        Rotation2d r2d = getOdometryHeading(alliance);
+        Pose2d pose2d = sdo.getPoseMeters();
+        blind_sdo.resetPosition(r2d, getPositions(), pose2d);
+    }
+
+    public void doneWithBlindOdometry() {
+        blind_sdo = null;
+    }
+
+    public Pose2d getBlindPoseMeters() {
+        if (blind_sdo != null) return blind_sdo.getPoseMeters();
+        return null;
+    }
     
 }

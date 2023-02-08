@@ -131,6 +131,7 @@ public class RobotContainer {
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData(" RotateWheelsButton", new RotateWheelsButton());
+    SmartDashboard.putData(new InstrumentOdometryAndVisionCommand());
     SmartDashboard.putBoolean("DiagnosticsDriveMotortest", true);
   }
 

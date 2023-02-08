@@ -11,7 +11,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class AsyncDataLogger<T extends AsyncDataLoggerDatum> extends SubsystemBase {
   ArrayBlockingQueue<AsyncDataLoggerMessage> queue;
-  int droppedMessages = 0;
+  int droppedMessageCount = 0;
+  int sentMessageCount = 0;
   Logger logger = EventLogging.getLogger(getClass(), EventLogging.Level.INFO);
 
   public AsyncDataLogger(String filename, int capacity) {
@@ -25,11 +26,14 @@ public class AsyncDataLogger<T extends AsyncDataLoggerDatum> extends SubsystemBa
     t.start();
   }
 
-  void do_queue(AsyncDataLoggerMessage m) {
+  boolean do_queue(AsyncDataLoggerMessage m) {
     if (queue.remainingCapacity() > 0) {
       queue.add(m);
+      sentMessageCount++;
+      return true;
     } else {
-      droppedMessages++;
+      droppedMessageCount++;
+      return false;
     }
   }
 
@@ -42,7 +46,11 @@ public class AsyncDataLogger<T extends AsyncDataLoggerDatum> extends SubsystemBa
   }
 
   public void close() {
-    do_queue(new AsyncDataLoggerMessage(MessageType.CLOSE, null));
+    boolean sent = do_queue(new AsyncDataLoggerMessage(MessageType.CLOSE, null));
+    if (!sent) {
+      logger.error ("Unable to send CLOSE message");
+    }
+    logger.info ("{} messages sent, {} dropped", sentMessageCount, droppedMessageCount);
   }
 
   enum MessageType { DATA, FLUSH, CLOSE }
@@ -57,33 +65,42 @@ public class AsyncDataLogger<T extends AsyncDataLoggerDatum> extends SubsystemBa
     }
   }
 
+  public int getDroppedMessageCount() {
+    return droppedMessageCount;
+  }
+
+  public int getSentMessageCount() {
+    return sentMessageCount;
+  }
+
   void writerThread(File file) {
+    int receivedMessageCount = 0;
     try {
       BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-      boolean open = true;
-      while (true) {
+      boolean running = true;
+      while (running) {
         AsyncDataLoggerMessage m = queue.take();
-        if (open) {
-          MessageType mt = m.messageType;
-          switch (mt) {
-            case FLUSH:
-              bos.flush();
-              break;
-            case CLOSE:
-              bos.close();
-              open = false;
-              break;
-            case DATA:
-              T payload = m.payload;
-              if (payload != null) {
-                bos.write(payload.getAsyncDataLoggerBytes());
-              }
-              break;
-          }
+        receivedMessageCount++;
+        MessageType mt = m.messageType;
+        switch (mt) {
+          case FLUSH:
+            bos.flush();
+            break;
+          case CLOSE:
+            bos.close();
+            running = false;
+            break;
+          case DATA:
+            T payload = m.payload;
+            if (payload != null) {
+              bos.write(payload.getAsyncDataLoggerBytes());
+            }
+            break;
         }
       }
     } catch (IOException | InterruptedException ex) {
       throw new RuntimeException("writer thread choked", ex);
     }
+    logger.info ("{} messages received", receivedMessageCount);
   }
 }
