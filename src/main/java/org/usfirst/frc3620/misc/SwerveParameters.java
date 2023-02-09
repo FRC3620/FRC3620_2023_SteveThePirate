@@ -23,6 +23,9 @@ public class SwerveParameters  {
     @JsonProperty("chassis_length")
     private Double chassisLength;
 
+    @JsonProperty("drive_gear_ratio")
+    private Double driveGearRatio;
+
     public SwerveParameters() {
         super();
     }
@@ -51,6 +54,10 @@ public class SwerveParameters  {
         return chassisWidth;
     }
 
+    public Double getDriveGearRatio() {
+        return driveGearRatio;
+    }
+
     public String whichSwerveParametersAreMissing() {
         StringJoiner l = new StringJoiner("|");
         if (leftFrontAbsoluteOffset == null) l.add("swerve.he.lf");
@@ -59,6 +66,7 @@ public class SwerveParameters  {
         if (rightBackAbsoluteOffset == null) l.add("swerve.he.rb");
         if (chassisLength == null) l.add("swerve.chassis_length");
         if (chassisWidth == null) l.add("swerve.chassis_width");
+        if (driveGearRatio == null) l.add("swerve.drive_gear_ratio");
         if (l.length() == 0) return null;
         return l.toString();
     }
@@ -72,6 +80,7 @@ public class SwerveParameters  {
                 .add("rightBackAbsoluteOffset=" + rightBackAbsoluteOffset)
                 .add("chassisWidth=" + chassisWidth)
                 .add("chassisLength=" + chassisLength)
+                .add("driveGearRatio=" + driveGearRatio)
                 .toString();
     }
 }
