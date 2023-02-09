@@ -133,6 +133,7 @@ public class RobotContainer {
     SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 15));
     SmartDashboard.putData("ElevateCommand1", new CannonElevateCommand(cannonSubsystem, 21));
     SmartDashboard.putData("ElevateCommand2", new CannonElevateCommand(cannonSubsystem, 46));
+    SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 65));
     SmartDashboard.putData("RollCommand1", new CannonRollCommand(cannonSubsystem, 12));
     SmartDashboard.putData("RollCommand2", new CannonRollCommand(cannonSubsystem, 5));
     SmartDashboard.putData("PitchCommand1", new CannonPitchCommand(cannonSubsystem, 12));

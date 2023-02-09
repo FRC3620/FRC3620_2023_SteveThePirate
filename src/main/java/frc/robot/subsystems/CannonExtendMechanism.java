@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Base64.Encoder;
+
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
@@ -24,6 +26,8 @@ public class CannonExtendMechanism  {
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
   RelativeEncoder encoder;
+
+
   SparkMaxPIDController PID = null;
   
   Double requestedPositionWhileCalibrating = null;
@@ -58,6 +62,7 @@ public class CannonExtendMechanism  {
   }
 
   public void periodic() {
+    
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {

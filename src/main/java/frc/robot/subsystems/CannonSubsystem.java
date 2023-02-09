@@ -28,26 +28,22 @@ public class CannonSubsystem extends SubsystemBase {
   
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationEncoder;
-  public AnalogInput elevationHomeEncoder;
   public Encoder elevateEncoder;
 
 
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
-  public AnalogInput extendHomeEncoder;
 
   public CANSparkMaxSendable roll;
   public RelativeEncoder rollEncoder;
-  public AnalogInput rollHomeEncoder;
 
   public CANSparkMaxSendable pitch;
   public RelativeEncoder pitchEncoder;
-  public AnalogInput pitchHomeEncoder;
   /** Creates a new ArmSubsystem. */
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
-    cannonElevateMechanism = new CannonElevateMechanism(elevation);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder);
     cannonRollMechanism = new CannonRollMechanism(roll);
     cannonPitchMechanism = new CannonPitchMechanism(pitch);
   }
@@ -59,7 +55,7 @@ public class CannonSubsystem extends SubsystemBase {
     cannonElevateMechanism.periodic();
     cannonRollMechanism.periodic();
     cannonPitchMechanism.periodic();
-    SmartDashboard.putNumber("elevate encoder distance", elevateEncoder.getDistance());
+
   }
 
   public void setLength(double length) {
@@ -113,8 +109,6 @@ public class CannonSubsystem extends SubsystemBase {
 
     elevateEncoder = new Encoder(1, 2);
     addChild("elevateEncoder", elevateEncoder);
-    elevateEncoder.setDistancePerPulse(-360/256.0);
-
 
   }
 }
