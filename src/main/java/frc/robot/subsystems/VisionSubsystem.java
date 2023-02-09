@@ -105,11 +105,11 @@ public class VisionSubsystem extends SubsystemBase {
         }
 
         for (var target : targetsToProcess) {
-          int targetId = bestTarget.getFiducialId();
+          int targetId = target.getFiducialId();
           Transform3d vectorFromCameraToTag = target.getBestCameraToTarget();
           //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
           Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
-          Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(bestTargetId);
+          Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(targetId);
 
           if (targetId == bestTargetId) {
             SmartDashboard.putNumber("whereami.closest tag id", targetId);
@@ -174,32 +174,17 @@ public class VisionSubsystem extends SubsystemBase {
 
   public static class VisionData implements AsyncDataLoggerDatum {
     final public double when;
-
-    final public double photonVisionTimestamp;
-
-    final public Integer bestTargetId;
-
-    final public List<PhotonTrackedTarget> targets;
-
-    final public Map<Integer, Translation2d> cameraPositions = new HashMap<>();
-
     final public Translation2d odometry, blind_odometry;
-    
     final public double robotHeading;
+    final public Map<Integer, Translation2d> cameraPositions = new HashMap<>();
+    final public PhotonPipelineResult photonPipelineResult;
 
     VisionData(double t, PhotonPipelineResult photonPipelineResult) {
       this.when = t;
-      this.photonVisionTimestamp = photonPipelineResult.getTimestampSeconds();
-      if (photonPipelineResult.hasTargets()) {
-        this.targets = photonPipelineResult.getTargets();
-        this.bestTargetId = photonPipelineResult.getBestTarget().getFiducialId();
-      } else {
-        this.targets = null;
-        this.bestTargetId = null;
-      }
       this.odometry = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
       this.blind_odometry = RobotContainer.odometrySubsystem.getBlindPoseMeters().getTranslation();
       this.robotHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+      this.photonPipelineResult = photonPipelineResult;
     }
 
     void addCameraPosition(int id, Translation2d t2d) {
