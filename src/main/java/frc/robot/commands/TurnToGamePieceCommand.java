@@ -39,7 +39,7 @@ public class TurnToGamePieceCommand extends CommandBase {
     double spinPower = 0.3;
     currentYaw = visionSubsystem.getTargetYaw();
     currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
-    //targetHeading = currentHeading + currentYaw;
+    targetHeading = currentHeading + currentYaw;
 
     SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
     SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
@@ -49,7 +49,7 @@ public class TurnToGamePieceCommand extends CommandBase {
       spinPower = -spinPower;
     }
 
-    //driveSubsystem.setTargetHeading(targetHeading);
+    driveSubsystem.setTargetHeading(targetHeading);
 
     driveSubsystem.autoDrive(currentYaw, 0, spinPower);
   }
