@@ -39,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 	private final double AZIMUTH_ENCODER_CONVERSION_FACTOR = (1/(11.7))*235; //units are tics*motor revolutions
 	private final double SPEED_ENCODER_TICS = 42;
-	private final double WHEEL_TO_ENCODER_RATIO_VELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
+	//private final double WHEEL_TO_ENCODER_RATIO_VELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
 	private final double WHEEL_RADIUS = 2; //in inches
 	private final double MAX_VELOCITY_RPM = 1200; //maximum velocity that the robot will travel when joystick is at full throtle, measured in RPM orignally 750
 	private final double MAX_TURN = 6; //maximum angular velocity at which the robot will turn when joystick is at full throtle, measured in rad/s
@@ -93,10 +93,10 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	// divide by zero errors if the dimensions are missing in the .json.
 	private double CHASIS_WIDTH = 22.25; //inches
 	private double CHASIS_LENGTH = 24.25; //inches
-
+	
 	private final double WHEEL_CIRCUMFERENCE = 2*Math.PI*WHEEL_RADIUS;
-	private final double DRIVE_ENCODER_CONVERSION_FACTOR = WHEEL_CIRCUMFERENCE*WHEEL_TO_ENCODER_RATIO_VELOCITY;
 	private final double MAX_VELOCITY_IN_PER_SEC = MAX_VELOCITY_RPM*WHEEL_CIRCUMFERENCE/60; //max velocity in inches per second origanlly 60
+
  
 	// readings of the absolute encoders when the wheels are pointed at true 0 degrees (gears to front of robot)
 	private double RIGHT_FRONT_ABSOLUTE_OFFSET;
@@ -140,94 +140,30 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 	SwerveCalculator sc;
 	DriveVectors oldVectors;
+	SwerveParameters swerveParameters;
 
   	public DriveSubsystem(INavigationSubsystem navigationSubsystem) {
 		this.navigationSubsystem = navigationSubsystem;
-		SwerveParameters p = RobotContainer.robotParameters.getSwerveParameters();
-		if (p == null) {
+		swerveParameters = RobotContainer.robotParameters.getSwerveParameters();
+		
+		if (swerveParameters == null) {
 			logger.error("all swerve parameters are missing");
 		} else {
-			String missingSwerveParameters = p.whichSwerveParametersAreMissing();
+			String missingSwerveParameters = swerveParameters.whichSwerveParametersAreMissing();
 			if (missingSwerveParameters != null) {
 				logger.error("missing swerve parameters: {}", missingSwerveParameters);
 			} else {
-				RIGHT_BACK_ABSOLUTE_OFFSET = p.getRightBackAbsoluteOffset();
-				LEFT_BACK_ABSOLUTE_OFFSET = p.getLeftBackAbsoluteOffset();
-				RIGHT_FRONT_ABSOLUTE_OFFSET = p.getRightFrontAbsoluteOffset();
-				LEFT_FRONT_ABSOLUTE_OFFSET = p.getLeftFrontAbsoluteOffset();
-				CHASIS_LENGTH = p.getChassisLength();
-				CHASIS_WIDTH = p.getChassisWidth();
+				RIGHT_BACK_ABSOLUTE_OFFSET = swerveParameters.getRightBackAbsoluteOffset();
+				LEFT_BACK_ABSOLUTE_OFFSET = swerveParameters.getLeftBackAbsoluteOffset();
+				RIGHT_FRONT_ABSOLUTE_OFFSET = swerveParameters.getRightFrontAbsoluteOffset();
+				LEFT_FRONT_ABSOLUTE_OFFSET = swerveParameters.getLeftFrontAbsoluteOffset();
+				CHASIS_LENGTH = swerveParameters.getChassisLength();
+				CHASIS_WIDTH = swerveParameters.getChassisWidth();
 			}
 		}
 		sc = new SwerveCalculator(CHASIS_WIDTH, CHASIS_LENGTH, MAX_VELOCITY_IN_PER_SEC);
 
-		SendableRegistry.addLW(leftFrontHomeEncoder, getName(), "left front home encoder");
-		SendableRegistry.addLW(rightFrontHomeEncoder, getName(), "right front home encoder");
-		SendableRegistry.addLW(leftBackHomeEncoder, getName(), "left back home encoder");
-		SendableRegistry.addLW(rightBackHomeEncoder, getName(), "right back home encoder");
-
-		setupMotors();
-
-		if (rightFrontDrive != null) {
-			SendableRegistry.addLW(rightFrontDrive, getName(), "right front drive");
-			SendableRegistry.addLW(leftFrontDrive, getName(), "left front drive");
-			SendableRegistry.addLW(leftBackDrive, getName(), "left back drive");
-			SendableRegistry.addLW(rightBackDrive, getName(), "right back drive");
-			SendableRegistry.addLW(rightFrontAzimuth, getName(), "right front azimuth");
-			SendableRegistry.addLW(leftFrontAzimuth, getName(), "left front azimuth");
-			SendableRegistry.addLW(leftBackAzimuth, getName(), "left back azimuth");
-			SendableRegistry.addLW(rightBackAzimuth, getName(), "right back azimuth");
-
-			rightFrontVelPID = rightFrontDrive.getPIDController();
-			rightFrontPositionPID = rightFrontAzimuth.getPIDController();
-			leftFrontVelPID = leftFrontDrive.getPIDController();
-			leftFrontPositionPID = leftFrontAzimuth.getPIDController();
-			rightBackVelPID = rightBackDrive.getPIDController();
-			rightBackPositionPID = rightBackAzimuth.getPIDController();
-			leftBackVelPID = leftBackDrive.getPIDController();
-			leftBackPositionPID = leftBackAzimuth.getPIDController();
-
-			rightFrontDriveEncoder.setPositionConversionFactor(DRIVE_ENCODER_CONVERSION_FACTOR);
-			leftFrontDriveEncoder.setPositionConversionFactor(DRIVE_ENCODER_CONVERSION_FACTOR);
-			leftBackDriveEncoder.setPositionConversionFactor(DRIVE_ENCODER_CONVERSION_FACTOR);
-			rightBackDriveEncoder.setPositionConversionFactor(DRIVE_ENCODER_CONVERSION_FACTOR);
-
-			rightFrontDriveEncoder
-					.setVelocityConversionFactor((WHEEL_TO_ENCODER_RATIO_VELOCITY * WHEEL_CIRCUMFERENCE) / 60);
-			leftFrontDriveEncoder
-					.setVelocityConversionFactor((WHEEL_TO_ENCODER_RATIO_VELOCITY * WHEEL_CIRCUMFERENCE) / 60);
-			leftBackDriveEncoder
-					.setVelocityConversionFactor((WHEEL_TO_ENCODER_RATIO_VELOCITY * WHEEL_CIRCUMFERENCE) / 60);
-			rightBackDriveEncoder
-					.setVelocityConversionFactor((WHEEL_TO_ENCODER_RATIO_VELOCITY * WHEEL_CIRCUMFERENCE) / 60);
-
-			rightFrontAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
-			leftFrontAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
-			leftBackAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
-			rightBackAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
-
-			rightBackDriveEncoder.setPositionConversionFactor(1);
-
-			setPositionPID(rightFrontPositionPID);
-			setPositionPID(leftFrontPositionPID);
-			setPositionPID(leftBackPositionPID);
-			setPositionPID(rightBackPositionPID);
-
-			setVelocityPID(rightFrontVelPID);
-			setVelocityPID(leftFrontVelPID);
-			setVelocityPID(leftBackVelPID);
-			setVelocityPID(rightBackVelPID);
-
-			rightFrontPositionPID.setFeedbackDevice(rightFrontAzimuthEncoder);
-			leftFrontPositionPID.setFeedbackDevice(leftFrontAzimuthEncoder);
-			leftBackPositionPID.setFeedbackDevice(leftBackAzimuthEncoder);
-			rightBackPositionPID.setFeedbackDevice(rightBackAzimuthEncoder);
-
-			rightFrontVelPID.setFeedbackDevice(rightFrontDriveEncoder);
-			leftFrontVelPID.setFeedbackDevice(leftFrontDriveEncoder);
-			leftBackVelPID.setFeedbackDevice(leftBackDriveEncoder);
-			rightBackVelPID.setFeedbackDevice(rightBackDriveEncoder);
-		}
+		setupMotorsAndEncoders();
 
 		SmartDashboard.putNumber("drive.position_pid.p", kPositionP);
 		SmartDashboard.putNumber("drive.position_pid.i", kPositionI);
@@ -252,6 +188,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		spinPIDController = new PIDController(kSpinP, kSpinI, kSpinD);
 		spinPIDController.enableContinuousInput(-180, 180); //sets a circular range instead of a linear one. 
 		spinPIDController.setTolerance(3);
+		addChild("Spin PID", spinPIDController);
 
 		fixRelativeEncoders();
 
@@ -273,6 +210,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 		if (rightFrontDriveEncoder != null) {
 			SmartDashboard.putNumber("drive.rf.drive.velocity", rightFrontDriveEncoder.getVelocity());
+			SmartDashboard.putNumber("drive.rf.drive.position", rightFrontDriveEncoder.getPosition());
 			SmartDashboard.putNumber("drive.rf.azimuth.position_raw", rightFrontAzimuthEncoder.getPosition());
 			SmartDashboard.putNumber("drive.rf.azimuth.velocity", rightFrontAzimuthEncoder.getVelocity());
 			SmartDashboard.putNumber("drive.rf.azimuth.position", getFixedPosition(rightFrontAzimuthEncoder));
@@ -358,14 +296,12 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 	void fillSwerveModulePosition(int index, RelativeEncoder driveEncoder, RelativeEncoder azimuthEncoder) {
 		double distanceInInches = 0;
-		if (driveEncoder != null) {
-			distanceInInches = driveEncoder.getPosition();
-		}
-		// I don't know why we have to negate this, but we do
+		if (driveEncoder != null) distanceInInches = driveEncoder.getPosition();
 		double distanceInMeters = - Units.inchesToMeters(distanceInInches);
 		swerveModulePositions[index].distanceMeters = distanceInMeters;
 
 		double azimuthInDegrees0ToRight = getFixedPosition(azimuthEncoder);
+		// I don't know why we have to negate this, but we do
 		double azimuthInRadians0InFront = Units.degreesToRadians(azimuthInDegrees0ToRight + 90);
 		swerveModulePositions[index].angle = new Rotation2d(azimuthInRadians0InFront);
 	}
@@ -902,7 +838,6 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	}
 
 	public double convertDirection(double azimuthTics) { //took this out to make it testable
-
 		double encoderReading = azimuthTics;
 		double azimuth = (360.0*encoderReading)/AZIMUTH_ENCODER_CONVERSION_FACTOR;
 		azimuth = azimuth % 360;
@@ -922,7 +857,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		double encoderSpeed = velocity; //RPM
 		encoderSpeed = encoderSpeed/60; //Motor Revolutions per second
 
-		double wheelSpeed = encoderSpeed/WHEEL_TO_ENCODER_RATIO_VELOCITY; //wheel revolutions per second
+		double wheelSpeed = encoderSpeed/wheelToEncoderRatioVelocity(); //wheel revolutions per second
 		wheelSpeed = wheelSpeed/WHEEL_CIRCUMFERENCE; //inches per second
 
 		return wheelSpeed;
@@ -931,7 +866,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	public Vector convertSingleVector(Vector v) {
 		double speed = v.getMagnitude();
 		speed = speed * WHEEL_CIRCUMFERENCE;
-		speed = speed * WHEEL_TO_ENCODER_RATIO_VELOCITY;
+		speed = speed * wheelToEncoderRatioVelocity();
 		speed = speed * SPEED_ENCODER_TICS;
 		speed = speed * 10; //converted to tics/100ms
 
@@ -1045,25 +980,31 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
         }
         autoSpinMode = false;
 	}
+
 	public double getTargetHeading(){
 		return targetHeading;
 	}
+
 	public void setTargetHeading(double angle){
 		//logger.info("setting heading to "+angle);
 		targetHeading = angle;
 	}
+
 	public void setAutoSpinMode() {
         if (logSpinTransitions && !autoSpinMode){
            logger.info("Switching to Auto Spin Mode");
         }
         autoSpinMode = true;
 	}
+
 	public void setForcedManualModeTrue(){
 		forceManualMode = true;
 	}
+
 	public void setForcedManualModeFalse(){
 		forceManualMode = false;
 	}
+
 	public boolean getForcedManualMode(){
 		return forceManualMode;
 	}
@@ -1132,11 +1073,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		setOneDriveIdle(rightBackDrive, idleMode);
 	}
 
-	void setupMotors() {
+	void setupMotorsAndEncoders() {
 		rightFrontHomeEncoder = new AnalogInput(0);
 		leftFrontHomeEncoder = new AnalogInput(1);
 		leftBackHomeEncoder = new AnalogInput(2);
 		rightBackHomeEncoder = new AnalogInput(3);
+		addChild("RB home encoder", rightFrontHomeEncoder);
+		addChild("LR home encoder", leftFrontHomeEncoder);
+		addChild("LB home encoder", leftBackHomeEncoder);
+		addChild("RB home encoder", rightBackHomeEncoder);
 
 		CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
 		boolean shouldMakeAllCANDevices = RobotContainer.shouldMakeAllCANDevices();
@@ -1145,62 +1090,129 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		// they do not put up unreasonable amounts of SPAM
 		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 1, "RF Drive") || shouldMakeAllCANDevices){
 	
-		  rightFrontDrive = new CANSparkMaxSendable(1, MotorType.kBrushless);
-		  rightFrontDriveEncoder = rightFrontDrive.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 2, "RF Azimuth");
-		  rightFrontAzimuth = new CANSparkMaxSendable(2, MotorType.kBrushless);
-		  rightFrontAzimuthEncoder = rightFrontAzimuth.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 3, "LF Drive");
-		  leftFrontDrive = new CANSparkMaxSendable(3, MotorType.kBrushless);
-		  leftFrontDriveEncoder = leftFrontDrive.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 4, "LF Azimuth");
-		  leftFrontAzimuth = new CANSparkMaxSendable(4, MotorType.kBrushless);
-		  leftFrontAzimuthEncoder = leftFrontAzimuth.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 5, "LB Drive");
-		  leftBackDrive = new CANSparkMaxSendable(5, MotorType.kBrushless);
-		  leftBackDriveEncoder = leftBackDrive.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 6, "LB Azimuth");
-		  leftBackAzimuth = new CANSparkMaxSendable(6, MotorType.kBrushless);
-		  leftBackAzimuthEncoder = leftBackAzimuth.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 7, "RB Drive");
-		  rightBackDrive = new CANSparkMaxSendable(7, MotorType.kBrushless);
-		  rightBackDriveEncoder = rightBackDrive.getEncoder();
-	
-		  canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 8, "RB Azimuth");
-		  rightBackAzimuth = new CANSparkMaxSendable(8, MotorType.kBrushless);
-		  rightBackAzimuthEncoder = rightBackAzimuth.getEncoder();
+			rightFrontDrive = new CANSparkMaxSendable(1, MotorType.kBrushless);
+			rightFrontDriveEncoder = rightFrontDrive.getEncoder();
 
-		  MotorSetup.resetMaxToKnownState(rightFrontDrive, true);
-		  rightFrontDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
-		  MotorSetup.resetMaxToKnownState(rightFrontAzimuth, false);
-		  rightFrontAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
-		  MotorSetup.resetMaxToKnownState(leftFrontDrive, true);
-		  leftFrontDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
-		  MotorSetup.resetMaxToKnownState(leftFrontAzimuth, false);
-		  leftFrontAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
-		  MotorSetup.resetMaxToKnownState(leftBackDrive, true);
-		  leftBackDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
-		  MotorSetup.resetMaxToKnownState(leftBackAzimuth, false);
-		  leftBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-	
-		  MotorSetup.resetMaxToKnownState(rightBackDrive, true);
-		  rightBackDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
-		  
-		  MotorSetup.resetMaxToKnownState(rightBackAzimuth, false);
-		  rightBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 2, "RF Azimuth");
+			rightFrontAzimuth = new CANSparkMaxSendable(2, MotorType.kBrushless);
+			rightFrontAzimuthEncoder = rightFrontAzimuth.getEncoder();
+
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 3, "LF Drive");
+			leftFrontDrive = new CANSparkMaxSendable(3, MotorType.kBrushless);
+			leftFrontDriveEncoder = leftFrontDrive.getEncoder();
+
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 4, "LF Azimuth");
+			leftFrontAzimuth = new CANSparkMaxSendable(4, MotorType.kBrushless);
+			leftFrontAzimuthEncoder = leftFrontAzimuth.getEncoder();
+
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 5, "LB Drive");
+			leftBackDrive = new CANSparkMaxSendable(5, MotorType.kBrushless);
+			leftBackDriveEncoder = leftBackDrive.getEncoder();
+
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 6, "LB Azimuth");
+			leftBackAzimuth = new CANSparkMaxSendable(6, MotorType.kBrushless);
+			leftBackAzimuthEncoder = leftBackAzimuth.getEncoder();
+
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 7, "RB Drive");
+			rightBackDrive = new CANSparkMaxSendable(7, MotorType.kBrushless);
+			rightBackDriveEncoder = rightBackDrive.getEncoder();
+
+			canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 8, "RB Azimuth");
+			rightBackAzimuth = new CANSparkMaxSendable(8, MotorType.kBrushless);
+			rightBackAzimuthEncoder = rightBackAzimuth.getEncoder();
+
+			MotorSetup.resetMaxToKnownState(rightFrontDrive, true);
+			rightFrontDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(rightFrontAzimuth, false);
+			rightFrontAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(leftFrontDrive, true);
+			leftFrontDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(leftFrontAzimuth, false);
+			leftFrontAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(leftBackDrive, true);
+			leftBackDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(leftBackAzimuth, false);
+			leftBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(rightBackDrive, true);
+			rightBackDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			MotorSetup.resetMaxToKnownState(rightBackAzimuth, false);
+			rightBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+
+			addChild("RF drive motor", rightFrontDrive);
+			addChild("LF drive motor", leftFrontDrive);
+			addChild("LB drive motor", leftBackDrive);
+			addChild("RB drive motor", rightBackDrive);
+			addChild("RF azimuth motor", rightFrontAzimuth);
+			addChild("LF azimuth motor", leftFrontAzimuth);
+			addChild("LB azimuth motor", leftBackAzimuth);
+			addChild("RB azimuth motor", rightBackAzimuth);
+
+			rightFrontVelPID = rightFrontDrive.getPIDController();
+			rightFrontPositionPID = rightFrontAzimuth.getPIDController();
+			leftFrontVelPID = leftFrontDrive.getPIDController();
+			leftFrontPositionPID = leftFrontAzimuth.getPIDController();
+			rightBackVelPID = rightBackDrive.getPIDController();
+			rightBackPositionPID = rightBackAzimuth.getPIDController();
+			leftBackVelPID = leftBackDrive.getPIDController();
+			leftBackPositionPID = leftBackAzimuth.getPIDController();
+
+			rightFrontDriveEncoder.setPositionConversionFactor(getDriveEncoderConversionFactor());
+			leftFrontDriveEncoder.setPositionConversionFactor(getDriveEncoderConversionFactor());
+			leftBackDriveEncoder.setPositionConversionFactor(getDriveEncoderConversionFactor());
+			rightBackDriveEncoder.setPositionConversionFactor(getDriveEncoderConversionFactor());
+
+			rightFrontDriveEncoder
+					.setVelocityConversionFactor((wheelToEncoderRatioVelocity() * WHEEL_CIRCUMFERENCE) / 60);
+			leftFrontDriveEncoder
+					.setVelocityConversionFactor((wheelToEncoderRatioVelocity() * WHEEL_CIRCUMFERENCE) / 60);
+			leftBackDriveEncoder
+					.setVelocityConversionFactor((wheelToEncoderRatioVelocity() * WHEEL_CIRCUMFERENCE) / 60);
+			rightBackDriveEncoder
+					.setVelocityConversionFactor((wheelToEncoderRatioVelocity() * WHEEL_CIRCUMFERENCE) / 60);
+
+			rightFrontAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
+			leftFrontAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
+			leftBackAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
+			rightBackAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
+
+			rightBackDriveEncoder.setPositionConversionFactor(1);
+
+			setPositionPID(rightFrontPositionPID);
+			setPositionPID(leftFrontPositionPID);
+			setPositionPID(leftBackPositionPID);
+			setPositionPID(rightBackPositionPID);
+
+			setVelocityPID(rightFrontVelPID);
+			setVelocityPID(leftFrontVelPID);
+			setVelocityPID(leftBackVelPID);
+			setVelocityPID(rightBackVelPID);
+
+			rightFrontPositionPID.setFeedbackDevice(rightFrontAzimuthEncoder);
+			leftFrontPositionPID.setFeedbackDevice(leftFrontAzimuthEncoder);
+			leftBackPositionPID.setFeedbackDevice(leftBackAzimuthEncoder);
+			rightBackPositionPID.setFeedbackDevice(rightBackAzimuthEncoder);
+
+			rightFrontVelPID.setFeedbackDevice(rightFrontDriveEncoder);
+			leftFrontVelPID.setFeedbackDevice(leftFrontDriveEncoder);
+			leftBackVelPID.setFeedbackDevice(leftBackDriveEncoder);
+			rightBackVelPID.setFeedbackDevice(rightBackDriveEncoder);
 		}
-	
 	}
 
+	//private final double DRIVE_ENCODER_CONVERSION_FACTOR = WHEEL_CIRCUMFERENCE*WHE--EL_TO_ENCODER_RATIO_VELOCITY;
+	double getDriveEncoderConversionFactor() {
+		return WHEEL_CIRCUMFERENCE*wheelToEncoderRatioVelocity();
+	}
+	
+	//private final double WHEEL_TO_ENCODER_RATIO_V--ELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
+	double wheelToEncoderRatioVelocity() {
+		return (1/swerveParameters.getDriveGearRatio());
+	}
 }

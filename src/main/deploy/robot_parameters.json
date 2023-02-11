@@ -11,7 +11,8 @@
       "he.rb": 90.0,  // right back
       //
       "chassis_width": 23.00,  // inches
-      "chassis_length": 23.00
+      "chassis_length": 23.00,
+      "drive_gear_ratio": 8.31
     }
   },
   {
@@ -26,22 +27,24 @@
       "he.rb": -41.7,  // right back
       //
       "chassis_width": 22.25,  // inches
-      "chassis_length": 24.25
+      "chassis_length": 24.25,
+      "drive_gear_ratio": 5.85
     }
   },
   {
-    "name": "TOAD",
+    "name": "2023 Robot",
     "macAddress": "00-80-2F-18-5C-5F",
     "makeAllCANDevices": false,
     "swerveParameters": {
       // azimuth home encoders
-      "he.rf": -173.67, // right front
-      "he.lf": 73.65,   // left front
-      "he.lb": -29.79,  // left back
-      "he.rb": 62.05,   // right back
+      "he.rf": -134.82, // right front
+      "he.lf": 75.32,   // left front
+      "he.lb": 17.16,  // left back
+      "he.rb": -21.26,   // right back
       //
-      "chassis_width": 22.25,  // inches
-      "chassis_length": 24.25
+      "chassis_width": 19.00,  // inches
+      "chassis_length": 19.00,
+      "drive_gear_ratio": 5.85
     }
   },
   {
