@@ -148,6 +148,7 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putString("tags", tags.toString());
 
       if (visionDataLogger != null) {
+        visionData.setOdometryAfter(RobotContainer.odometrySubsystem.getPoseMeters().getTranslation());
         visionDataLogger.send(visionData);
       }
     }      
@@ -173,14 +174,15 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public static class VisionData implements AsyncDataLoggerDatum {
-    final public double when;
+    final public double time;
     final public Translation2d odometry, blind_odometry;
+    public Translation2d odometry_after;
     final public double robotHeading;
     final public Map<Integer, Translation2d> cameraPositions = new HashMap<>();
     final public PhotonPipelineResult photonPipelineResult;
 
     VisionData(double t, PhotonPipelineResult photonPipelineResult) {
-      this.when = t;
+      this.time = t;
       this.odometry = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
       this.blind_odometry = RobotContainer.odometrySubsystem.getBlindPoseMeters().getTranslation();
       this.robotHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
@@ -189,6 +191,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     void addCameraPosition(int id, Translation2d t2d) {
       cameraPositions.put(id, t2d);
+    }
+
+    void setOdometryAfter(Translation2d t2d) {
+      this.odometry_after = t2d;
     }
 
     @Override
