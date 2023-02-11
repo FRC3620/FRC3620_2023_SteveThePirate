@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,6 +30,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationEncoder;
   public Encoder elevateEncoder;
+  public DigitalInput homeSwitch;
+  public DigitalInput notHomeSwitch;
 
 
   public CANSparkMaxSendable extend;
@@ -43,7 +46,7 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
-    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder, homeSwitch, notHomeSwitch);
     cannonRollMechanism = new CannonRollMechanism(roll);
     cannonPitchMechanism = new CannonPitchMechanism(pitch);
   }
@@ -109,6 +112,12 @@ public class CannonSubsystem extends SubsystemBase {
 
     elevateEncoder = new Encoder(1, 2);
     addChild("elevateEncoder", elevateEncoder);
+
+    homeSwitch = new DigitalInput(3);
+    addChild("homeSwitch", homeSwitch);
+
+    notHomeSwitch = new DigitalInput(4);
+    addChild("not home switch", notHomeSwitch);
 
   }
 }
