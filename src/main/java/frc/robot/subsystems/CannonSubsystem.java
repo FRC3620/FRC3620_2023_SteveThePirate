@@ -100,13 +100,13 @@ public class CannonSubsystem extends SubsystemBase {
       addChild("extend", extend);
     }
 
-    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Roll") || shouldMakeAllCANDevices) {
-      roll = new CANSparkMaxSendable(11, MotorType.kBrushless);
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Roll") || shouldMakeAllCANDevices) {
+      roll = new CANSparkMaxSendable(12, MotorType.kBrushless);
       addChild("roll", roll);
     }
 
-    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Pitch") || shouldMakeAllCANDevices) {
-      pitch = new CANSparkMaxSendable(12, MotorType.kBrushless);
+    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
+      pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
       addChild("pitch", pitch);
     }
 

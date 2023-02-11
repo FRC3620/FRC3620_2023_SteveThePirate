@@ -114,7 +114,7 @@ public class CannonElevateMechanism  {
     SmartDashboard.putNumber(name + ".requestedHeight", height);
     requestedPosition = height;
     if (encoderIsValid) {
-      m_pidController.setSetpoint(height);;;;
+      m_pidController.setSetpoint(height);
     } else {
       requestedPositionWhileCalibrating = height;
     }

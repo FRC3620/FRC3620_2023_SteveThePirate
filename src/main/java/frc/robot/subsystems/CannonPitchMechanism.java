@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,16 +40,16 @@ public class CannonPitchMechanism  {
       PID = motor.getPIDController();
 
       // set up PID for turretPID here
-      PID.setP(0.1);   //0.1
+      PID.setP(0.01);   //0.1
       PID.setI(0.0);     //0.0
-      PID.setD(10);    //10
+      PID.setD(0.0);    //10
       PID.setFF(0.0);      //0.0
 
-      PID.setOutputRange(-0.1, 0.1);
+      PID.setOutputRange(-0.15, 0.15);
     }
 
     if (encoder != null) {
-      //encoder.setPositionConversionFactor(90.0/115.0);
+      encoder.setPositionConversionFactor(65/2.3);
       //encoder.setVelocityConversionFactor(1);
     }
   }
@@ -70,18 +71,19 @@ public class CannonPitchMechanism  {
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
-            pitchCannon(0.03);
+            pitchCannon(0.015);
           
             if (calibrationTimer == null) {
               calibrationTimer = new Timer();
               calibrationTimer.reset();
               calibrationTimer.start();
             } else {
-              if (calibrationTimer.get() > 0.5){
-                if (Math.abs(elevateSpeed) < 2) {
+              if (calibrationTimer.get() > 0.75){
+                if (Math.abs(elevateSpeed) < 15) {
                   encoderIsValid = true;
                   pitchCannon(0.0);
-                  encoder.setPosition(0.0);
+                  encoder.setPosition(65);
+                  
                   if (requestedPositionWhileCalibrating != null) {
                     setPitch(requestedPositionWhileCalibrating);
                     requestedPositionWhileCalibrating = null;
@@ -104,12 +106,8 @@ public class CannonPitchMechanism  {
    * @param pitch
    */
   public void setPitch(double pitch) {
-    if(pitch < 0) {
-      pitch = 0;
-    }
-    if(pitch > 24) {
-      pitch = 24;
-    }
+
+    pitch = MathUtil.clamp(pitch, -45, 45);
     SmartDashboard.putNumber(name + ".requestedHeight", pitch);
     requestedPosition = pitch;
     if (encoderIsValid) {
