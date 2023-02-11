@@ -29,7 +29,7 @@ public class DriveToCoordinateCommand extends CommandBase {
   Translation2d destination;
   double distance;
 
-  final boolean doLog = true;
+  final boolean doLog = false;
   D2CDataLogger dataLogger;
 
   /** Creates a new DriveToCoordinateCommand. */

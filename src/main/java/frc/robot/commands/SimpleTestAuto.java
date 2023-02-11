@@ -30,15 +30,15 @@ public class SimpleTestAuto extends SequentialCommandGroup {
       ,
       new WaitForSaneOdometryCommand()
       ,
-      new DriveToCoordinateCommand(placePosition, 0.2, 0.2, 0, driveSubsystem)
+      new DriveToCoordinateCommand(placePosition, 0.2, 0.2, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(bigStu, .3, .2, -135, driveSubsystem)
+      new DriveToCoordinateCommand(bigStu, .3, .2, -45, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(gamePiece, .4, .2, -135, driveSubsystem)
+      new DriveToCoordinateCommand(gamePiece, .4, .2, -45, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(bigStu, .4, .1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(bigStu, .4, .1, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(placePosition, .3, .2, 0, driveSubsystem)
+      new DriveToCoordinateCommand(placePosition, .3, .2, 180, driveSubsystem)
     );
   }
 }
