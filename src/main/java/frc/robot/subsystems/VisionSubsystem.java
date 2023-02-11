@@ -27,7 +27,7 @@ public class VisionSubsystem extends SubsystemBase {
   PhotonCamera lifecam;
   PhotonPoseEstimator lifecamPoseEstimator;
 
-  boolean doingAprilTags = false;
+  boolean doingAprilTags = true;
 
   public VisionSubsystem() {
     super();
@@ -89,6 +89,7 @@ public class VisionSubsystem extends SubsystemBase {
           SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
 
           Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+
           SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
           SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
           RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
@@ -111,6 +112,12 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
+  public Transform3d vectorFromCameraToTag;
+
+  public Transform3d getCameraToTag(){
+    return vectorFromCameraToTag;
+  }
+
   public double getTargetPitch(){
     return targetPitch;
   }
@@ -120,7 +127,6 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public Transform3d tag1Transform;
-
 
   public Transform3d getTag1Transform() {
     return tag1Transform;
