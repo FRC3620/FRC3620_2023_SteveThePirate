@@ -6,12 +6,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
 
 public class NavXNavigationSubsystem extends SubsystemBase implements INavigationSubsystem {
-  public AHRS ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+  public AHRS ahrs;
 
   double headingOffset = 0;
 
   /** Creates a new NavXNavigationSubsystem. */
   public NavXNavigationSubsystem() {
+    ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+    addChild("NavX", ahrs);
     SmartDashboard.putNumber("navx.offset", 0);
   }
 

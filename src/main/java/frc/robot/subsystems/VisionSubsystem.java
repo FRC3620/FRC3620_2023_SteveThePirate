@@ -17,22 +17,23 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.FieldLayout;
 import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
   PhotonCamera lifecam;
   PhotonPoseEstimator lifecamPoseEstimator;
+  static AprilTagFieldLayout fieldLayout;
 
   boolean doingAprilTags = true;
 
   public VisionSubsystem() {
     super();
     try {
-      fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+      fieldLayout = FieldLayout.getAprilTag2023FieldLayout();
     } catch (IOException ex) {
       System.out.println("unable to load file");
     }
@@ -48,8 +49,6 @@ public class VisionSubsystem extends SubsystemBase {
   public boolean getTargetTransform = true;
 
   public static Double targetOneX = null;
-
-  static AprilTagFieldLayout fieldLayout;
 
   double targetPitch;
   double targetYaw;
