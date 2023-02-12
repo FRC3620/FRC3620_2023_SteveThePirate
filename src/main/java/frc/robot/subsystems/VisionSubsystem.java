@@ -36,8 +36,24 @@ import frc.robot.FieldLayout;
 import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
-  PhotonCamera lifecam;
-  PhotonPoseEstimator lifecamPoseEstimator;
+  public enum FrontCameraMode {
+    APRILTAGS(0), CONES(1), CUBES(2);
+
+    int pipelineIndex;
+
+    FrontCameraMode(int pipeline) {
+      this.pipelineIndex = pipeline;
+    }
+
+    public int getPipelineIndex() {
+      return pipelineIndex;
+    }
+  }
+
+  PhotonCamera frontCamera;
+  PhotonPoseEstimator frontCameraPoseEstimator;
+  FrontCameraMode frontCameraMode;
+
   static AprilTagFieldLayout fieldLayout;
 
   public VisionSubsystem() {
@@ -48,19 +64,32 @@ public class VisionSubsystem extends SubsystemBase {
       System.out.println("unable to load file");
     }
 
-    lifecam = new PhotonCamera("Lifecam");
-    Transform3d camera1_mounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
-    lifecamPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, lifecam, camera1_mounting);
+    frontCamera = new PhotonCamera("Lifecam");
+    setFrontCameraMode(FrontCameraMode.APRILTAGS);
+    Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+    frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);
   }
 
-  public double atag1TransformX;
-  public double atag1TransformY;
-  public double atag1TransformZ;
-  public boolean getTargetTransform = true;
+  public FrontCameraMode setFrontCameraMode(FrontCameraMode mode) {
+    FrontCameraMode oldMode = this.frontCameraMode;
+    frontCamera.setPipelineIndex(mode.getPipelineIndex());
+    return oldMode;
+  }
 
-  public static Double targetOneX = null;
+  public FrontCameraMode getFrontCameraMode() {
+    return this.frontCameraMode;
+  }
 
-  List<Integer> tags = new ArrayList<>();
+  public PhotonTrackedTarget getTargetById(PhotonPipelineResult result, int requestedId) {
+    if (result.hasTargets()) {
+      for (var target: result.getTargets()) {
+        if (target.getFiducialId() == requestedId) {
+          return target;
+        }
+      }
+    }
+    return null;
+  }
 
   AsyncDataLogger<VisionData> visionDataLogger;
   double visionDataLoggerT0;
@@ -82,24 +111,46 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    var result = lifecam.getLatestResult();
-    var ts = result.getTimestampSeconds();
+    if (frontCameraMode == FrontCameraMode.APRILTAGS) {
+      aprilTagsPeriodic();
+    } else {
+      gamePiecePeriodic();
+    }
+  }
+
+  PhotonPipelineResult lastFrontCameraAprilTagsResult;
+
+  public PhotonPipelineResult getLastFrontCameraAprilTagsResult() {
+    return lastFrontCameraAprilTagsResult;
+  }
+
+  public PhotonPipelineResult getLastFrontCameraAprilTagsResult(double timestampSeconds) {
+    if (lastFrontCameraAprilTagsResult != null && lastFrontCameraAprilTagsResult.getTimestampSeconds() != timestampSeconds) {
+      return lastFrontCameraAprilTagsResult;
+    }
+    return null;
+  }
+
+  List<Integer> tags = new ArrayList<>();
+  void aprilTagsPeriodic() {
+    lastFrontCameraAprilTagsResult = frontCamera.getLatestResult();
+    var ts = lastFrontCameraAprilTagsResult.getTimestampSeconds();
     if (lastAprilTagTimestamp != ts) {
       lastAprilTagTimestamp = ts;
       VisionData visionData = null;
       if (visionDataLogger != null) {
-        visionData = new VisionData(Timer.getFPGATimestamp() - visionDataLoggerT0, result);
+        visionData = new VisionData(Timer.getFPGATimestamp() - visionDataLoggerT0, lastFrontCameraAprilTagsResult);
       }
 
       tags.clear();
-      if (result.hasTargets()) {
+      if (lastFrontCameraAprilTagsResult.hasTargets()) {
         Rotation2d whichWayAreWeFacing = RobotContainer.navigationSubsystem.getOdometryHeading(DriverStation.getAlliance());
 
-        PhotonTrackedTarget bestTarget = result.getBestTarget();
+        PhotonTrackedTarget bestTarget = lastFrontCameraAprilTagsResult.getBestTarget();
         int bestTargetId = bestTarget.getFiducialId();
         List<PhotonTrackedTarget> targetsToProcess;
         if (visionDataLogger != null) {
-          targetsToProcess = result.targets;
+          targetsToProcess = lastFrontCameraAprilTagsResult.targets;
         } else {
           targetsToProcess = Collections.singletonList(bestTarget);
         }
@@ -141,7 +192,7 @@ public class VisionSubsystem extends SubsystemBase {
           }
         }
 
-        for (var target : result.targets) {
+      for (var target : lastFrontCameraAprilTagsResult.targets) {
           tags.add(target.getFiducialId());
         }
       }
@@ -154,14 +205,21 @@ public class VisionSubsystem extends SubsystemBase {
     }      
   }
 
-  public Transform3d tag1Transform;
+  PhotonPipelineResult lastFrontCameraGamePieceResult;
 
-  public Transform3d getTag1Transform() {
-    return tag1Transform;
+  public PhotonPipelineResult getLastFrontCameraGamePieceResult() {
+    return lastFrontCameraGamePieceResult;
   }
 
-  public void clearTag1Transform() {
-    tag1Transform = null;
+  public PhotonPipelineResult getLastFrontCameraGamePieceResult(double timestampSeconds) {
+    if (lastFrontCameraGamePieceResult != null && lastFrontCameraGamePieceResult.getTimestampSeconds() != timestampSeconds) {
+      return lastFrontCameraGamePieceResult;
+  }
+    return null;
+  }
+
+  void gamePiecePeriodic() {
+    lastFrontCameraGamePieceResult = frontCamera.getLatestResult();
   }
 
   public static Translation3d getTranslation3dForTag(int tag) {
