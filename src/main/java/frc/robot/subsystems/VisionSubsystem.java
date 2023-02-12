@@ -7,11 +7,11 @@ import java.util.List;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.usfirst.frc3620.misc.FieldCalculations;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -24,8 +24,24 @@ import frc.robot.FieldLayout;
 import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
-  PhotonCamera lifecam;
-  PhotonPoseEstimator lifecamPoseEstimator;
+  public enum FrontCameraMode {
+    APRILTAGS(0), CONES(1), CUBES(2);
+
+    int pipelineIndex;
+
+    FrontCameraMode(int pipeline) {
+      this.pipelineIndex = pipeline;
+    }
+
+    public int getPipelineIndex() {
+      return pipelineIndex;
+    }
+  }
+
+  PhotonCamera frontCamera;
+  PhotonPoseEstimator frontCameraPoseEstimator;
+  FrontCameraMode frontCameraMode;
+
   static AprilTagFieldLayout fieldLayout;
 
   public VisionSubsystem() {
@@ -36,26 +52,61 @@ public class VisionSubsystem extends SubsystemBase {
       System.out.println("unable to load file");
     }
 
-    lifecam = new PhotonCamera("Lifecam");
-    Transform3d camera1_mounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
-    lifecamPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, lifecam, camera1_mounting);
+    frontCamera = new PhotonCamera("Lifecam");
+    setFrontCameraMode(FrontCameraMode.APRILTAGS);
+    Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+    frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);
   }
 
-  public double atag1TransformX;
-  public double atag1TransformY;
-  public double atag1TransformZ;
-  public boolean getTargetTransform = true;
+  public FrontCameraMode setFrontCameraMode(FrontCameraMode mode) {
+    FrontCameraMode oldMode = this.frontCameraMode;
+    frontCamera.setPipelineIndex(mode.getPipelineIndex());
+    return oldMode;
+  }
 
-  public static Double targetOneX = null;
+  public FrontCameraMode getFrontCameraMode() {
+    return this.frontCameraMode;
+  }
 
-  List<Integer> tags = new ArrayList<>();
+  public PhotonTrackedTarget getTargetById(PhotonPipelineResult result, int requestedId) {
+    if (result.hasTargets()) {
+      for (var target: result.getTargets()) {
+        if (target.getFiducialId() == requestedId) {
+          return target;
+        }
+      }
+    }
+    return null;
+  }
 
   @Override
   public void periodic() {
-    var result = lifecam.getLatestResult();
+    if (frontCameraMode == FrontCameraMode.APRILTAGS) {
+      aprilTagsPeriodic();
+    } else {
+      gamePiecePeriodic();
+    }
+  }
+
+  PhotonPipelineResult lastFrontCameraAprilTagsResult;
+
+  public PhotonPipelineResult getLastFrontCameraAprilTagsResult() {
+    return lastFrontCameraAprilTagsResult;
+  }
+
+  public PhotonPipelineResult getLastFrontCameraAprilTagsResult(double timestampSeconds) {
+    if (lastFrontCameraAprilTagsResult != null && lastFrontCameraAprilTagsResult.getTimestampSeconds() != timestampSeconds) {
+      return lastFrontCameraAprilTagsResult;
+    }
+    return null;
+  }
+
+  List<Integer> tags = new ArrayList<>();
+  void aprilTagsPeriodic() {
+    lastFrontCameraAprilTagsResult = frontCamera.getLatestResult();
     tags.clear();
-    if (result.hasTargets()) {
-      PhotonTrackedTarget bestTarget = result.getBestTarget();
+    if (lastFrontCameraAprilTagsResult.hasTargets()) {
+      PhotonTrackedTarget bestTarget = lastFrontCameraAprilTagsResult.getBestTarget();
       Transform3d vectorFromCameraToTag = bestTarget.getBestCameraToTarget();
       int idOfBestTag = bestTarget.getFiducialId();
       SmartDashboard.putNumber("whereami.closest tag id", bestTarget.getFiducialId());
@@ -84,22 +135,28 @@ public class VisionSubsystem extends SubsystemBase {
         RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
       }
 
-      for (var target : result.targets) {
+      for (var target : lastFrontCameraAprilTagsResult.targets) {
         tags.add(target.getFiducialId());
       }
     }
     SmartDashboard.putString("tags", tags.toString());
   }
 
-  public Transform3d tag1Transform;
+  PhotonPipelineResult lastFrontCameraGamePieceResult;
 
-
-  public Transform3d getTag1Transform() {
-    return tag1Transform;
+  public PhotonPipelineResult getLastFrontCameraGamePieceResult() {
+    return lastFrontCameraGamePieceResult;
   }
 
-  public void clearTag1Transform() {
-    tag1Transform = null;
+  public PhotonPipelineResult getLastFrontCameraGamePieceResult(double timestampSeconds) {
+    if (lastFrontCameraGamePieceResult != null && lastFrontCameraGamePieceResult.getTimestampSeconds() != timestampSeconds) {
+      return lastFrontCameraGamePieceResult;
+    }
+    return null;
+  }
+
+  void gamePiecePeriodic() {
+    lastFrontCameraGamePieceResult = frontCamera.getLatestResult();
   }
 
   public static Translation3d getTranslation3dForTag(int tag) {
