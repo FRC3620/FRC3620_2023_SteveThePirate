@@ -1,6 +1,5 @@
 package frc.robot;
 
-import java.util.Set;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.usfirst.frc3620.misc.RobotMode;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -44,23 +44,27 @@ public class Robot extends TimedRobot {
     PortForwarder.add (10080, "wpilibpi.local", 80);
     PortForwarder.add (10022, "wpilibpi.local", 22);
 
-    CommandScheduler.getInstance().onCommandInitialize(new Consumer<Command>() {//whenever a command initializes, the function declared bellow will run.
+    CommandScheduler commandScheduler = CommandScheduler.getInstance();
+
+    commandScheduler.onCommandInitialize(new Consumer<Command>() {//whenever a command initializes, the function declared bellow will run.
       public void accept(Command command) {
         logger.info("Initialized {}", command.getClass().getSimpleName());//I scream at people
       }
     });
 
-    CommandScheduler.getInstance().onCommandFinish(new Consumer<Command>() {//whenever a command ends, the function declared bellow will run.
+    commandScheduler.onCommandFinish(new Consumer<Command>() {//whenever a command ends, the function declared bellow will run.
       public void accept(Command command) {
         logger.info("Ended {}", command.getClass().getSimpleName());//I, too, scream at people
       }
     });
 
-    CommandScheduler.getInstance().onCommandInterrupt(new Consumer<Command>() {//whenever a command ends, the function declared bellow will run.
+    commandScheduler.onCommandInterrupt(new Consumer<Command>() {//whenever a command ends, the function declared bellow will run.
       public void accept(Command command) {
         logger.info("Interrupted {}", command.getClass().getSimpleName());//I, in addition, as well, scream.
       }
     });
+
+    SmartDashboard.putData(commandScheduler);
     
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
