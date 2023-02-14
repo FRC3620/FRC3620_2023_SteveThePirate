@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
@@ -17,6 +20,7 @@ public class DriveToGamePieceCommand extends CommandBase {
   double currentHeading;
   double targetHeading;
   double tolerance = 5;
+  double lastTimestamp;
 
   enum MyState{
     SEARCHING, DRIVING, STOPPED
@@ -36,14 +40,19 @@ public class DriveToGamePieceCommand extends CommandBase {
   public void initialize() {
     myState = MyState.SEARCHING;
     driveSubsystem.setForcedManualModeTrue();
+    lastTimestamp = -1;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    PhotonPipelineResult result = visionSubsystem.getLastFrontCameraGamePieceResult(lastTimestamp);
+    if (result != null) {
+      lastTimestamp = result.getTimestampSeconds();
+      PhotonTrackedTarget target = result.getBestTarget();
     if(myState == MyState.SEARCHING){
       double spinPower = 0.3;
-      currentYaw = visionSubsystem.getTargetYaw();
+      currentYaw = target.getYaw();
       currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
       targetHeading = currentHeading + currentYaw;
 
@@ -61,10 +70,11 @@ public class DriveToGamePieceCommand extends CommandBase {
 
     if(myState == MyState.DRIVING){
       driveSubsystem.autoDrive(0, 0.2, 0);
-      if(visionSubsystem.getTargetPitch() < -10){ //MAY CHANGE NUM
+      if(target.getPitch() < -10){ //MAY CHANGE NUM
         myState = MyState.STOPPED;
       }
     }
+  }
   }
 
   // Called once the command ends or is interrupted.

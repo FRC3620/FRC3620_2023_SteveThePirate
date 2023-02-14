@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -20,6 +23,7 @@ public class TurnToGamePieceCommand extends CommandBase {
   double currentHeading;
   double targetHeading;
   double tolerance = 5;
+  double lastTimestamp;
   public TurnToGamePieceCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
@@ -31,27 +35,33 @@ public class TurnToGamePieceCommand extends CommandBase {
   public void initialize() {
     driveSubsystem.setForcedManualModeTrue();
     SmartDashboard.putBoolean("TurntoGamePiece.running", true);
+    lastTimestamp = -1;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double spinPower = 0.3;
-    currentYaw = visionSubsystem.getTargetYaw();
-    currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
-    targetHeading = currentHeading + currentYaw;
+    PhotonPipelineResult result = visionSubsystem.getLastFrontCameraGamePieceResult(lastTimestamp);
+    if (result != null) {
+      lastTimestamp = result.getTimestampSeconds();
+      PhotonTrackedTarget target = result.getBestTarget();
+      double spinPower = 0.3;
+      currentYaw = target.getYaw();
+      currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+      targetHeading = currentHeading + currentYaw;
 
-    SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
-    SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
-    SmartDashboard.putNumber("gamepiece.currentHeading", currentHeading);
+      SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
+      SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
+      SmartDashboard.putNumber("gamepiece.currentHeading", currentHeading);
 
-    if(currentYaw < 0){
-      spinPower = -spinPower;
+      if(currentYaw < 0){
+        spinPower = -spinPower;
+      }
+
+      driveSubsystem.setTargetHeading(targetHeading);
+
+      driveSubsystem.autoDrive(currentYaw, 0, spinPower);
     }
-
-    driveSubsystem.setTargetHeading(targetHeading);
-
-    driveSubsystem.autoDrive(currentYaw, 0, spinPower);
   }
 
   // Called once the command ends or is interrupted.
