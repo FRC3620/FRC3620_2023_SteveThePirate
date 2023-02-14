@@ -122,6 +122,7 @@ public class RobotContainer {
   }
 
   private void setupSmartDashboardCommands() {
+    // DriveSubsystem
     SmartDashboard.putData("Strafe to target", new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
@@ -129,9 +130,16 @@ public class RobotContainer {
     SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
+
+    // Diagnostics
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
-    SmartDashboard.putData(" RotateWheelsButton", new RotateWheelsButton());
-    SmartDashboard.putBoolean("DiagnosticsDriveMotortest", true);
+    SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
+
+    // Cannon
+
+    // Odometry and Vision Tests
+
+    // Autonomous
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
