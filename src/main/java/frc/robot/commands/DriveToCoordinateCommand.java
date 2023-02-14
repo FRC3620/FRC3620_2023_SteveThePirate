@@ -118,6 +118,7 @@ public class DriveToCoordinateCommand extends CommandBase {
     if (dataLogger != null) {
       dataLogger.done();
     }
+    driveSubsystem.stopDrive();
   }
 
   // Returns true when the command should end.

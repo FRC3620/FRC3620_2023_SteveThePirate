@@ -4,9 +4,11 @@
 
 package frc.robot.commands;
 
+import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.misc.PoseOnField;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -31,6 +33,10 @@ public class SimpleTestAuto extends SequentialCommandGroup {
       new WaitForSaneOdometryCommand()
       ,
       new DriveToCoordinateCommand(placePosition, 0.2, 0.2, 180, driveSubsystem)
+      ,
+      new LogCommand(null, "stopping now")
+      ,
+      new WaitCommand(1.5)
       ,
       new DriveToCoordinateCommand(bigStu, .3, .2, -45, driveSubsystem)
       ,

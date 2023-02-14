@@ -121,9 +121,8 @@ public class VisionSubsystem extends SubsystemBase {
     return targetPitch;
   }
 
-  public double getTargetYaw(){
-    return targetYaw;
-  }
+  public double getTargetYaw(){ 
+    return targetYaw;}
 
   public Transform3d tag1Transform;
 
