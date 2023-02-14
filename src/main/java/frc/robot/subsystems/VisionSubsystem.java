@@ -68,7 +68,7 @@ public class VisionSubsystem extends SubsystemBase {
     return this.frontCameraMode;
   }
 
-  public PhotonTrackedTarget getTargetById(PhotonPipelineResult result, int requestedId) {
+  public static PhotonTrackedTarget getTargetById(PhotonPipelineResult result, int requestedId) {
     if (result.hasTargets()) {
       for (var target: result.getTargets()) {
         if (target.getFiducialId() == requestedId) {
