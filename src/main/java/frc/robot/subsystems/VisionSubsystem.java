@@ -13,9 +13,12 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.AsyncDataLogger;
 import org.usfirst.frc3620.logger.AsyncDataLoggerDatum;
+import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.LoggingMaster;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.FieldCalculations;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,7 +40,7 @@ import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
   public enum FrontCameraMode {
-    APRILTAGS(0), CONES(1), CUBES(2);
+    APRILTAGS(2), CONES(1), CUBES(0);
 
     int pipelineIndex;
 
@@ -50,6 +53,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
   PhotonCamera frontCamera;
   PhotonPoseEstimator frontCameraPoseEstimator;
   FrontCameraMode frontCameraMode;
@@ -68,11 +72,16 @@ public class VisionSubsystem extends SubsystemBase {
     setFrontCameraMode(FrontCameraMode.APRILTAGS);
     Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
     frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);
+
+    frontPipelineCheckTimer = new Timer();
+    frontPipelineCheckTimer.start();
   }
 
   public FrontCameraMode setFrontCameraMode(FrontCameraMode mode) {
     FrontCameraMode oldMode = this.frontCameraMode;
     frontCamera.setPipelineIndex(mode.getPipelineIndex());
+    this.frontCameraMode = mode;
+    logger.info ("Changed front camera mode from {} to {}", oldMode, mode);
     return oldMode;
   }
 
@@ -109,8 +118,18 @@ public class VisionSubsystem extends SubsystemBase {
 
   double lastAprilTagTimestamp = -1.0;
 
+  Timer frontPipelineCheckTimer;
+
   @Override
   public void periodic() {
+    if (frontPipelineCheckTimer.advanceIfElapsed(1.0)) {
+      int frontCameraPipelineIndex = frontCamera.getPipelineIndex();
+      int shouldBe = frontCameraMode.getPipelineIndex();
+      if (frontCameraPipelineIndex != shouldBe) {
+        logger.warn ("Had to force front camera pipeline from {} to {}", frontCameraPipelineIndex, shouldBe);
+        frontCamera.setPipelineIndex(shouldBe);
+      }
+    }
     if (frontCameraMode == FrontCameraMode.APRILTAGS) {
       aprilTagsPeriodic();
     } else {

@@ -128,7 +128,11 @@ public class RobotContainer {
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData(" RotateWheelsButton", new RotateWheelsButton());
+
+    // vision and odometry tests
     SmartDashboard.putData(new InstrumentOdometryAndVisionCommand());
+    SmartDashboard.putData(new SeeCubeCommand());
+    SmartDashboard.putData(new SeeConeCommand());
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
