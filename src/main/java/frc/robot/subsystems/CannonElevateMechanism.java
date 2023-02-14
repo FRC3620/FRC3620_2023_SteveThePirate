@@ -110,7 +110,7 @@ public class CannonElevateMechanism  {
    * @param height
    */
   public void setHeight(double height) {
-    height = MathUtil.clamp(height, 0, 125);
+    height = MathUtil.clamp(height, -15, 125);
     SmartDashboard.putNumber(name + ".requestedHeight", height);
     requestedPosition = height;
     if (encoderIsValid) {

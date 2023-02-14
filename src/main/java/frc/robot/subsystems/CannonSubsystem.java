@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
 
 
@@ -119,6 +120,12 @@ public class CannonSubsystem extends SubsystemBase {
     notHomeSwitch = new DigitalInput(4);
     addChild("not home switch", notHomeSwitch);
 
+  }
+
+  public void setLocation(CannonLocation cannonLocation) {
+    cannonElevateMechanism.setHeight(cannonLocation.getElevation());
+    cannonExtendMechanism.setLength(cannonLocation.getExtension());
+    cannonPitchMechanism.setPitch(cannonLocation.getWristPitch());
   }
 }
 

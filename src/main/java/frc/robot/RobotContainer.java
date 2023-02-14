@@ -123,6 +123,18 @@ public class RobotContainer {
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
             .onTrue(new ResetNavXCommand());
+    
+    
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
+    new JoystickButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.coneMidLocation));
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.cubeHighLocation));
+    new JoystickButton(operatorJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
   }
 
   private void setupSmartDashboardCommands() 
@@ -146,6 +158,9 @@ public class RobotContainer {
     SmartDashboard.putData("RollCommand2", new CannonRollCommand(cannonSubsystem, 5));
     SmartDashboard.putData("PitchCommand1", new CannonPitchCommand(cannonSubsystem, 15));
     SmartDashboard.putData("PitchCommand2", new CannonPitchCommand(cannonSubsystem, -15));
+    SmartDashboard.putData("HighLocation", new SetCannonLocationCommand(CannonLocation.coneHighLocation));
+    SmartDashboard.putData("MidLocation", new SetCannonLocationCommand(CannonLocation.coneMidLocation));
+    SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
