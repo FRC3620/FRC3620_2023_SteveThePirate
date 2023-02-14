@@ -27,7 +27,7 @@ public class UpdatedLocateAprilTagCommand extends CommandBase {
   @Override
   public void initialize() {
     // set the wheels to strafe here
-    visionSubsystem.clearTag1Transform();
+    // visionSubsystem.clearTag1Transform();
     iAmDriving = false;
     end = false;
     // driveSubsystem.setWheelsToStrafe(0);
@@ -47,7 +47,7 @@ public class UpdatedLocateAprilTagCommand extends CommandBase {
     double offset = 36;
 
     if (joemama) {
-      Transform3d atag1transform = visionSubsystem.getTag1Transform();
+      Transform3d atag1transform = null;  // visionSubsystem.getTag1Transform();
       if (atag1transform != null) {
         double atag1TransformXm = atag1transform.getX();
         double atag1TransformYm = atag1transform.getY();

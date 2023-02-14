@@ -31,7 +31,7 @@ public class StrafeToAprilTagCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Double distanceToX = visionSubsystem.targetOneX;
+    Double distanceToX = null; // visionSubsystem.targetOneX;
     double targetSpeed = 0.0;
 
     if (distanceToX != null) {
