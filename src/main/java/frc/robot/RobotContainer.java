@@ -130,6 +130,9 @@ public class RobotContainer {
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
             .onTrue(new ResetNavXCommand());
     
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y)
+            .onTrue(new SetNavX180Command());
+            
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
 
