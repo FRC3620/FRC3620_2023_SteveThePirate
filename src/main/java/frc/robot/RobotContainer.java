@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.JoystickAnalogButton;
 import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
@@ -127,11 +128,11 @@ public class RobotContainer {
     
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
-    new JoystickButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneMidLocation));
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeHighLocation));
-    new JoystickButton(operatorJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
             .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
