@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.FlareSubsystem.FlareColor;
 
 import java.util.Set;
 
@@ -20,10 +21,12 @@ import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlareSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.NavXNavigationSubsystem;
 import frc.robot.subsystems.OdometrySubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
@@ -56,6 +59,7 @@ public class RobotContainer {
   public static VisionSubsystem visionSubsystem;
   public static OdometrySubsystem odometrySubsystem;
   public static CannonSubsystem cannonSubsystem;
+  public static FlareSubsystem flareSubsystem;
 
   // joysticks here....
   public static Joystick driverJoystick;
@@ -107,6 +111,7 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
     cannonSubsystem = new CannonSubsystem();
+    flareSubsystem = new FlareSubsystem();
   }
 
   /**
@@ -125,7 +130,12 @@ public class RobotContainer {
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
             .onTrue(new ResetNavXCommand());
     
-    
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
+
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
+
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
