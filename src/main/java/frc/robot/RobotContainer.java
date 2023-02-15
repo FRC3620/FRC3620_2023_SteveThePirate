@@ -133,6 +133,7 @@ public class RobotContainer {
     SmartDashboard.putData(" RotateWheelsButton", new RotateWheelsButton());
     SmartDashboard.putBoolean("DiagnosticsDriveMotortest", true);
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
+    SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
