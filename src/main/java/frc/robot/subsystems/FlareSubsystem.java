@@ -1,35 +1,27 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
-import com.ctre.phoenix.led.CANdle.LEDStripType;
-
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class FlareSubsystem extends SubsystemBase {
-  /** Creates a new FlareSubsystem. */
-  private Spark Flare;
-  private double CurrentFlareColor;
+  private Spark blinkinMotorController;
+  private FlareColor currentFlareColor;
+
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-
   public FlareSubsystem() {
-    Flare = new Spark(2);
-    CurrentFlareColor = FlareColor.PURPLE.value;
-    CurrentFlareColor = FlareColor.YELLOW.value;
+    blinkinMotorController = new Spark(2);
+    addChild("Blinkin", blinkinMotorController);
+    currentFlareColor = FlareColor.YELLOW;
   }
 
   public void setColor(FlareColor flareColor){
     logger.info ("Set color to {}", flareColor);
-    CurrentFlareColor = flareColor.value;
+    currentFlareColor = flareColor;
   }
 
   public enum FlareColor{
@@ -41,16 +33,9 @@ public class FlareSubsystem extends SubsystemBase {
     }
   }
 
-
-
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    Flare.set(CurrentFlareColor);
+    blinkinMotorController.set(currentFlareColor.value);
   }
-
-
-
 }
-
