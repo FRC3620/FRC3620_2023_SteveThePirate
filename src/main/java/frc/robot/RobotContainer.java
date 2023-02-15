@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,6 +19,7 @@ import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
@@ -28,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.JoystickAnalogButton;
 import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
@@ -55,6 +58,7 @@ public class RobotContainer {
   public static INavigationSubsystem navigationSubsystem;
   public static VisionSubsystem visionSubsystem;
   public static OdometrySubsystem odometrySubsystem;
+  public static CannonSubsystem cannonSubsystem;
   public static FlareSubsystem flareSubsystem;
 
   // joysticks here....
@@ -106,6 +110,7 @@ public class RobotContainer {
     driveSubsystem = new DriveSubsystem(navigationSubsystem);
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
+    cannonSubsystem = new CannonSubsystem();
     flareSubsystem = new FlareSubsystem();
   }
 
@@ -130,9 +135,21 @@ public class RobotContainer {
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
+
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.coneMidLocation));
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.cubeHighLocation));
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
   }
 
-  private void setupSmartDashboardCommands() {
+  private void setupSmartDashboardCommands() 
+  {
     SmartDashboard.putData("Strafe to target", new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
@@ -143,6 +160,18 @@ public class RobotContainer {
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData(" RotateWheelsButton", new RotateWheelsButton());
     SmartDashboard.putBoolean("DiagnosticsDriveMotortest", true);
+    SmartDashboard.putData("ExtendCommand1" , new CannonExtendCommand(cannonSubsystem, 3));
+    SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 15));
+    SmartDashboard.putData("ElevateCommand1", new CannonElevateCommand(cannonSubsystem, 21));
+    SmartDashboard.putData("ElevateCommand2", new CannonElevateCommand(cannonSubsystem, 0));
+    SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 65));
+    SmartDashboard.putData("RollCommand1", new CannonRollCommand(cannonSubsystem, 12));
+    SmartDashboard.putData("RollCommand2", new CannonRollCommand(cannonSubsystem, 5));
+    SmartDashboard.putData("PitchCommand1", new CannonPitchCommand(cannonSubsystem, 15));
+    SmartDashboard.putData("PitchCommand2", new CannonPitchCommand(cannonSubsystem, -15));
+    SmartDashboard.putData("HighLocation", new SetCannonLocationCommand(CannonLocation.coneHighLocation));
+    SmartDashboard.putData("MidLocation", new SetCannonLocationCommand(CannonLocation.coneMidLocation));
+    SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
   }
 
   SendableChooser<Command> chooser = new SendableChooser<>();
