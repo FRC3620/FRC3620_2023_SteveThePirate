@@ -96,4 +96,13 @@ public class DriveToCoordinateCommand extends CommandBase {
   public boolean runsWhenDisabled(){
     return true;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(super.toString());
+    sb.append("[dest=");
+    sb.append(destinationPoseOnField.toString());
+    sb.append("]");
+    return sb.toString();
+  }
 }
