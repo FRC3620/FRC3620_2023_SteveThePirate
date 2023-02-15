@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -14,6 +18,8 @@ public class FlareSubsystem extends SubsystemBase {
   /** Creates a new FlareSubsystem. */
   private Spark Flare;
   private double CurrentFlareColor;
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
 
   public FlareSubsystem() {
     Flare = new Spark(2);
@@ -22,11 +28,12 @@ public class FlareSubsystem extends SubsystemBase {
   }
 
   public void setColor(FlareColor flareColor){
+    logger.info ("Set color to {}", flareColor);
     CurrentFlareColor = flareColor.value;
   }
 
   public enum FlareColor{
-    PURPLE(0.91), YELLOW(0.69);
+    PURPLE(0.91), YELLOW(0.69), YELLOWSTROBE(0.15), PURPLESTROBE(0.35);
   
     public final double value;
     private FlareColor(double value){

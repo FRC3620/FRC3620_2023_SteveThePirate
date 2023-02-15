@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.FlareSubsystem.FlareColor;
 
 import java.util.Set;
 
@@ -18,10 +19,12 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlareSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.NavXNavigationSubsystem;
 import frc.robot.subsystems.OdometrySubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
@@ -52,6 +55,7 @@ public class RobotContainer {
   public static INavigationSubsystem navigationSubsystem;
   public static VisionSubsystem visionSubsystem;
   public static OdometrySubsystem odometrySubsystem;
+  public static FlareSubsystem flareSubsystem;
 
   // joysticks here....
   public static Joystick driverJoystick;
@@ -102,6 +106,7 @@ public class RobotContainer {
     driveSubsystem = new DriveSubsystem(navigationSubsystem);
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
+    flareSubsystem = new FlareSubsystem();
   }
 
   /**
@@ -119,6 +124,12 @@ public class RobotContainer {
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
             .onTrue(new ResetNavXCommand());
+    
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
+
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
   }
 
   private void setupSmartDashboardCommands() {
