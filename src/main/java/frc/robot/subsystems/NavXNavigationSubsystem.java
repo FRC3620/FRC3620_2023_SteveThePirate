@@ -21,6 +21,8 @@ public class NavXNavigationSubsystem extends SubsystemBase implements INavigatio
   public void periodic() {
 		SmartDashboard.putNumber("navx.heading_corrected", getCorrectedHeading());
 		SmartDashboard.putNumber("navx.heading_raw", getRawHeading());
+    SmartDashboard.putNumber("navx.pitch", ahrs.getPitch());
+    SmartDashboard.putNumber("navx.roll", ahrs.getRoll());
   }
 
   @Override
@@ -44,5 +46,9 @@ public class NavXNavigationSubsystem extends SubsystemBase implements INavigatio
   @Override
   public double getHeadingOffset() {
     return headingOffset;
+  }
+  
+  public double getPitch() {
+    return ahrs.getPitch();
   }
 }
