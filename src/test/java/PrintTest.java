@@ -11,7 +11,7 @@ public class PrintTest {
         // need this because of fuzzy thinking
         var v = new VisionSubsystem();
         
-        PoseOnField p = TargetPoseOnField.HumanTarget;
+        PoseOnField p = TargetPoseOnField.humanTarget();
         System.out.println(p);
     }
 

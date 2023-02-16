@@ -16,9 +16,9 @@ public class LegoAssembler {
     }
 
     public enum StartPosition {
-        WALL(TargetPoseOnField.WallTarget),
-        MID(TargetPoseOnField.MidTarget),
-        HUMAN(TargetPoseOnField.HumanTarget);
+        WALL(TargetPoseOnField.wallTarget),
+        MID(TargetPoseOnField.midTarget),
+        HUMAN(TargetPoseOnField.humanTarget);
 
         final TargetPoseOnField targetPoseOnField;
         StartPosition(TargetPoseOnField targetPoseOnField) {

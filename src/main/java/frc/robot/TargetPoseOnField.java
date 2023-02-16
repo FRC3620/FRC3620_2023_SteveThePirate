@@ -10,64 +10,35 @@ import frc.robot.subsystems.VisionSubsystem;
 public class TargetPoseOnField extends PoseOnField {
 
     int redFiducialId, blueFiducialId;
-    Translation2d redTargetPose, blueTargetPose;
+    Translation2d redTargetTranslation, blueTargetTranslation, offsetTranslation;
 
-    TargetPoseOnField (int redFiducialId, int blueFiducialId) {
+    TargetPoseOnField (int redFiducialId, int blueFiducialId, double x_inside_offset, double y_offset) {
         this.redFiducialId = redFiducialId;
         this.blueFiducialId = blueFiducialId;
-        this.redTargetPose = VisionSubsystem.getTranslation3dForTag(redFiducialId).toTranslation2d();
-        this.blueTargetPose = VisionSubsystem.getTranslation3dForTag(blueFiducialId).toTranslation2d();
+        this.redTargetTranslation = VisionSubsystem.getTranslation3dForTag(redFiducialId).toTranslation2d();
+        this.blueTargetTranslation = VisionSubsystem.getTranslation3dForTag(blueFiducialId).toTranslation2d();
+        if (x_inside_offset != 0 || y_offset != 0) this.offsetTranslation = new Translation2d(x_inside_offset, y_offset);
     }
 
     @Override
     public Translation2d getTranslationInMeters(Alliance alliance) {
+        Translation2d rv, fixedOffsetTranslation = null;
         switch (alliance) {
             case Blue:
-                return blueTargetPose;
-            case Red:
-                return redTargetPose;
-            default:
-                throw new IllegalArgumentException("Unsupported enum value");
-        }
-    }
-
-    /**
-     * return an absolute field position in front of this target.
-     * x is distance in metersfrom the target, positive heading toward
-     * @param alliance whic alliance we are
-     * @param x x distance in meters from target, positive heading toward
-     * center of the field
-     * @param y y distance in meters from target, positive heading away 
-     * the wall and scorer's table
-     * @return 
-     */
-    public Translation2d inFront(Alliance alliance, double x, double y) {
-        Translation2d t2d_target;
-        switch (alliance) {
-            case Blue:
-                t2d_target = blueTargetPose;
+                rv = blueTargetTranslation;
+                if (offsetTranslation != null) {
+                    fixedOffsetTranslation = new Translation2d(-offsetTranslation.getX(), offsetTranslation.getY());
+                }
                 break;
             case Red:
-                t2d_target = redTargetPose;
-                x = -x;
+                rv = redTargetTranslation;
+                fixedOffsetTranslation = offsetTranslation;
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported enum value");
         }
-        Translation2d rv = t2d_target.plus(new Translation2d(x, y));
+        if (offsetTranslation != null) rv = rv.plus(fixedOffsetTranslation);
         return rv;
-    }
-
-    public Translation2d inFront(Alliance alliance, Translation2d t2d) {
-        return inFront(alliance, t2d.getX(), t2d.getY());
-    }
-
-    public Translation2d inFront(Translation2d t2d) {
-        return inFront(DriverStation.getAlliance(), t2d);
-    }
-
-    public Translation2d inFront(double x, double y) {
-        return inFront(DriverStation.getAlliance(), x, y);
     }
 
     public int getTargetId() {
@@ -92,11 +63,42 @@ public class TargetPoseOnField extends PoseOnField {
         sb.append(Integer.toString(redFiducialId));
         sb.append(",blue=");
         sb.append(Integer.toString(blueFiducialId));
+        if (offsetTranslation != null) {
+            sb.append(",x_offset=");
+            sb.append(Double.toString(offsetTranslation.getX()));
+            sb.append(",y_offset=");
+            sb.append(Double.toString(offsetTranslation.getY()))
+        }
         sb.append("]");
         return sb.toString();
     }
 
-    static public TargetPoseOnField WallTarget = new TargetPoseOnField(1, 8);
-    static public TargetPoseOnField MidTarget = new TargetPoseOnField(2, 7);
-    static public TargetPoseOnField HumanTarget = new TargetPoseOnField(3, 6);
+    static TargetPoseOnField wallTarget = wallTarget(0, 0);
+    static TargetPoseOnField midTarget = midTarget(0, 0);
+    static TargetPoseOnField humanTarget = humanTarget(0, 0);
+
+    public static TargetPoseOnField wallTarget() {
+        return wallTarget;
+    }
+
+    public static TargetPoseOnField midTarget() {
+        return midTarget;
+    }
+
+    public static TargetPoseOnField humanTarget() {
+        return humanTarget;
+    }
+
+    public static TargetPoseOnField wallTarget(double x, double y) {
+        return new TargetPoseOnField(1, 8, x, y);
+    }
+
+    public static TargetPoseOnField midTarget(double x, double y) {
+        return new TargetPoseOnField(2, 7, x, y);
+    }
+    
+    public static TargetPoseOnField humanTarget(double x, double y) {
+        return new TargetPoseOnField(3, 6, x, y);
+    }
+
 }
