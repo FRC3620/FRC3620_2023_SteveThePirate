@@ -130,12 +130,17 @@ public class RobotContainer {
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
             .onTrue(new ResetNavXCommand());
     
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y)
+            .onTrue(new SetNavX180Command());
+            
+    // driver colors
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
 
+    // operator cannon stuff
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
@@ -154,9 +159,15 @@ public class RobotContainer {
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+
+    SmartDashboard.putData("DriveWheels", new RunWheelsForwardButton());
+    SmartDashboard.putData("RotateWheels", new RotateWheelsButton());
+
     SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
+    SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
+    SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
 
     // Diagnostics
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
