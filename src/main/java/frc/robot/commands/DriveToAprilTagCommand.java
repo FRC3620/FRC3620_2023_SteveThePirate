@@ -7,11 +7,13 @@ package frc.robot.commands;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class DriveToAprilTagCommand extends CommandBase {
@@ -19,18 +21,29 @@ public class DriveToAprilTagCommand extends CommandBase {
   boolean pitchTime = false;
   DriveSubsystem driveSubsystem;
   VisionSubsystem visionSubsystem;
+  OdometrySubsystem odometrySubsystem;
   double lastTimestamp;
+  int tagID;
 
   enum MyState {
-    SQUARING, STRAFING, FORWARD
+    SQUARING, STRAFING, FORWARD, LAST
   }
 
   MyState myState;
 
+  public enum Position{
+    MIDDLE, WALL, HUMAN
+  }
+
+  Position position;
+
   /** Creates a new DriveToAprilTagCommand. */
-  public DriveToAprilTagCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+  public DriveToAprilTagCommand(int tagID, Position position, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
+    this.tagID = tagID;
+    this.position = position;
     this.driveSubsystem = RobotContainer.driveSubsystem;
     this.visionSubsystem = RobotContainer.visionSubsystem;
+    this.odometrySubsystem = odometrySubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem, visionSubsystem);
   }
@@ -69,7 +82,7 @@ public class DriveToAprilTagCommand extends CommandBase {
       if (result.hasTargets()) {
         SmartDashboard.putString("apriltag.targets", result.getTargets().toString());
       }
-      PhotonTrackedTarget target = VisionSubsystem.getTargetById(result, 8);
+      PhotonTrackedTarget target = VisionSubsystem.getTargetById(result, tagID);
       SmartDashboard.putString("apriltag.target", "" + target);
 
       if (target != null) {
@@ -112,7 +125,8 @@ public class DriveToAprilTagCommand extends CommandBase {
           }
 
           if (tagPitch == null || tagPitch > -12 && tagPitch < -10) {
-            end = true;
+            driveSubsystem.stopDrive();
+            myState = MyState.LAST;
             SmartDashboard.putNumber("apriltag.headingDone", currentHeading);
             SmartDashboard.putNumber("apriltag.tagYawDone", tagYaw);
             SmartDashboard.putNumber("apriltag.tagPitchDone", tagPitch);
@@ -122,6 +136,17 @@ public class DriveToAprilTagCommand extends CommandBase {
           }
         }
         SmartDashboard.putNumber("apriltag.speed", speed);
+
+        if (myState == MyState.LAST){
+          driveSubsystem.setWheelsToStrafe(0);
+          //double y = odometrySubsystem.whereIIs.getY();
+          if (position == Position.MIDDLE){
+            end = true;
+          }
+          if (position == Position.HUMAN){
+            
+          }
+        }
       }
     }
   }
@@ -130,6 +155,7 @@ public class DriveToAprilTagCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveSubsystem.stopDrive();
+    myState = MyState.SQUARING;
   }
 
   // Returns true when the command should end.
