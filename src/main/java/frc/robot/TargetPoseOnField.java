@@ -9,6 +9,21 @@ import frc.robot.subsystems.VisionSubsystem;
 
 public class TargetPoseOnField extends PoseOnField {
 
+    public enum TargetPosition {
+        WALL(TargetPoseOnField.wallTarget),
+        MID(TargetPoseOnField.midTarget),
+        HUMAN(TargetPoseOnField.humanTarget);
+
+        final TargetPoseOnField targetPoseOnField;
+        TargetPosition(TargetPoseOnField targetPoseOnField) {
+            this.targetPoseOnField = targetPoseOnField;
+        }
+
+        public TargetPoseOnField getTargetPoseOnField() {
+            return this.targetPoseOnField;
+        }
+    }
+
     int redFiducialId, blueFiducialId;
     Translation2d redTargetTranslation, blueTargetTranslation, offsetTranslation;
 
@@ -17,6 +32,14 @@ public class TargetPoseOnField extends PoseOnField {
         this.blueFiducialId = blueFiducialId;
         this.redTargetTranslation = VisionSubsystem.getTranslation3dForTag(redFiducialId).toTranslation2d();
         this.blueTargetTranslation = VisionSubsystem.getTranslation3dForTag(blueFiducialId).toTranslation2d();
+        if (x_inside_offset != 0 || y_offset != 0) this.offsetTranslation = new Translation2d(x_inside_offset, y_offset);
+    }
+
+    TargetPoseOnField (TargetPoseOnField t, double x_inside_offset, double y_offset) {
+        this.redFiducialId = t.redFiducialId;
+        this.blueFiducialId = t.blueFiducialId;
+        this.redTargetTranslation = t.redTargetTranslation;
+        this.blueTargetTranslation = t.blueTargetTranslation;
         if (x_inside_offset != 0 || y_offset != 0) this.offsetTranslation = new Translation2d(x_inside_offset, y_offset);
     }
 
@@ -76,6 +99,14 @@ public class TargetPoseOnField extends PoseOnField {
     static TargetPoseOnField wallTarget = wallTarget(0, 0);
     static TargetPoseOnField midTarget = midTarget(0, 0);
     static TargetPoseOnField humanTarget = humanTarget(0, 0);
+
+    public static TargetPoseOnField target(TargetPosition t) {
+        return t.getTargetPoseOnField();
+    }
+
+    public static TargetPoseOnField target(TargetPosition t, double x, double y) {
+        return new TargetPoseOnField(t.getTargetPoseOnField(), x, y);
+    }
 
     public static TargetPoseOnField wallTarget() {
         return wallTarget;

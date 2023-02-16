@@ -1,57 +1,45 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.TargetPoseOnField.TargetPosition;
 
 public class LegoAssembler {
-    void assemble (StartPosition startPosition, int gamepieces, boolean placeLast, boolean balance) {
+    protected void assemble (TargetPosition startPosition, int gamepieces, boolean placeLast, boolean balance) {
         // add(null, null);
-
     }
 
-    public enum StartPosition {
-        WALL(TargetPoseOnField.wallTarget),
-        MID(TargetPoseOnField.midTarget),
-        HUMAN(TargetPoseOnField.humanTarget);
+    protected List<CommandAndReason> commandAndReasons;
 
-        final TargetPoseOnField targetPoseOnField;
-        StartPosition(TargetPoseOnField targetPoseOnField) {
-            this.targetPoseOnField = targetPoseOnField;
-        }
-
-        public TargetPoseOnField getTargetPoseOnField() {
-            return this.targetPoseOnField;
-        }
-    }
-
-    List<CommandAndReason> commandAndReasons;
-
-    LegoAssembler() {
+    protected LegoAssembler() {
         commandAndReasons = new ArrayList<>();
     }
 
-    void add(String reason, Command command) {
+    protected void add(String reason, Command command) {
         commandAndReasons.add(new CommandAndReason(command, reason));
     }
 
+    protected void add(Command command, String reason) {
+        commandAndReasons.add(new CommandAndReason(command, reason));
+    }
+
+    protected void add(Command command) {
+        commandAndReasons.add(new CommandAndReason(command, null));
+    }
+
+    protected void add(String reason) {
+        commandAndReasons.add(new CommandAndReason(null, reason));
+    }
+
+    // TODO use streams on these?
     public List<Command> getCommands() {
         var rv = new ArrayList<Command>(commandAndReasons.size());
         for (var cr: commandAndReasons) {
-            rv.add(cr.command);
-        }
-        return rv;
-    }
-
-    public List<String> getReasons() {
-        var rv = new ArrayList<String>(commandAndReasons.size());
-        for (var cr: commandAndReasons) {
-            rv.add(cr.reason);
+            if (cr.command != null) {
+                rv.add(cr.command);
+            }
         }
         return rv;
     }
@@ -59,12 +47,12 @@ public class LegoAssembler {
     public List<String> getReasonsWithCommands() {
         var rv = new ArrayList<String>(commandAndReasons.size());
         for (var cr: commandAndReasons) {
-            rv.add(cr.reason + ": " + cr.command);
+            rv.add(cr.toString());
         }
         return rv;
     }
 
-    public static LegoAssembler getLegoAssembler (StartPosition startPosition, int gamepieces, boolean placeLast, boolean balance) {
+    public static LegoAssembler getLegoAssembler (TargetPosition startPosition, int gamepieces, boolean placeLast, boolean balance) {
         var rv = new LegoAssembler();
         rv.assemble(startPosition, gamepieces, placeLast, balance);
         return rv;
@@ -76,6 +64,19 @@ public class LegoAssembler {
         CommandAndReason (Command c, String r) {
             this.command = c;
             this.reason = r;
+        }
+
+        @Override 
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            if (reason != null) {
+                sb.append(reason);
+                if (command != null) sb.append(": ");
+            }
+            if (command != null) {
+                sb.append(command.toString());
+            }
+            return sb.toString();
         }
     }
 }
