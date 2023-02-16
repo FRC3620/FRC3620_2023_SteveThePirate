@@ -160,9 +160,12 @@ public class RobotContainer {
     SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
+    SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
+    SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
 
     // Diagnostics
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
+    SmartDashboard.putData(" RotateWheelsButton", new RotateWheelsButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
 
     // Cannon
