@@ -47,15 +47,6 @@ abstract public class PoseOnField {
             }
         }
 
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder(getClass().getSimpleName());
-            sb.append("[t=");
-            sb.append(translationInMeters.toString());
-            sb.append("]");
-            return sb.toString();
-        }
-
     }
 
     static class PoseOnFieldSetFromCenterLine extends PoseOnFieldBase {

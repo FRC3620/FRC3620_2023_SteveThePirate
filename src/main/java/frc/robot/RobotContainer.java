@@ -71,6 +71,7 @@ public class RobotContainer {
 
     robotParameters = RobotParametersContainer.getRobotParameters(RobotParameters.class);
     logger.info ("got parameters for chassis '{}'", robotParameters.getName());
+    System.out.println("!!!!!!!!!!!!!!!!!!!!! " + robotParameters);
 
     practiceBotJumper = new DigitalInput(0);
     SendableRegistry.add(practiceBotJumper, "RobotContainer", "Practice Bot Jumper");
@@ -157,19 +158,19 @@ public class RobotContainer {
     // DriveSubsystem
     SmartDashboard.putData("Strafe to target", new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Drive to apirl tag", new DriveToAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-
-    SmartDashboard.putData("DriveWheels", new RunWheelsForwardButton());
-    SmartDashboard.putData("RotateWheels", new RotateWheelsButton());
-
-    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, driveSubsystem));
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, -135, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
 
     // Diagnostics
+    SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
 
@@ -294,6 +295,10 @@ public class RobotContainer {
   public static boolean shouldMakeAllCANDevices() {
     if (DriverStation.isFMSAttached()) {
       return true;
+    }
+
+    if (!Robot.isReal()) {
+      return false;
     }
 
     if(practiceBotJumper.get() == true){

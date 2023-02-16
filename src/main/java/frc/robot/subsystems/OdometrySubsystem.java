@@ -77,10 +77,11 @@ public class OdometrySubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         Pose2d whereIIs = update(DriverStation.getAlliance());
+        Translation2d whereIIsInInches = whereIIs.getTranslation().div(Units.metersToInches(1));
         SmartDashboard.putNumber("odometry.x", whereIIs.getX());
         SmartDashboard.putNumber("odometry.y", whereIIs.getY());
-        SmartDashboard.putNumber("odometry.x inches", whereIIs.getX());
-        SmartDashboard.putNumber("odometry.y inches", whereIIs.getY());
+        SmartDashboard.putNumber("odometry.x inches", whereIIsInInches.getX());
+        SmartDashboard.putNumber("odometry.y inches", whereIIsInInches.getY());
     }
 
     public Rotation2d getOdometryHeading(Alliance alliance) {

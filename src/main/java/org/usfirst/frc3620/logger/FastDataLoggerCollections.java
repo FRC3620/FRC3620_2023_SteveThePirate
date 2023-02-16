@@ -10,7 +10,10 @@ public class FastDataLoggerCollections extends FastDataLoggerBase {
 
     @Override
     public String start() {
-        int initialSize = (int) (maxLengthInSeconds * ( 1.0 / getInterval() ));
+        int initialSize = 100;
+        if (getInterval() > 0) {
+            initialSize = (int) (maxLengthInSeconds * ( 1.0 / getInterval() ));
+        }
         data = new ArrayList<>(initialSize);
         timestamps = new ArrayList<>(initialSize);
 
