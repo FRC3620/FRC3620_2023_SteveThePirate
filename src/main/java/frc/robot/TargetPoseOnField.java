@@ -67,7 +67,7 @@ public class TargetPoseOnField extends PoseOnField {
             sb.append(",x_offset=");
             sb.append(Double.toString(offsetTranslation.getX()));
             sb.append(",y_offset=");
-            sb.append(Double.toString(offsetTranslation.getY()))
+            sb.append(Double.toString(offsetTranslation.getY()));
         }
         sb.append("]");
         return sb.toString();

@@ -8,8 +8,8 @@ public class PrintTest {
 
     @Test
     public void test00() {
-        // need this because of fuzzy thinking
-        var v = new VisionSubsystem();
+        // TODO need this because of fuzzy thinking
+        new VisionSubsystem();
         
         PoseOnField p = TargetPoseOnField.humanTarget();
         System.out.println(p);
