@@ -166,11 +166,11 @@ public class RobotContainer {
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
-
-    // Diagnostics
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
+    
+    // Diagnostics
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
 
@@ -189,6 +189,8 @@ public class RobotContainer {
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
 
     // Odometry and Vision Tests
+    SmartDashboard.putData(new SeeConeCommand());
+    SmartDashboard.putData(new SeeCubeCommand());
 
     // Autonomous
 
