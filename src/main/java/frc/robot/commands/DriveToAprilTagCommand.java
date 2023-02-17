@@ -225,6 +225,7 @@ public class DriveToAprilTagCommand extends CommandBase {
     drivingDataLogger.setInterval(0.0);
     drivingDataLogger.addMetadata("position", position.toString());
     drivingDataLogger.addDataProvider("state", () -> myState.toString());
+    drivingDataLogger.addDataProvider("state_ord", () -> myState.ordinal());
     drivingDataLogger.addDataProvider("static_y_in_last", () -> staticYInLast);
     drivingDataLogger.addDataProvider("strafe_power", () -> dl_strafePower);
 

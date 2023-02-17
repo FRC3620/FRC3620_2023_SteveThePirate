@@ -1242,8 +1242,9 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		return WHEEL_CIRCUMFERENCE*wheelToEncoderRatioVelocity();
 	}
 	
-	//private final double WHEEL_TO_ENCODER_RATIO_V--ELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
+	//private final double WHEEL_TO_ENCODER_RATIO_VELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
 	double wheelToEncoderRatioVelocity() {
+		if (swerveParameters == null) return 1/8.31; // this number is as good as any in simulation
 		return (1/swerveParameters.getDriveGearRatio());
 	}
 }
