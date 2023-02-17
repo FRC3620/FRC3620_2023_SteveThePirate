@@ -8,6 +8,9 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
@@ -24,6 +27,8 @@ public class DriveToAprilTagCommand extends CommandBase {
   OdometrySubsystem odometrySubsystem;
   double lastTimestamp;
   int tagID;
+  double staticYInLast;
+  
 
   enum MyState {
     SQUARING, STRAFING, FORWARD, LAST
@@ -62,6 +67,7 @@ public class DriveToAprilTagCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Pose2d whereIIs = odometrySubsystem.getPoseMeters();
     double currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
 
     if (myState == MyState.SQUARING) {
@@ -126,6 +132,8 @@ public class DriveToAprilTagCommand extends CommandBase {
 
           if (tagPitch == null || tagPitch > -12 && tagPitch < -10) {
             driveSubsystem.stopDrive();
+            staticYInLast = whereIIs.getY();
+            SmartDashboard.putNumber("static y", staticYInLast);
             myState = MyState.LAST;
             SmartDashboard.putNumber("apriltag.headingDone", currentHeading);
             SmartDashboard.putNumber("apriltag.tagYawDone", tagYaw);
@@ -138,13 +146,32 @@ public class DriveToAprilTagCommand extends CommandBase {
         SmartDashboard.putNumber("apriltag.speed", speed);
 
         if (myState == MyState.LAST){
+          double strafeDistance = 0.3048;
+          double y = whereIIs.getY();
+          double power = 0.1;
+  
+
           driveSubsystem.setWheelsToStrafe(0);
-          //double y = odometrySubsystem.whereIIs.getY();
           if (position == Position.MIDDLE){
             end = true;
           }
+          if(DriverStation.getAlliance() == Alliance.Blue){
+            power = -0.1;
+          }
+
           if (position == Position.HUMAN){
-            
+            driveSubsystem.autoDrive(90, -power, 0);
+            if(y > staticYInLast + strafeDistance){
+              driveSubsystem.stopDrive();
+              end = true;
+            }
+          }
+          if (position == Position.WALL){
+            driveSubsystem.autoDrive(90, power, 0);
+            if(y < staticYInLast - strafeDistance){
+              driveSubsystem.stopDrive();
+              end = true;
+            }
           }
         }
       }
