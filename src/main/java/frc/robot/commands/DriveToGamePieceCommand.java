@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
 public class DriveToGamePieceCommand extends CommandBase {
   DriveSubsystem driveSubsystem;
@@ -21,6 +22,8 @@ public class DriveToGamePieceCommand extends CommandBase {
   double targetHeading;
   double tolerance = 5;
   double lastTimestamp;
+  FrontCameraMode currentCameraMode;
+  FrontCameraMode pipeline;
 
   enum MyState{
     SEARCHING, DRIVING, STOPPED
@@ -29,10 +32,11 @@ public class DriveToGamePieceCommand extends CommandBase {
   MyState myState;
   
   /** Creates a new DriveToGamePieceCommand. */
-  public DriveToGamePieceCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+  public DriveToGamePieceCommand(FrontCameraMode pipeline, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.visionSubsystem = visionSubsystem;
+    this.pipeline = pipeline;
   }
 
   // Called when the command is initially scheduled.
@@ -41,6 +45,7 @@ public class DriveToGamePieceCommand extends CommandBase {
     myState = MyState.SEARCHING;
     driveSubsystem.setForcedManualModeTrue();
     lastTimestamp = -1;
+    currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -79,7 +84,9 @@ public class DriveToGamePieceCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    visionSubsystem.setFrontCameraMode(currentCameraMode);
+  }
 
   // Returns true when the command should end.
   @Override
