@@ -125,9 +125,7 @@ public class CannonElevateMechanism  {
   }
 
   public double getElevation(){
-
     return elevateEncoder.getDistance() + elevationOffset;
-
   }
 
   public boolean amIHome(){
