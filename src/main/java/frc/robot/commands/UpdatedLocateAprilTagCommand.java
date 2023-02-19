@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -27,7 +28,7 @@ public class UpdatedLocateAprilTagCommand extends CommandBase {
   @Override
   public void initialize() {
     // set the wheels to strafe here
-    visionSubsystem.clearTag1Transform();
+    //visionSubsystem.clearTag1Transform();
     iAmDriving = false;
     end = false;
     // driveSubsystem.setWheelsToStrafe(0);
@@ -46,7 +47,7 @@ public class UpdatedLocateAprilTagCommand extends CommandBase {
     double speedZ;
     double offset = 36;
 
-    if (joemama) {
+    /*if (joemama) {
       Transform3d atag1transform = visionSubsystem.getTag1Transform();
       if (atag1transform != null) {
         double atag1TransformXm = atag1transform.getX();
@@ -107,7 +108,7 @@ public class UpdatedLocateAprilTagCommand extends CommandBase {
           driveSubsystem.stopDrive();
         }
       }
-    }
+    }*/
   }
 
   // Called once the command ends or is interrupted.

@@ -83,7 +83,6 @@ abstract public class DataLoggerBase implements IDataLogger {
 
 	double getTimeInSeconds() {
 		return edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-		// return System.currentTimeMillis() / 1000.0;
 	}
 
 	@Override
