@@ -74,6 +74,7 @@ public class RobotContainer {
 
     robotParameters = RobotParametersContainer.getRobotParameters(RobotParameters.class);
     logger.info ("got parameters for chassis '{}'", robotParameters.getName());
+    System.out.println("!!!!!!!!!!!!!!!!!!!!! " + robotParameters);
 
     practiceBotJumper = new DigitalInput(0);
     SendableRegistry.add(practiceBotJumper, "RobotContainer", "Practice Bot Jumper");
@@ -150,6 +151,8 @@ public class RobotContainer {
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
 
+    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
 
 
     // operator cannon stuff
@@ -206,7 +209,10 @@ public class RobotContainer {
     SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
-
+    SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
+    
     // Diagnostics
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
@@ -227,6 +233,8 @@ public class RobotContainer {
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
 
     // Odometry and Vision Tests
+    SmartDashboard.putData(new SeeConeCommand());
+    SmartDashboard.putData(new SeeCubeCommand());
 
     // Autonomous
 
@@ -333,6 +341,10 @@ public class RobotContainer {
   public static boolean shouldMakeAllCANDevices() {
     if (DriverStation.isFMSAttached()) {
       return true;
+    }
+
+    if (!Robot.isReal()) {
+      return false;
     }
 
     if(practiceBotJumper.get() == true){

@@ -15,7 +15,10 @@ public class RobotParameters extends RobotParametersBase {
 
     @Override
     public String toString() {
-        return "RobotParameters [swerveParameters=" + swerveParameters + "]";
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.setLength(sb.length()-1);
+        sb.append (", swerveParameters=" + swerveParameters + "]");
+        return sb.toString();
     }
 
 }

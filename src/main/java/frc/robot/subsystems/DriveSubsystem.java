@@ -144,8 +144,11 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
   	public DriveSubsystem(INavigationSubsystem navigationSubsystem) {
 		this.navigationSubsystem = navigationSubsystem;
-		swerveParameters = RobotContainer.robotParameters.getSwerveParameters();
-		
+
+		swerveParameters = null;
+		if (RobotContainer.robotParameters != null) {
+			swerveParameters = RobotContainer.robotParameters.getSwerveParameters();
+		}
 		if (swerveParameters == null) {
 			logger.error("all swerve parameters are missing");
 		} else {
