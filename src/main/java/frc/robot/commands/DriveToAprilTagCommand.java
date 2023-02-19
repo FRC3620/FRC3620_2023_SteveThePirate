@@ -11,6 +11,7 @@ import org.usfirst.frc3620.logger.IFastDataLogger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -30,15 +31,15 @@ public class DriveToAprilTagCommand extends CommandBase {
   double lastTimestamp;
   int tagID;
   double staticYInLast;
-  
+  Timer timer;
 
   enum MyState {
-    SQUARING, STRAFING, FORWARD, LAST
+    SQUARING, SET_TO_STRAFE, STRAFING, SET_TO_FORWARD, FORWARD, LAST
   }
 
   MyState myState;
 
-  public enum Position{
+  public enum Position {
     MIDDLE, WALL, HUMAN
   }
 
@@ -48,7 +49,8 @@ public class DriveToAprilTagCommand extends CommandBase {
   IFastDataLogger drivingDataLogger = null;
 
   /** Creates a new DriveToAprilTagCommand. */
-  public DriveToAprilTagCommand(int tagID, Position position, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
+  public DriveToAprilTagCommand(int tagID, Position position, DriveSubsystem driveSubsystem,
+      VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     this.tagID = tagID;
     this.position = position;
     // TODO why are we going to RobotContainer for these? they are available as parameters.
@@ -87,12 +89,23 @@ public class DriveToAprilTagCommand extends CommandBase {
 
     if (myState == MyState.SQUARING) {
       driveSubsystem.setTargetHeading(180);
-      double spinX = driveSubsystem.getSpinPower();
+      double spinX = 3 * driveSubsystem.getSpinPower();
       driveSubsystem.autoDrive(0, 0, spinX);
-      if (Math.abs(currentHeading) > 175 && Math.abs(currentHeading) < 185) {
+      if (Math.abs(currentHeading) > 178 && Math.abs(currentHeading) < 182) {
         driveSubsystem.stopDrive();
-        myState = MyState.STRAFING;
+        myState = MyState.SET_TO_STRAFE;
         SmartDashboard.putNumber("apriltag.headingSquare", currentHeading);
+      }
+    }
+    if (myState == MyState.SET_TO_STRAFE) {
+      if (timer == null) {
+        timer = new Timer();
+        timer.start();
+      }
+      driveSubsystem.setWheelsToStrafe(0);
+      if (timer.advanceIfElapsed(.25)) {
+        myState = MyState.STRAFING;
+        timer = null;
       }
     }
     PhotonPipelineResult result = visionSubsystem.getLastFrontCameraAprilTagsResult(lastTimestamp);
@@ -110,11 +123,16 @@ public class DriveToAprilTagCommand extends CommandBase {
         // do work here
         Double tagYaw = target.getYaw();
         Double tagPitch = target.getPitch();
+
         dl_tagYaw = tagYaw;
         dl_tagPitch = tagPitch;
         dl_tagId = target.getFiducialId();
         double targetYaw = 5.8483;
         double targetPitch = -11.304;
+
+        double targetYawTolerance = 0.8;
+        double targetPitchTolerance = 0.9;
+
         double speed = 0.0;
 
         SmartDashboard.putString("apriltag.state", myState.toString());
@@ -127,9 +145,9 @@ public class DriveToAprilTagCommand extends CommandBase {
             speed = 0.1;
           }
 
-          if (tagYaw == null || tagYaw > 5.01 && tagYaw < 6.6) {
+          if (tagYaw == null || tagYaw > targetYaw - targetYawTolerance && tagYaw < targetYaw + targetYawTolerance) {
             driveSubsystem.stopDrive();
-            myState = MyState.FORWARD;
+            myState = MyState.SET_TO_FORWARD;
             SmartDashboard.putNumber("apriltag.headingStrafe", currentHeading);
             SmartDashboard.putNumber("apriltag.tagYawStrafe", tagYaw);
             SmartDashboard.putNumber("apriltag.tagPitchStrafe", tagPitch);
@@ -139,6 +157,17 @@ public class DriveToAprilTagCommand extends CommandBase {
 
         }
 
+        if (myState == MyState.SET_TO_FORWARD) {
+          if (timer == null) {
+            timer = new Timer();
+            timer.start();
+          }
+          driveSubsystem.setWheelsToStrafe(90);
+          if (timer.advanceIfElapsed(.25)) {
+            myState = MyState.FORWARD;
+            timer = null;
+          }
+        }
         if (myState == MyState.FORWARD) {
           double spinX = driveSubsystem.getSpinPower();
           if (tagPitch < targetPitch) {
@@ -148,7 +177,7 @@ public class DriveToAprilTagCommand extends CommandBase {
             speed = 0.1;
           }
 
-          if (tagPitch == null || tagPitch > -12 && tagPitch < -10) {
+          if (tagPitch == null || tagPitch > targetPitch - targetPitchTolerance && tagPitch < targetPitch + targetPitchTolerance) {
             driveSubsystem.stopDrive();
             staticYInLast = whereIIs.getY();
             SmartDashboard.putNumber("static y", staticYInLast);
@@ -163,16 +192,16 @@ public class DriveToAprilTagCommand extends CommandBase {
         }
         SmartDashboard.putNumber("apriltag.speed", speed);
 
-        if (myState == MyState.LAST){
+        if (myState == MyState.LAST) {
           double strafeDistance = 0.3048;
           double y = whereIIs.getY();
           double power = 0.1;
 
           driveSubsystem.setWheelsToStrafe(0);
-          if (position == Position.MIDDLE){
+          if (position == Position.MIDDLE) {
             end = true;
           }
-          if(DriverStation.getAlliance() == Alliance.Blue){
+          if (DriverStation.getAlliance() == Alliance.Blue) {
             power = -0.1;
           }
 
@@ -185,6 +214,7 @@ public class DriveToAprilTagCommand extends CommandBase {
               end = true;
             }
           }
+
           if (position == Position.WALL){
             dl_strafePower = power;
             driveSubsystem.autoDrive(90, power, 0);
