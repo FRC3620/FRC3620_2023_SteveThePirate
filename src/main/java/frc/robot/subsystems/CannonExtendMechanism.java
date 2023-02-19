@@ -14,6 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -112,12 +113,7 @@ public class CannonExtendMechanism  {
    * @param length
    */
   public void setLength(double length) {
-    if(length < 0) {
-      length = 0;
-    }
-    if(length > 24) {
-      length = 24;
-    }
+    length = MathUtil.clamp(length, 0, 18);
     SmartDashboard.putNumber(name + ".requestedLength", length);
     requestedPosition = length;
     if (encoderIsValid) {
@@ -129,5 +125,9 @@ public class CannonExtendMechanism  {
 
   public void extendCannon(double speed) {
       motor.set(speed);
+  }
+
+  public double getExtension() {
+    return requestedPosition;
   }
 }

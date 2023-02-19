@@ -25,8 +25,8 @@ import frc.robot.RobotContainer;
 public class CannonSubsystem extends SubsystemBase {
   public CannonExtendMechanism cannonExtendMechanism;
   public CannonElevateMechanism cannonElevateMechanism;
-  public CannonRollMechanism cannonRollMechanism;
   public CannonPitchMechanism cannonPitchMechanism;
+  public CannonClawMechanism cannonClawMechanism;
   
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationEncoder;
@@ -43,13 +43,16 @@ public class CannonSubsystem extends SubsystemBase {
 
   public CANSparkMaxSendable pitch;
   public RelativeEncoder pitchEncoder;
+
+  public CANSparkMaxSendable claw;
+  public RelativeEncoder clawEncoder;
   /** Creates a new ArmSubsystem. */
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
     cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder, homeSwitch, notHomeSwitch);
-    cannonRollMechanism = new CannonRollMechanism(roll);
     cannonPitchMechanism = new CannonPitchMechanism(pitch);
+    cannonClawMechanism = new CannonClawMechanism(claw);
   }
 
   @Override
@@ -57,8 +60,8 @@ public class CannonSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     cannonExtendMechanism.periodic();
     cannonElevateMechanism.periodic();
-    cannonRollMechanism.periodic();
     cannonPitchMechanism.periodic();
+    cannonClawMechanism.periodic();
 
   }
 
@@ -70,13 +73,30 @@ public class CannonSubsystem extends SubsystemBase {
     cannonElevateMechanism.setHeight(height);
   }
 
-  public void setRoll(double roll) {
-    cannonRollMechanism.setRoll(roll);
-  }
 
   public void setPitch(double pitch)
   {
     cannonPitchMechanism.setPitch(pitch);
+  }
+
+  public void setClawSpeed(double clawSpeed) {
+    cannonClawMechanism.setClawSpeed(clawSpeed);
+  }
+
+  public double getClawSpeed(){
+    return cannonClawMechanism.getClawSpeed();
+  }
+
+  public double getElevation() {
+    return cannonElevateMechanism.getElevation();
+  }
+  
+  public double getExtension() {
+    return cannonExtendMechanism.getExtension();
+  }
+  
+  public double getPitch() {
+    return cannonPitchMechanism.getPitch();
   }
 
   //Sets length of arm for movement. (Endgame?)
@@ -101,16 +121,19 @@ public class CannonSubsystem extends SubsystemBase {
       addChild("extend", extend);
     }
 
-    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Roll") || shouldMakeAllCANDevices) {
-      roll = new CANSparkMaxSendable(12, MotorType.kBrushless);
-      addChild("roll", roll);
-    }
-
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
       pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(pitch, false);
       addChild("pitch", pitch);
     }
 
+    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Claw") || shouldMakeAllCANDevices) {
+      claw = new CANSparkMaxSendable(12, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(claw, false);
+      claw.setSmartCurrentLimit(5);
+
+      addChild("claw", claw);
+    }
     elevateEncoder = new Encoder(1, 2);
     addChild("elevateEncoder", elevateEncoder);
 

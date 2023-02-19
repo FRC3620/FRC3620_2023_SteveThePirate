@@ -49,7 +49,8 @@ public class CannonPitchMechanism  {
     }
 
     if (encoder != null) {
-      encoder.setPositionConversionFactor(65/2.3);
+      //calculated by two positions difference of angle over difference in encoder value
+      encoder.setPositionConversionFactor(191/6.05);
       //encoder.setVelocityConversionFactor(1);
     }
   }
@@ -71,7 +72,7 @@ public class CannonPitchMechanism  {
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
-            pitchCannon(0.015);
+            pitchCannon(-0.015);
           
             if (calibrationTimer == null) {
               calibrationTimer = new Timer();
@@ -82,7 +83,7 @@ public class CannonPitchMechanism  {
                 if (Math.abs(elevateSpeed) < 15) {
                   encoderIsValid = true;
                   pitchCannon(0.0);
-                  encoder.setPosition(65);
+                  encoder.setPosition(-140);
                   
                   if (requestedPositionWhileCalibrating != null) {
                     setPitch(requestedPositionWhileCalibrating);
@@ -119,5 +120,9 @@ public class CannonPitchMechanism  {
 
   public void pitchCannon(double speed) {
       motor.set(speed);
+  }
+
+  public double getPitch() {
+    return requestedPosition;
   }
 }

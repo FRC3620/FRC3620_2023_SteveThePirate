@@ -19,6 +19,7 @@ import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import frc.robot.subsystems.CannonPitchMechanism;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem;
@@ -28,8 +29,10 @@ import frc.robot.subsystems.OdometrySubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.JoystickAnalogButton;
 import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
@@ -124,6 +127,10 @@ public class RobotContainer {
     driverJoystick = new Joystick(0);
     operatorJoystick = new Joystick(1);
 
+    DPad driverDPad = new DPad(driverJoystick, 0);
+    DPad operatorDPad = new DPad(operatorJoystick, 0);
+
+    //Driver
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A)
             .whileTrue(new XModeCommand(driveSubsystem));
 
@@ -133,24 +140,55 @@ public class RobotContainer {
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y)
             .onTrue(new SetNavX180Command());
             
+    new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
+            .onTrue(new SetCannonClawSpeedCommand(cannonSubsystem, 0.2));
+
+    new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
+            .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.2));
+
     // driver colors
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
 
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
+
 
     // operator cannon stuff
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
+
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneMidLocation));
+
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeHighLocation));
+
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
+
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
             .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
+    
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
+
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
+             
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.1)
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getElevation() + 5)));
+
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.1)
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getElevation() - 5)));
+
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.1)
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() + 3)));
+
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.1)
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() - 3)));
+    
+    operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
+    operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getPitch() + 5)));
+    operatorDPad.right().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getPitch() - 5)));
   }
 
   private void setupSmartDashboardCommands() {
@@ -175,16 +213,17 @@ public class RobotContainer {
 
     // Cannon
     SmartDashboard.putData("ExtendCommand1" , new CannonExtendCommand(cannonSubsystem, 3));
-    SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 15));
+    SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 7));
     SmartDashboard.putData("ElevateCommand1", new CannonElevateCommand(cannonSubsystem, 21));
     SmartDashboard.putData("ElevateCommand2", new CannonElevateCommand(cannonSubsystem, 0));
-    SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 65));
-    SmartDashboard.putData("RollCommand1", new CannonRollCommand(cannonSubsystem, 12));
-    SmartDashboard.putData("RollCommand2", new CannonRollCommand(cannonSubsystem, 5));
-    SmartDashboard.putData("PitchCommand1", new CannonPitchCommand(cannonSubsystem, 15));
-    SmartDashboard.putData("PitchCommand2", new CannonPitchCommand(cannonSubsystem, -15));
+    SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 90));
+    SmartDashboard.putData("PitchCommand1", new CannonPitchCommand(cannonSubsystem, -10));
+    SmartDashboard.putData("PitchCommand2", new CannonPitchCommand(cannonSubsystem, -70));
     SmartDashboard.putData("HighLocation", new SetCannonLocationCommand(CannonLocation.coneHighLocation));
     SmartDashboard.putData("MidLocation", new SetCannonLocationCommand(CannonLocation.coneMidLocation));
+    SmartDashboard.putData("ClawIn", new SetCannonClawSpeedCommand(cannonSubsystem, 0.2));
+    SmartDashboard.putData("ClawOut", new SetCannonClawSpeedCommand(cannonSubsystem, -0.2));
+    SmartDashboard.putData("ClawStop", new SetCannonClawSpeedCommand(cannonSubsystem, 0));
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
 
     // Odometry and Vision Tests
