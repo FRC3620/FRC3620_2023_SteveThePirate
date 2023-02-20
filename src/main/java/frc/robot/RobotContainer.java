@@ -144,7 +144,7 @@ public class RobotContainer {
             .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.2));
 
     //Operator
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+    /*new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
@@ -157,7 +157,8 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
-            .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
+            .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));*/
+
     
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
@@ -166,16 +167,16 @@ public class RobotContainer {
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
              
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getElevation() + 5)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setHeight(cannonSubsystem.getElevation() + 3)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getElevation() - 5)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setHeight(cannonSubsystem.getElevation() - 3)));
 
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() + 3)));
+    /*new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.1)
+            .whileTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() + 3)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() - 3)));
+            .whileTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() - 3)));*/
     
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
     operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getPitch() + 5)));
