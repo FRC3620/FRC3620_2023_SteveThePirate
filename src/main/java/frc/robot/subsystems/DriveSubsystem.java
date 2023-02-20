@@ -144,8 +144,11 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
   	public DriveSubsystem(INavigationSubsystem navigationSubsystem) {
 		this.navigationSubsystem = navigationSubsystem;
-		swerveParameters = RobotContainer.robotParameters.getSwerveParameters();
-		
+
+		swerveParameters = null;
+		if (RobotContainer.robotParameters != null) {
+			swerveParameters = RobotContainer.robotParameters.getSwerveParameters();
+		}
 		if (swerveParameters == null) {
 			logger.error("all swerve parameters are missing");
 		} else {
@@ -1009,20 +1012,51 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		return forceManualMode;
 	}
 
-	public double getAzimuthLeftFront() {
-  		return getFixedPosition(leftFrontAzimuthEncoder);
+	public enum Corner {
+		LF, RF, LB, RB;
 	}
 
-	public double getAzimuthRightFront() {
-		return getFixedPosition(rightFrontAzimuthEncoder);
+	RelativeEncoder getAzimuthEncoderForCorner(Corner corner) {
+		switch (corner) {
+			case LF:
+				return leftFrontAzimuthEncoder;
+			case RF:
+				return rightFrontAzimuthEncoder;
+			case LB:
+				return leftBackAzimuthEncoder;
+			case RB:
+				return rightBackAzimuthEncoder;
+			default:
+				return null;
+		}
 	}
 
-	public double getAzimuthLeftBack() {
-		return getFixedPosition(leftBackAzimuthEncoder);
+	RelativeEncoder getDriveEncoderForCorner(Corner corner) {
+		switch (corner) {
+			case LF:
+				return leftFrontDriveEncoder;
+			case RF:
+				return rightFrontDriveEncoder;
+			case LB:
+				return leftBackDriveEncoder;
+			case RB:
+				return rightBackDriveEncoder;
+			default:
+				return null;
+		}
 	}
 
-	public double getAzimuthRightBack() {
-		return getFixedPosition(rightBackAzimuthEncoder);
+	public double getCornerAzimuthPosition(Corner corner) {
+		RelativeEncoder encoder = getAzimuthEncoderForCorner(corner);
+		return getFixedPosition(encoder);
+	}
+
+	public double getCornerDriveVelocity(Corner corner) {
+		RelativeEncoder encoder = getDriveEncoderForCorner(corner);
+		if (encoder != null) {
+			return encoder.getVelocity();
+		}
+		return 0;
 	}
 
 	private void setOneDriveClosedLoopRampRate (CANSparkMax d, double secondsToFullThrottle, String name) {
@@ -1211,8 +1245,9 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		return WHEEL_CIRCUMFERENCE*wheelToEncoderRatioVelocity();
 	}
 	
-	//private final double WHEEL_TO_ENCODER_RATIO_V--ELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
+	//private final double WHEEL_TO_ENCODER_RATIO_VELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
 	double wheelToEncoderRatioVelocity() {
+		if (swerveParameters == null) return 1/8.31; // this number is as good as any in simulation
 		return (1/swerveParameters.getDriveGearRatio());
 	}
 }

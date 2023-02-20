@@ -55,6 +55,6 @@
   {
     "name": "simulator",
     "macAddress": "(simulation)",
-    "makeAllCANDevices": true
+    "makeAllCANDevices": false
   }
 ]

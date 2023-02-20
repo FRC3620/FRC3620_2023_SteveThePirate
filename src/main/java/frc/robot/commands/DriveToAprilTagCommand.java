@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.usfirst.frc3620.logger.IFastDataLogger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.DrivingDataLogger;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
@@ -43,11 +45,15 @@ public class DriveToAprilTagCommand extends CommandBase {
 
   Position position;
 
+  boolean doLogging = true;
+  IFastDataLogger drivingDataLogger = null;
+
   /** Creates a new DriveToAprilTagCommand. */
   public DriveToAprilTagCommand(int tagID, Position position, DriveSubsystem driveSubsystem,
       VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     this.tagID = tagID;
     this.position = position;
+    // TODO why are we going to RobotContainer for these? they are available as parameters.
     this.driveSubsystem = RobotContainer.driveSubsystem;
     this.visionSubsystem = RobotContainer.visionSubsystem;
     this.odometrySubsystem = odometrySubsystem;
@@ -64,6 +70,10 @@ public class DriveToAprilTagCommand extends CommandBase {
     lastTimestamp = -1;
     double currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
     SmartDashboard.putNumber("apriltag.headingStart", currentHeading);
+
+    if (doLogging) {
+      setupDrivingDataLogger();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -71,6 +81,11 @@ public class DriveToAprilTagCommand extends CommandBase {
   public void execute() {
     Pose2d whereIIs = odometrySubsystem.getPoseMeters();
     double currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+  
+    dl_tagYaw = null;
+    dl_tagPitch = null;
+    dl_tagId = null;
+    dl_strafePower = null;
 
     if (myState == MyState.SQUARING) {
       driveSubsystem.setTargetHeading(180);
@@ -108,10 +123,16 @@ public class DriveToAprilTagCommand extends CommandBase {
         // do work here
         Double tagYaw = target.getYaw();
         Double tagPitch = target.getPitch();
-        double targetYaw = 0.709;
-        double targetPitch = -10.561;
+
+        dl_tagYaw = tagYaw;
+        dl_tagPitch = tagPitch;
+        dl_tagId = target.getFiducialId();
+        double targetYaw = 5.8483;
+        double targetPitch = -11.304;
+
         double targetYawTolerance = 0.8;
         double targetPitchTolerance = 0.9;
+
         double speed = 0.0;
 
         SmartDashboard.putString("apriltag.state", myState.toString());
@@ -184,16 +205,21 @@ public class DriveToAprilTagCommand extends CommandBase {
             power = -0.1;
           }
 
-          if (position == Position.HUMAN) {
+          if (position == Position.HUMAN){
+            dl_strafePower = -power;
             driveSubsystem.autoDrive(90, -power, 0);
-            if (y > staticYInLast + strafeDistance) {
+            if(y > staticYInLast + strafeDistance){
+              dl_strafePower = 0.0;
               driveSubsystem.stopDrive();
               end = true;
             }
           }
-          if (position == Position.WALL) {
+
+          if (position == Position.WALL){
+            dl_strafePower = power;
             driveSubsystem.autoDrive(90, power, 0);
-            if (y < staticYInLast - strafeDistance) {
+            if(y < staticYInLast - strafeDistance){
+              dl_strafePower = 0.0;
               driveSubsystem.stopDrive();
               end = true;
             }
@@ -201,18 +227,42 @@ public class DriveToAprilTagCommand extends CommandBase {
         }
       }
     }
+
+    if (drivingDataLogger != null) drivingDataLogger.update();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (drivingDataLogger != null) {
+      drivingDataLogger.done();
+      drivingDataLogger = null;
+    }
     driveSubsystem.stopDrive();
-    myState = MyState.SQUARING;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return end;
+  }
+
+  Double dl_tagYaw, dl_tagPitch, dl_strafePower;
+  Integer dl_tagId;
+  
+  void setupDrivingDataLogger() {
+    drivingDataLogger = DrivingDataLogger.getShootingDataLogger("drive_to_apriltag");
+    drivingDataLogger.setInterval(0.0);
+    drivingDataLogger.addMetadata("position", position.toString());
+    drivingDataLogger.addDataProvider("state", () -> myState.toString());
+    drivingDataLogger.addDataProvider("state_ord", () -> myState.ordinal());
+    drivingDataLogger.addDataProvider("static_y_in_last", () -> staticYInLast);
+    drivingDataLogger.addDataProvider("strafe_power", () -> dl_strafePower);
+
+    drivingDataLogger.addDataProvider("tagYaw", () -> dl_tagYaw);
+    drivingDataLogger.addDataProvider("tagPitch", () -> dl_tagPitch);
+    drivingDataLogger.addDataProvider("tagId", () -> dl_tagId);
+
+    drivingDataLogger.start();
   }
 }
