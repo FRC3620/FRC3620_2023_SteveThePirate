@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import org.usfirst.frc3620.misc.CANDeviceFinder;
@@ -9,14 +5,12 @@ import org.usfirst.frc3620.misc.CANDeviceType;
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.MotorSetup;
 
-import com.revrobotics.AnalogInput;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
@@ -112,18 +106,21 @@ public class CannonSubsystem extends SubsystemBase {
     if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation") || shouldMakeAllCANDevices) {
       elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(elevation, true);
+      elevation.setIdleMode(IdleMode.kBrake);
       addChild("elevation", elevation);
     }
 
 		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {
       extend = new CANSparkMaxSendable(10, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(extend, true);
+      extend.setIdleMode(IdleMode.kBrake);
       addChild("extend", extend);
     }
 
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
       pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(pitch, false);
+      pitch.setIdleMode(IdleMode.kBrake);
       addChild("pitch", pitch);
     }
 
@@ -131,6 +128,7 @@ public class CannonSubsystem extends SubsystemBase {
       claw = new CANSparkMaxSendable(12, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(claw, false);
       claw.setSmartCurrentLimit(5);
+      claw.setIdleMode(IdleMode.kBrake);
 
       addChild("claw", claw);
     }

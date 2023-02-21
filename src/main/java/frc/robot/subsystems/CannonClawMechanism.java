@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 
-public class CannonClawMechanism extends SubsystemBase {
+public class CannonClawMechanism {
   /** Creates a new ClawMechanism. */
   boolean encoderIsValid = false;
   Timer calibrationTimer;

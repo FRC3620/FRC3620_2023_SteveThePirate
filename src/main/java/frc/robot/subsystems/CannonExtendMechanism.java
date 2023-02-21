@@ -36,10 +36,6 @@ public class CannonExtendMechanism  {
 
   final String name = "Extension";
 
-
-
-
-
   public CannonExtendMechanism(CANSparkMaxSendable motor) {
     this.motor = motor;
     if (motor != null) {
@@ -94,6 +90,9 @@ public class CannonExtendMechanism  {
                   if (requestedPositionWhileCalibrating != null) {
                     setLength(requestedPositionWhileCalibrating);
                     requestedPositionWhileCalibrating = null;
+                  } else {
+                    // this might try to extend arm while vertical, a big no-no!
+                    // setLength(encoder.getPosition());
                   }
                 }
               }
