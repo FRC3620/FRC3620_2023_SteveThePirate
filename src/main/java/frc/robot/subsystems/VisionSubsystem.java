@@ -40,7 +40,7 @@ import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
   public enum FrontCameraMode {
-    APRILTAGS(2), CONES(1), CUBES(0);
+    APRILTAGS(0), CONES(1), CUBES(2);
 
     int pipelineIndex;
 

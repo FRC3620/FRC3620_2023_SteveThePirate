@@ -127,8 +127,8 @@ public class DriveToAprilTagCommand extends CommandBase {
         dl_tagYaw = tagYaw;
         dl_tagPitch = tagPitch;
         dl_tagId = target.getFiducialId();
-        double targetYaw = 10.805;
-        double targetPitch = 8.525;
+        double targetYaw = 12.040;
+        double targetPitch =3.118;
 
         double targetYawTolerance = 0.8;
         double targetPitchTolerance = 0.9;
