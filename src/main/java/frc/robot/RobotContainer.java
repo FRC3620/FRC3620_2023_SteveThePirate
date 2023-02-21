@@ -10,6 +10,7 @@ import frc.robot.commands.*;
 import frc.robot.commands.DriveToAprilTagCommand.Position;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.FlareSubsystem.FlareColor;
+import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
 import java.util.Set;
 
@@ -198,22 +199,17 @@ public class RobotContainer {
     // DriveSubsystem
     SmartDashboard.putData("Strafe to target", new StrafeToAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Move to target", new LocateAprilTagCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to apirl tag", new DriveToAprilTagCommand(8, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Drive to apirl tag", new DriveToAprilTagCommand(3, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, -135, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
-    SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
-    
-    // Diagnostics
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
 
