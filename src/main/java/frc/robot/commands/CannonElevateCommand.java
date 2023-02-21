@@ -25,7 +25,7 @@ public class CannonElevateCommand extends CommandBase {
   @Override
   public void initialize() 
   {
-    cannonSubsystem.setHeight(desiredHeight);
+    cannonSubsystem.setElevation(desiredHeight);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -1,24 +1,15 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
-
-import java.util.Base64.Encoder;
 
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 
 public class CannonExtendMechanism  {
@@ -27,7 +18,6 @@ public class CannonExtendMechanism  {
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
   RelativeEncoder encoder;
-
 
   SparkMaxPIDController PID = null;
   
@@ -65,6 +55,7 @@ public class CannonExtendMechanism  {
     if (motor != null) {
       SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
+      SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
 
       if (encoder != null) {
         double extendSpeed = encoder.getVelocity();
@@ -88,7 +79,7 @@ public class CannonExtendMechanism  {
                   extendCannon(0.0);
                   encoder.setPosition(0.0);
                   if (requestedPositionWhileCalibrating != null) {
-                    setLength(requestedPositionWhileCalibrating);
+                    setExtension(requestedPositionWhileCalibrating);
                     requestedPositionWhileCalibrating = null;
                   } else {
                     // this might try to extend arm while vertical, a big no-no!
@@ -111,7 +102,7 @@ public class CannonExtendMechanism  {
    * "Extend" motor.
    * @param length
    */
-  public void setLength(double length) {
+  public void setExtension(double length) {
     length = MathUtil.clamp(length, 0, 18);
     SmartDashboard.putNumber(name + ".requestedLength", length);
     requestedPosition = length;
@@ -123,10 +114,14 @@ public class CannonExtendMechanism  {
   }
 
   public void extendCannon(double speed) {
-      motor.set(speed);
+    motor.set(speed);
   }
 
-  public double getExtension() {
+  public void disable() {
+    motor.stopMotor();
+  }
+
+  public double getRequestedExtension() {
     return requestedPosition;
   }
 }

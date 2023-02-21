@@ -179,20 +179,20 @@ public class RobotContainer {
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
              
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getElevation() + 5)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedElevation() + 5)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getElevation() - 5)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedElevation() - 5)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() + 3)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() + 3)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setLength(cannonSubsystem.getExtension() - 3)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() - 3)));
     
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
-    operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getPitch() + 5)));
-    operatorDPad.right().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getPitch() - 5)));
+    operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() + 5)));
+    operatorDPad.right().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() - 5)));
   }
 
   private void setupSmartDashboardCommands() {
@@ -216,6 +216,7 @@ public class RobotContainer {
     // Cannon
     SmartDashboard.putData("ExtendCommand1" , new CannonExtendCommand(cannonSubsystem, 3));
     SmartDashboard.putData("ExtendCommand2" , new CannonExtendCommand(cannonSubsystem, 7));
+    SmartDashboard.putData("Turn off extension", new InstantCommand(() -> cannonSubsystem.disableExtension()));
     SmartDashboard.putData("ElevateCommand1", new CannonElevateCommand(cannonSubsystem, 21));
     SmartDashboard.putData("ElevateCommand2", new CannonElevateCommand(cannonSubsystem, 0));
     SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 90));

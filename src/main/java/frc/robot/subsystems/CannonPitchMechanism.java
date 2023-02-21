@@ -116,7 +116,14 @@ public class CannonPitchMechanism  {
       motor.set(speed);
   }
 
-  public double getPitch() {
+  public double getCurrentPitch() {
+    if (encoder != null) {
+      return encoder.getPosition();
+    }
+    return 0;
+  }
+
+  public double getRequestedPitch() {
     return requestedPosition;
   }
 }

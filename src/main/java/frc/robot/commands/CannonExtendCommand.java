@@ -27,7 +27,7 @@ public class CannonExtendCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cannonSubsystem.setLength(desiredLength);
+    cannonSubsystem.setExtension(desiredLength);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
