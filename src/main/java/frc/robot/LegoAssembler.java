@@ -8,6 +8,9 @@ import frc.robot.TargetPoseOnField.TargetPosition;
 
 public class LegoAssembler {
     protected void assemble (TargetPosition startPosition, int gamepieces, boolean placeLast, boolean balance) {
+        if (startPosition == TargetPosition.WALL) {
+            add("this is first command");
+        }
         // add(null, null);
     }
 
