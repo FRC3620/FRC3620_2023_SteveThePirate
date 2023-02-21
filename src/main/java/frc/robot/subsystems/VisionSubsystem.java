@@ -68,7 +68,7 @@ public class VisionSubsystem extends SubsystemBase {
       System.out.println("unable to load file");
     }
 
-    frontCamera = new PhotonCamera("Lifecam");
+    frontCamera = new PhotonCamera("FrontCamera");
     setFrontCameraMode(FrontCameraMode.APRILTAGS);
     Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
     frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);

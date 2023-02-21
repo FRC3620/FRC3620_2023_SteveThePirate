@@ -37,7 +37,7 @@
     "makeAllCANDevices": false,
     "swerveParameters": {
       // azimuth home encoders
-      "he.rf": -134.82, // right front
+      "he.rf": 157.06, // right front
       "he.lf": 75.32,   // left front
       "he.lb": 17.16,  // left back
       "he.rb": -21.26,   // right back
