@@ -57,13 +57,17 @@ public class DriveToGamePieceCommand extends CommandBase {
     if (result != null) {
       lastTimestamp = result.getTimestampSeconds();
       PhotonTrackedTarget target = result.getBestTarget();
+      currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+      if (target == null) {
+        driveSubsystem.autoDrive(currentHeading + 90, 0, 0.2);
+        driveSubsystem.autoDrive(currentHeading - 90, 0, 0.2);
+      }
       if (target != null) {
         SmartDashboard.putString("gamepiece.state", myState.toString());
         if (myState == MyState.SEARCHING) {
           double spinPower = 0.3;
           currentYaw = target.getYaw();
           SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
-          currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
           targetHeading = currentHeading + currentYaw;
           SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
 
