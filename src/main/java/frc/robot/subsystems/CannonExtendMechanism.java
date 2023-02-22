@@ -22,7 +22,7 @@ public class CannonExtendMechanism  {
   SparkMaxPIDController PID = null;
   
   Double requestedPositionWhileCalibrating = null;
-  Double requestedPosition = null;
+  double requestedPosition = 0;
 
   final String name = "Extension";
 
@@ -43,7 +43,7 @@ public class CannonExtendMechanism  {
     }
 
     if (encoder != null) {
-      encoder.setPositionConversionFactor((30.25-4.125)/(16.4-4.8));
+      encoder.setPositionConversionFactor(15/30.4);
       //encoder.setVelocityConversionFactor(1);
     }
   }
@@ -103,7 +103,7 @@ public class CannonExtendMechanism  {
    * @param length
    */
   public void setExtension(double length) {
-    length = MathUtil.clamp(length, 0, 18);
+    length = MathUtil.clamp(length, 0, 20);
     SmartDashboard.putNumber(name + ".requestedLength", length);
     requestedPosition = length;
     if (encoderIsValid) {
