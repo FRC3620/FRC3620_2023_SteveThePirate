@@ -66,9 +66,10 @@ public class DriveToGamePieceCommand extends CommandBase {
         SmartDashboard.putString("gamepiece.state", myState.toString());
         if (myState == MyState.SEARCHING) {
           double spinPower = 0.3;
+          double targetYaw = 11.8;
           currentYaw = target.getYaw();
           SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
-          targetHeading = currentHeading + currentYaw;
+          targetHeading = currentHeading + currentYaw - targetYaw;
           SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
 
           if (currentYaw < 0) {
@@ -85,7 +86,7 @@ public class DriveToGamePieceCommand extends CommandBase {
 
         if (myState == MyState.DRIVING) {
           driveSubsystem.autoDrive(0, 0.2, 0);
-          if (target.getPitch() < -15) { // MAY CHANGE NUM
+          if (target.getPitch() < 1.6 && target.getPitch() > 0) { // MAY CHANGE NUM
             myState = MyState.STOPPED;
           }
         }
