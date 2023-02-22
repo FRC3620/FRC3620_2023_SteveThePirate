@@ -206,7 +206,7 @@ public class RobotContainer {
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(FrontCameraMode.CONES, driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
