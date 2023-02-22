@@ -7,6 +7,7 @@ package frc.robot.commands;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,14 +26,15 @@ public class DriveToGamePieceCommand extends CommandBase {
   FrontCameraMode currentCameraMode;
   FrontCameraMode pipeline;
 
-  enum MyState{
+  enum MyState {
     SEARCHING, DRIVING, STOPPED
   }
 
   MyState myState;
-  
+
   /** Creates a new DriveToGamePieceCommand. */
   public DriveToGamePieceCommand(FrontCameraMode pipeline, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+    addRequirements(driveSubsystem, visionSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.visionSubsystem = visionSubsystem;
@@ -55,31 +57,36 @@ public class DriveToGamePieceCommand extends CommandBase {
     if (result != null) {
       lastTimestamp = result.getTimestampSeconds();
       PhotonTrackedTarget target = result.getBestTarget();
-    if(myState == MyState.SEARCHING){
-      double spinPower = 0.3;
-      currentYaw = target.getYaw();
-      currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
-      targetHeading = currentHeading + currentYaw;
+      if (target != null) {
+        SmartDashboard.putString("gamepiece.state", myState.toString());
+        if (myState == MyState.SEARCHING) {
+          double spinPower = 0.3;
+          currentYaw = target.getYaw();
+          SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
+          currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+          targetHeading = currentHeading + currentYaw;
+          SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
 
-      if(currentYaw < 0){
-        spinPower = -spinPower;
-      }
+          if (currentYaw < 0) {
+            spinPower = -spinPower;
+          }
 
-      driveSubsystem.setTargetHeading(targetHeading);
+          driveSubsystem.setTargetHeading(targetHeading);
 
-      driveSubsystem.autoDrive(currentYaw, 0, spinPower);
-      if(currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance){
-        myState = MyState.DRIVING;
+          driveSubsystem.autoDrive(currentYaw, 0, spinPower);
+          if (currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance) {
+            myState = MyState.DRIVING;
+          }
+        }
+
+        if (myState == MyState.DRIVING) {
+          driveSubsystem.autoDrive(0, 0.2, 0);
+          if (target.getPitch() < -15) { // MAY CHANGE NUM
+            myState = MyState.STOPPED;
+          }
+        }
       }
     }
-
-    if(myState == MyState.DRIVING){
-      driveSubsystem.autoDrive(0, 0.2, 0);
-      if(target.getPitch() < -10){ //MAY CHANGE NUM
-        myState = MyState.STOPPED;
-      }
-    }
-  }
   }
 
   // Called once the command ends or is interrupted.
@@ -91,7 +98,7 @@ public class DriveToGamePieceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(myState == MyState.STOPPED){
+    if (myState == MyState.STOPPED) {
       return true;
     } else {
       return false;
