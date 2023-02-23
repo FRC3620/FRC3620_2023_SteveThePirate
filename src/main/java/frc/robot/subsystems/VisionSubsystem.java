@@ -126,7 +126,7 @@ public class VisionSubsystem extends SubsystemBase {
       int frontCameraPipelineIndex = frontCamera.getPipelineIndex();
       int shouldBe = frontCameraMode.getPipelineIndex();
       if (frontCameraPipelineIndex != shouldBe) {
-        logger.warn ("Had to force front camera pipeline from {} to {}", frontCameraPipelineIndex, shouldBe);
+        logger.warn ("Front pipeline is incorrect: currently {}, should be {}, trying to force it.", frontCameraPipelineIndex, shouldBe);
         frontCamera.setPipelineIndex(shouldBe);
       }
     }

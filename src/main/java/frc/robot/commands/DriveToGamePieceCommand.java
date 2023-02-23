@@ -7,24 +7,23 @@ package frc.robot.commands;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.INavigationSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
 public class DriveToGamePieceCommand extends CommandBase {
   DriveSubsystem driveSubsystem;
   VisionSubsystem visionSubsystem;
-  double currentYaw;
-  double currentHeading;
-  double targetHeading;
   double tolerance = 5;
   double lastTimestamp;
   FrontCameraMode currentCameraMode;
   FrontCameraMode pipeline;
+
+  double targetHeading;
 
   enum MyState {
     SEARCHING, DRIVING, STOPPED
@@ -34,18 +33,20 @@ public class DriveToGamePieceCommand extends CommandBase {
 
   /** Creates a new DriveToGamePieceCommand. */
   public DriveToGamePieceCommand(FrontCameraMode pipeline, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
-    addRequirements(driveSubsystem, visionSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.visionSubsystem = visionSubsystem;
     this.pipeline = pipeline;
+
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(driveSubsystem, visionSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     myState = MyState.SEARCHING;
-    driveSubsystem.setForcedManualModeTrue();
+    // I don't think we want this
+    // driveSubsystem.setForcedManualModeTrue();
     lastTimestamp = -1;
     currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
   }
@@ -54,44 +55,57 @@ public class DriveToGamePieceCommand extends CommandBase {
   @Override
   public void execute() {
     PhotonPipelineResult result = visionSubsystem.getLastFrontCameraGamePieceResult(lastTimestamp);
-    if (result != null) {
+    SmartDashboard.putBoolean("gamepiece.have_vision_result", result != null);
+    PhotonTrackedTarget target = null;
+    if (result == null) {
+      SmartDashboard.putBoolean("gamepiece.have_vision_target", false);
+    } else {
+      // remember that we got a result!
       lastTimestamp = result.getTimestampSeconds();
-      PhotonTrackedTarget target = result.getBestTarget();
-      currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
-      if (target == null) {
-        driveSubsystem.autoDrive(currentHeading + 90, 0, 0.2);
-        driveSubsystem.autoDrive(currentHeading - 90, 0, 0.2);
+
+      if (result.hasTargets()) {
+        target = result.getBestTarget();
+      
+        int id = target.getFiducialId();
+        SmartDashboard.putNumber("gamepiece.target_id", id);
+        if (id != -1) {
+          // target is probably from AprilTags
+          target = null;
+        }
       }
-      if (target != null) {
-        SmartDashboard.putString("gamepiece.state", myState.toString());
+    
+      if (target == null) {
+        driveSubsystem.stopDrive();
+      } else {
+        double currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+        double currentYaw = target.getYaw();
+        double currentPitch = target.getPitch();
+        SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
+        SmartDashboard.putNumber("gamepiece.pitch", currentPitch);
+
         if (myState == MyState.SEARCHING) {
-          double spinPower = 0.3;
+          double spinPower = currentYaw * 0.03;
+          spinPower = MathUtil.clamp(spinPower, -.3, .3);
           double targetYaw = 11.8;
-          currentYaw = target.getYaw();
-          SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
-          targetHeading = currentHeading + currentYaw - targetYaw;
+
+          targetHeading = currentHeading + currentYaw;
           SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
-
-          if (currentYaw < 0) {
-            spinPower = -spinPower;
-          }
-
-          driveSubsystem.setTargetHeading(targetHeading);
 
           driveSubsystem.autoDrive(currentYaw, 0, spinPower);
           if (currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance) {
+            driveSubsystem.setTargetHeading(targetHeading);
             myState = MyState.DRIVING;
           }
-        }
-
-        if (myState == MyState.DRIVING) {
-          driveSubsystem.autoDrive(0, 0.2, 0);
-          if (target.getPitch() < 1.6 && target.getPitch() > 0) { // MAY CHANGE NUM
+        } else if (myState == MyState.DRIVING) {
+          double spinPower = driveSubsystem.getSpinPower();
+          driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
+          if (currentPitch < 1.6 && currentPitch > 0) { // MAY CHANGE NUM
             myState = MyState.STOPPED;
           }
         }
       }
     }
+    SmartDashboard.putString("gamepiece.state", myState.toString());
   }
 
   // Called once the command ends or is interrupted.
