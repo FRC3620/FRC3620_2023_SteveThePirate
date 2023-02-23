@@ -146,7 +146,7 @@ public class RobotContainer {
             .onTrue(new SetCannonClawSpeedCommand(cannonSubsystem, 0.4));
 
     new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
-            .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.4));
+            .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.6));
 
     // driver colors
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
@@ -185,10 +185,10 @@ public class RobotContainer {
             .onTrue(new InstantCommand(() -> cannonSubsystem.setElevation(cannonSubsystem.getRequestedElevation() - 5)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() + 2)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() + 1)));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.1)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() - 2)));
+            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() - 1)));
     
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
     operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() + 5)));
@@ -287,6 +287,19 @@ public class RobotContainer {
     SmartDashboard.putNumber("driver.spin.processed", rv);
     return rv;
   }
+
+  /*static double operatorDeadzone = 0.2;
+
+  public static double getOperatorLeftY() {
+    double axisValue = operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y);
+    if (Math.abs(axisValue) < operatorDeadzone) {
+      return 0;
+    }
+    if (axisValue < 0){
+      return -(axisValue*axisValue);
+    }
+    return axisValue*axisValue;
+  }*/
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

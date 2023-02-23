@@ -7,9 +7,9 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CannonLocation {
-    public static CannonLocation coneHighLocation = new CannonLocation(40.1, 24, -40.1);
+    public static CannonLocation coneHighLocation = new CannonLocation(42.9, 31.8, -55.8);
+    public static CannonLocation cubeHighLocation = new CannonLocation(42.9, 31.8, -55.8);
     public static CannonLocation coneMidLocation = new CannonLocation(44.3, 15.8, -80);
-    public static CannonLocation cubeHighLocation = new CannonLocation(40.1, 24, -40.1);
     public static CannonLocation cubeMidLocation = new CannonLocation(33.75, 10, -44);
     public static CannonLocation lowLocation = new CannonLocation(3.5, 0, -67);
     public static CannonLocation floorPickLocation = new CannonLocation(-10, 0, -10);

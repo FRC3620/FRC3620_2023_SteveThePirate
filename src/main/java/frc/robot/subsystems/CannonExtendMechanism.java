@@ -103,7 +103,7 @@ public class CannonExtendMechanism  {
    * @param length
    */
   public void setExtension(double length) {
-    length = MathUtil.clamp(length, 0, 20);
+    length = MathUtil.clamp(length, 0, 45);
     SmartDashboard.putNumber(name + ".requestedLength", length);
     requestedPosition = length;
     if (encoderIsValid) {
