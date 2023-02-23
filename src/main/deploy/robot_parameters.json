@@ -22,9 +22,9 @@
     "swerveParameters": {
       // azimuth home encoders
       "he.lf": -9.9,  // left front
-      "he.rf": 172.4,   // right front
-      "he.lb": -40, // left back
-      "he.rb": -41.7,  // right back
+      "he.rf": 163.6,   // right front
+      "he.lb": -39.5, // left back
+      "he.rb": -48.6,  // right back
       //
       "chassis_width": 22.25,  // inches
       "chassis_length": 24.25,
