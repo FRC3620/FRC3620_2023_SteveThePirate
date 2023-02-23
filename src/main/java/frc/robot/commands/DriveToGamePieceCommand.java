@@ -6,8 +6,12 @@ package frc.robot.commands;
 
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -18,16 +22,20 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 public class DriveToGamePieceCommand extends CommandBase {
   DriveSubsystem driveSubsystem;
   VisionSubsystem visionSubsystem;
-  double tolerance = 5;
+  double tolerance = 2;
   double lastTimestamp;
   FrontCameraMode currentCameraMode;
   FrontCameraMode pipeline;
 
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
   double targetHeading;
 
   enum MyState {
-    SEARCHING, DRIVING, STOPPED
+    SEARCHING, WAITING1, DRIVING, STOPPED
   }
+
+  Timer waiting1Timer;
 
   MyState myState;
 
@@ -49,6 +57,7 @@ public class DriveToGamePieceCommand extends CommandBase {
     // driveSubsystem.setForcedManualModeTrue();
     lastTimestamp = -1;
     currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
+    logger.info("Searching for {}", pipeline);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -74,32 +83,56 @@ public class DriveToGamePieceCommand extends CommandBase {
         }
       }
     
-      if (target == null) {
-        driveSubsystem.stopDrive();
-      } else {
-        double currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
-        double currentYaw = target.getYaw();
-        double currentPitch = target.getPitch();
-        SmartDashboard.putNumber("gamepiece.yaw", currentYaw);
-        SmartDashboard.putNumber("gamepiece.pitch", currentPitch);
+      double currentHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
 
-        if (myState == MyState.SEARCHING) {
-          double spinPower = currentYaw * 0.03;
+      Double currentTargetYaw = null;
+      Double currentTargetPitch = null;
+      if (target != null) {
+        currentTargetYaw = target.getYaw();
+        currentTargetPitch = target.getPitch();
+        SmartDashboard.putNumber("gamepiece.yaw", currentTargetYaw);
+        SmartDashboard.putNumber("gamepiece.pitch", currentTargetPitch);
+      }
+
+      if (myState == MyState.SEARCHING) {
+        if (target != null) {
+          double spinPower = currentTargetYaw * 0.010;
           spinPower = MathUtil.clamp(spinPower, -.3, .3);
-          double targetYaw = 11.8;
 
-          targetHeading = currentHeading + currentYaw;
+          targetHeading = currentHeading + currentTargetYaw;
           SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
 
-          driveSubsystem.autoDrive(currentYaw, 0, spinPower);
+          driveSubsystem.autoDrive(currentTargetYaw, 0, spinPower);
           if (currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance) {
+            logger.info ("done searching; targetYaw = {}, currentHeading = {}, targetHeading = {}", currentTargetYaw, currentHeading, targetHeading);
             driveSubsystem.setTargetHeading(targetHeading);
-            myState = MyState.DRIVING;
+            myState = MyState.WAITING1;
           }
-        } else if (myState == MyState.DRIVING) {
-          double spinPower = driveSubsystem.getSpinPower();
-          driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
-          if (currentPitch < 1.6 && currentPitch > 0) { // MAY CHANGE NUM
+        } else {
+          driveSubsystem.stopDrive();
+        }
+      } else if (myState == MyState.WAITING1) {
+        if (waiting1Timer == null) {
+          waiting1Timer = new Timer();
+          waiting1Timer.start();
+          driveSubsystem.stopDrive();
+          driveSubsystem.setWheelsToStrafe(90);
+        } else {
+          if (waiting1Timer.hasElapsed(3.0)) {
+            if (target != null) {
+              myState = MyState.DRIVING;
+              waiting1Timer = null;
+              targetHeading = currentHeading + currentTargetYaw;
+              logger.info ("done waiting; targetYaw = {}, currentHeading = {}, targetHeading = {}, targetPitch = {}", currentTargetYaw, currentHeading, targetHeading, currentTargetPitch);
+            }
+          }
+        }
+      } else if (myState == MyState.DRIVING) {
+        double spinPower = driveSubsystem.getSpinPower();
+        driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
+        if (target != null) {
+          if (currentTargetPitch < 1.6 && currentTargetPitch > 0) { // MAY CHANGE NUM
+            logger.info ("done driving; targetPitch = {}", currentTargetPitch);
             myState = MyState.STOPPED;
           }
         }
