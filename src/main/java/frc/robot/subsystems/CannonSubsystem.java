@@ -129,7 +129,7 @@ public class CannonSubsystem extends SubsystemBase {
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
       pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(pitch, false);
-      pitch.setSmartCurrentLimit(30);
+      pitch.setSmartCurrentLimit(35);
       pitch.setIdleMode(IdleMode.kBrake);
       addChild("pitch", pitch);
     }
@@ -137,7 +137,7 @@ public class CannonSubsystem extends SubsystemBase {
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Claw") || shouldMakeAllCANDevices) {
       claw = new CANSparkMaxSendable(12, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(claw, false);
-      claw.setSmartCurrentLimit(5);
+      claw.setSmartCurrentLimit(20);
       claw.setIdleMode(IdleMode.kBrake);
 
       addChild("claw", claw);

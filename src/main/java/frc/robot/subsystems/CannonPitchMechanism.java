@@ -38,7 +38,7 @@ public class CannonPitchMechanism  {
       PID.setD(0.0);    //10
       PID.setFF(0.0);      //0.0
 
-      PID.setOutputRange(-0.2, 0.2);
+      PID.setOutputRange(-0.4, 0.4);
     }
 
     if (encoder != null) {

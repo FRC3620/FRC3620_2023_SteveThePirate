@@ -146,13 +146,13 @@ public class RobotContainer {
             .onTrue(new SetCannonClawSpeedCommand(cannonSubsystem, 0.4));
 
     new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
-            .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.6));
+            .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.8));
 
-    // driver colors
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
+    // operator colors
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
 
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
 
 
@@ -170,7 +170,10 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
-            .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
+            .onTrue(new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation));
+            
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.floorPickLocation));        
     
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
