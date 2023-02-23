@@ -90,11 +90,13 @@ public class CannonClawMechanism {
    * "Extend" motor.*/
 
   public void setClawSpeed(double speed) {
+    if (motor != null) {
       motor.set(speed);
+    }
   }
 
-  public double getClawSpeed()
-  {
+  public double getClawSpeed() {
+    if (encoder == null) return 0;
     return encoder.getVelocity();
   }
 }
