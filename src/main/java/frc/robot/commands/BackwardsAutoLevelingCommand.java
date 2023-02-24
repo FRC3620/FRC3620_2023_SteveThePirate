@@ -31,7 +31,8 @@ public class BackwardsAutoLevelingCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -56,7 +57,7 @@ public class BackwardsAutoLevelingCommand extends CommandBase {
 
     if(myState == MyState.COUNTER){
       if(pitch > -10){
-        driveSubsystem.autoDrive(0, .2, 0);
+        driveSubsystem.autoDrive(0, .1, 0);
       } else {
         driveSubsystem.stopDrive();
         myState = MyState.DONE;
