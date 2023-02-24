@@ -19,7 +19,7 @@ public class SetCannonClawSpeedCommand extends CommandBase {
      */
     public SetCannonClawSpeedCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
       // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(_subsystem);
+      //addRequirements(_subsystem);
       cannonSubsystem = _subsystem;
       desiredSpeed = _desiredSpeed;
     } 
@@ -53,7 +53,7 @@ public class SetCannonClawSpeedCommand extends CommandBase {
         getStartedTimer.start();
       } else {
         if (getStartedTimer.get() > 0.5) {
-          if (Math.abs(cannonSubsystem.getClawSpeed()) < 400) {
+          if (Math.abs(cannonSubsystem.getClawSpeed()) < 600) {
             getStartedTimer = null;
             return true;
             } else {
