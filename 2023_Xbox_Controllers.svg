@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="11in"
    height="8.5in"
    id="svg3023"
-   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="2022_Xbox_Controllers.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="2023_Xbox_Controllers_duplicate.svg"
    inkscape:export-filename="C:\Users\dwegs\Documents\FRC3620.2022\FRC3620_2022_CuriousGeorge\Driver_Xbox_Controller.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
-   inkscape:label="X">
+   inkscape:label="X"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -27,29 +27,69 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1680"
+     inkscape:window-height="971"
      id="namedview105"
      showgrid="true"
-     inkscape:zoom="0.4462745"
-     inkscape:cx="161.99117"
-     inkscape:cy="344.62136"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:zoom="0.67620012"
+     inkscape:cx="800.05901"
+     inkscape:cy="395.59295"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1255"
+     inkscape:current-layer="g1327"
      inkscape:document-rotation="0"
      units="in"
      inkscape:snap-global="true"
      inkscape:snap-nodes="true"
      inkscape:snap-bbox="true"
-     inkscape:snap-others="true">
+     inkscape:snap-others="true"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in">
     <inkscape:grid
        type="xygrid"
        id="grid152" />
   </sodipodi:namedview>
   <defs
      id="defs3025">
+    <rect
+       x="874.00162"
+       y="209.99701"
+       width="180.41996"
+       height="38.450155"
+       id="rect10661" />
+    <rect
+       x="910.97292"
+       y="267.67224"
+       width="162.67374"
+       height="91.688834"
+       id="rect10275" />
+    <rect
+       x="675.83543"
+       y="45.844417"
+       width="104.9985"
+       height="79.858017"
+       id="rect6590" />
+    <rect
+       x="878.43818"
+       y="385.98041"
+       width="153.80062"
+       height="186.33537"
+       id="rect6159" />
+    <rect
+       x="529.42907"
+       y="165.63144"
+       width="136.0544"
+       height="141.96981"
+       id="rect4246" />
+    <rect
+       x="516.1194"
+       y="152.32177"
+       width="112.39276"
+       height="42.886712"
+       id="rect4114" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient260">
@@ -222,16 +262,16 @@
     <marker
        style="overflow:visible"
        id="marker1726"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="Arrow1Lstart"
        inkscape:isstock="true"
        inkscape:collect="always">
       <path
-         transform="scale(0.8) translate(12.5,0)"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path1724" />
     </marker>
     <marker
@@ -252,16 +292,16 @@
     <marker
        style="overflow:visible"
        id="marker1580"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="Arrow1Lstart"
        inkscape:isstock="true"
        inkscape:collect="always">
       <path
-         transform="scale(0.8) translate(12.5,0)"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path1578" />
     </marker>
     <marker
@@ -382,10 +422,10 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter133"
-       x="-0.0042923073"
-       width="1.0085846"
-       y="-0.00069750001"
-       height="1.001395">
+       x="-0.025457334"
+       width="1.1338369"
+       y="-0.0012579091"
+       height="1.0159765">
       <feGaussianBlur
          inkscape:collect="always"
          stdDeviation="0.036838835"
@@ -400,6 +440,15 @@
        x2="120"
        y2="680"
        gradientUnits="userSpaceOnUse" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5901">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#g5897"
+         id="use5903" />
+    </clipPath>
   </defs>
   <metadata
      id="metadata3028">
@@ -409,7 +458,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -962,7 +1010,7 @@
        inkscape:label="LT"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1896)"
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1896)"
        d="M 342.24466,440.48155 200,340"
        id="path2989"
        inkscape:label="L_STICK"
@@ -986,7 +1034,7 @@
        inkscape:label="RT"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1458)"
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1458)"
        d="M 768.46602,283.61942 860,180"
        id="path2999"
        inkscape:label="RB"
@@ -1043,7 +1091,11 @@
          sodipodi:role="line"
          x="622.57086"
          y="680.64551"
-         id="tspan1185">Climber Up / Down</tspan></text>
+         id="tspan1185">Manual Adjust Arm </tspan><tspan
+         sodipodi:role="line"
+         x="622.57086"
+         y="713.97888"
+         id="tspan693">Up/Down</tspan></text>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1808)"
        d="M 329.56893,282.03495 200,180"
@@ -1051,7 +1103,7 @@
        inkscape:label="LB"
        sodipodi:nodetypes="cc" />
     <path
-       style="display:none;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1726);filter:url(#filter133)"
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter133)"
        d="M 362.84272,236.08544 340,100"
        id="path1191"
        inkscape:label="LT"
@@ -1087,13 +1139,7 @@
        inkscape:label="RB"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1650)"
-       d="M 475.33981,416.71456 420,200 h 20 v 0"
-       id="path1203"
-       inkscape:label="BACK"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1580)"
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 625.86408,416.71456 640,60 h 20"
        id="path1205"
        inkscape:label="START"
@@ -1105,7 +1151,7 @@
        inkscape:label="Y"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1360)"
+       style="display:none;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1360)"
        d="M 810.23704,416.60676 920,380"
        id="path1209"
        inkscape:label="B"
@@ -1124,72 +1170,87 @@
        sodipodi:nodetypes="ccc" />
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
+       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:196.907;display:inline"
        x="301.37476"
        y="680"
        id="text1219"><tspan
-         sodipodi:role="line"
-         id="tspan1215"
          x="301.37476"
-         y="680">Turret</tspan><tspan
-         sodipodi:role="line"
+         y="680"
+         id="tspan13790">Manual Adjust </tspan><tspan
          x="301.37476"
-         y="713.33337"
-         id="tspan1217">Front/Right/Back/Left</tspan></text>
+         y="713.33338"
+         id="tspan13792">Wrist
+</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
-       x="920"
-       y="380"
+       x="275.22046"
+       y="100.49694"
        id="text1223"><tspan
          sodipodi:role="line"
          id="tspan1221"
-         x="920"
-         y="380">Bloop</tspan></text>
+         x="275.22046"
+         y="100.49694">Place Cube Mid`</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
+       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:145.955;display:inline"
        x="920"
        y="500"
        id="text1227"><tspan
-         sodipodi:role="line"
-         id="tspan1225"
          x="920"
-         y="500">Tarmac</tspan></text>
+         y="500"
+         id="tspan13794">Pick From </tspan><tspan
+         x="920"
+         y="533.33338"
+         id="tspan13796">Floor</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
+       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:154.777;display:inline"
        x="920"
        y="440"
        id="text1231"><tspan
-         sodipodi:role="line"
-         id="tspan1229"
          x="920"
-         y="440">Auto</tspan></text>
+         y="440"
+         id="tspan13798">Place Piece </tspan><tspan
+         x="920"
+         y="473.33338"
+         id="tspan13800">Low</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
+       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:152.738;display:inline"
        x="920"
        y="320"
        id="text1235"><tspan
-         sodipodi:role="line"
-         id="tspan1233"
          x="920"
-         y="320">Safe Zone</tspan></text>
+         y="320"
+         id="tspan13802">Pick From </tspan><tspan
+         x="920"
+         y="353.33338"
+         id="tspan13804">Human </tspan><tspan
+         x="920"
+         y="386.66675"
+         id="tspan13806">Station</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:145.283;display:inline"
        x="39.958714"
        y="340"
-       id="text1241"><tspan
-         sodipodi:role="line"
-         id="tspan1237"
+       id="text1241"
+       transform="translate(48.802121,-42.886712)"><tspan
          x="39.958714"
-         y="340">Click to turn</tspan><tspan
-         sodipodi:role="line"
-         id="tspan1239"
+         y="340"
+         id="tspan13810"><tspan
+           style="display:inline"
+           id="tspan13808">Manual </tspan></tspan><tspan
          x="39.958714"
-         y="373.33337">off shooter</tspan></text>
+         y="373.33338"
+         id="tspan13814"><tspan
+           style="display:inline"
+           id="tspan13812">Adjust Arm
+</tspan></tspan><tspan
+         x="39.958714"
+         y="406.66675"
+         id="tspan13816">In/Out</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1197,13 +1258,9 @@
        y="200"
        id="text1247"><tspan
          sodipodi:role="line"
-         id="tspan1243"
-         x="440"
-         y="200">Climber Arm</tspan><tspan
-         sodipodi:role="line"
          id="tspan1245"
          x="440"
-         y="233.33337">Out</tspan></text>
+         y="200" /></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
@@ -1211,25 +1268,23 @@
        y="60"
        id="text1253"><tspan
          sodipodi:role="line"
-         id="tspan1249"
          x="660"
-         y="60">Climber Arm</tspan><tspan
-         sodipodi:role="line"
-         x="660"
-         y="93.333374"
-         id="tspan1251">In</tspan></text>
+         y="60"
+         id="tspan1251" /></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
+       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:150.158;display:inline"
        x="880"
        y="180"
        id="text1349"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
-         sodipodi:role="line"
-         id="tspan1347"
          x="880"
-         y="180">Eject Ball</tspan></text>
+         y="180"
+         id="tspan13818">Place Cone </tspan><tspan
+         x="880"
+         y="213.33338"
+         id="tspan13820">High</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
@@ -1239,11 +1294,7 @@
          sodipodi:role="line"
          x="60.901413"
          y="180"
-         id="tspan252">Get Ready </tspan><tspan
-         sodipodi:role="line"
-         x="60.901413"
-         y="213.33337"
-         id="tspan258">to Climb</tspan></text>
+         id="tspan258">Place Cube High</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:42.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
@@ -1261,13 +1312,88 @@
        y="100"
        id="text265"><tspan
          sodipodi:role="line"
-         id="tspan263"
          x="820"
-         y="100">Push the</tspan><tspan
+         y="100"
+         id="tspan267">Place Cone Mid</tspan></text>
+    <path
+       style="fill:#000000"
+       d="M 559.00612,85.773425 554.56956,391.89582"
+       id="path2303" />
+    <path
+       style="fill:#000000"
+       d="M 507.24629,76.900312 451.04991,159.71603"
+       id="path2311" />
+    <path
+       style="fill:#000000"
+       d="M 542.73874,205.56045 482.1058,144.92751"
+       id="path2313" />
+    <path
+       style="fill:#000000"
+       d="M 618.1602,75.42146 548.65415,57.675234"
+       id="path2315" />
+    <path
+       style="fill:#000000;stroke-width:1.49571;stroke-dasharray:none"
+       d="M 558.35698,210.25481 C 556.8798,315.47439 549.3033,427.13043 549.3033,427.13043"
+       id="path4110" />
+    <text
+       xml:space="preserve"
+       id="text4112"
+       style="writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect4114);display:inline;fill:#000000;stroke-width:2.016;stroke-dasharray:none" />
+    <text
+       xml:space="preserve"
+       id="text4244"
+       style="font-size:18.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect4246);shape-padding:0;display:inline;fill:#000000;stroke-width:2.016;stroke-dasharray:none"
+       transform="translate(-32.534748,-54.71753)"><tspan
+         x="529.42969"
+         y="189.89423"
+         id="tspan13824"><tspan
+           style="font-size:26.6667px"
+           id="tspan13822">Home </tspan></tspan><tspan
+         x="529.42969"
+         y="223.2276"
+         id="tspan13828"><tspan
+           style="font-size:26.6667px"
+           id="tspan13826">Position </tspan></tspan><tspan
+         x="529.42969"
+         y="256.56098"
+         id="tspan13832"><tspan
+           style="font-size:26.6667px"
+           id="tspan13830">(Field </tspan></tspan><tspan
+         x="529.42969"
+         y="289.89435"
+         id="tspan13836"><tspan
+           style="font-size:26.6667px"
+           id="tspan13834">Transition)</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       id="text6588"
+       style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect6590);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
+         x="675.83594"
+         y="70.107119"
+         id="tspan13838">Yellow </tspan><tspan
+         x="675.83594"
+         y="103.44049"
+         id="tspan13840">Light</tspan></text>
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 477.97887,407.84144 492.11479,51.126887 h 20"
+       id="path7476"
+       inkscape:label="START"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:26.6667px;writing-mode:lr-tb;fill:#000000;stroke-width:2.016;stroke-dasharray:none"
+       x="520.55597"
+       y="34.013599"
+       id="text9281"><tspan
          sodipodi:role="line"
-         x="820"
-         y="133.33337"
-         id="tspan267">Ball Up</tspan></text>
+         id="tspan9279"
+         x="520.55597"
+         y="34.013599">Purple </tspan><tspan
+         sodipodi:role="line"
+         x="520.55597"
+         y="67.346977"
+         id="tspan10261">Lights</tspan></text>
   </g>
   <g
      id="g1327"
@@ -1276,7 +1402,7 @@
      style="display:inline">
     <path
        style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1475)"
-       d="M 329.56893,282.03495 260,180"
+       d="M 356.18827,237.66939 286.61934,135.63444"
        id="path1261"
        inkscape:label="LB"
        sodipodi:nodetypes="cc" />
@@ -1311,7 +1437,7 @@
        inkscape:label="RT"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1347)"
+       style="display:none;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1347)"
        d="M 768.46602,283.61942 820,180 h 20"
        id="path1273"
        inkscape:label="RB"
@@ -1329,29 +1455,38 @@
        inkscape:label="START"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1609)"
-       d="M 759.27094,374.53327 900,300"
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1609)"
+       d="M 760.74979,377.49097 901.47885,302.9577"
        id="path1279"
        inkscape:label="Y"
        sodipodi:nodetypes="cc" />
     <path
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1727)"
+       style="display:none;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1727)"
        d="M 810.23704,416.60676 900,380"
        id="path1281"
        inkscape:label="B"
        sodipodi:nodetypes="cc" />
     <path
-       style="display:inline;mix-blend-mode:normal;fill:url(#linearGradient262);fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1320)"
+       style="display:none;mix-blend-mode:normal;fill:url(#linearGradient262);fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1320)"
        d="M 756.32062,467.90456 900,520"
        id="path1283"
        sodipodi:nodetypes="cc"
        inkscape:label="A" />
-    <path
-       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1857)"
-       d="M 700.66991,425.84072 740,520 900,600"
-       id="path1285"
-       inkscape:label="X"
-       sodipodi:nodetypes="ccc" />
+    <g
+       id="g5899"
+       clip-path="url(#clipPath5901)"
+       style="display:none">
+      <g
+         inkscape:label="Clip"
+         id="g5897">
+        <path
+           style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1857)"
+           d="M 700.66991,425.84072 740,520 900,600"
+           id="path1285"
+           inkscape:label="X"
+           sodipodi:nodetypes="ccc" />
+      </g>
+    </g>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1383,34 +1518,6 @@
          id="tspan1289">Front/Right/Back/Left</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline"
-       x="902.57086"
-       y="380"
-       id="text1295"><tspan
-         sodipodi:role="line"
-         id="tspan1603"
-         x="902.57086"
-         y="380">Intake Arm</tspan><tspan
-         sodipodi:role="line"
-         id="tspan1605"
-         x="902.57086"
-         y="413.33337">Up / Down</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
-       x="902.57086"
-       y="599.82135"
-       id="text1299"><tspan
-         sodipodi:role="line"
-         id="tspan1339"
-         x="902.57086"
-         y="599.82135">Reset</tspan><tspan
-         sodipodi:role="line"
-         id="tspan1341"
-         x="902.57086"
-         y="633.15472">NavX</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';display:none"
        x="920"
        y="440"
@@ -1419,20 +1526,6 @@
          id="tspan1301"
          x="0"
          y="0">Auto</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
-       x="900.98639"
-       y="302.57086"
-       id="text1307"><tspan
-         sodipodi:role="line"
-         id="tspan1333"
-         x="900.98639"
-         y="302.57086">Center on</tspan><tspan
-         sodipodi:role="line"
-         id="tspan1335"
-         x="900.98639"
-         y="335.90424">Ball</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1465,32 +1558,14 @@
          y="60" /></text>
     <text
        xml:space="preserve"
-       style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
-       x="840.98639"
-       y="180"
-       id="text1465"><tspan
-         sodipodi:role="line"
-         id="tspan268"
-         x="840.98639"
-         y="180">Turn drive off</tspan><tspan
-         sodipodi:role="line"
-         id="tspan270"
-         x="840.98639"
-         y="213.33337">[toggle]</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
-       x="84.326248"
-       y="180"
+       x="230.73262"
+       y="135.63443"
        id="text1587"><tspan
          sodipodi:role="line"
-         id="tspan1585"
-         x="84.326248"
-         y="180">Toggle Intake</tspan><tspan
-         sodipodi:role="line"
-         x="84.326248"
-         y="213.33337"
-         id="tspan1589">Wheels</tspan></text>
+         x="230.73262"
+         y="135.63443"
+         id="tspan1589">Intake</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1498,13 +1573,9 @@
        y="100"
        id="text2137"><tspan
          sodipodi:role="line"
-         id="tspan262"
-         x="840"
-         y="100">Pull the </tspan><tspan
-         sodipodi:role="line"
          id="tspan264"
          x="840"
-         y="133.33337">trigger</tspan></text>
+         y="100">&quot;Shoot&quot;</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:42.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline"
@@ -1517,13 +1588,31 @@
          y="80">Driver Controller</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
-       x="901.58447"
-       y="529.71649"
-       id="text267"><tspan
-         sodipodi:role="line"
-         id="tspan265"
-         x="901.58447"
-         y="529.71649">X mode</tspan></text>
+       id="text6157"
+       style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect6159);display:inline;fill:#000000;stroke-width:2.016;stroke-dasharray:none" />
+    <text
+       xml:space="preserve"
+       id="text10273"
+       style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect10275);fill:#000000;stroke-width:2.016;stroke-dasharray:none"
+       transform="translate(-14.788521)"><tspan
+         x="910.97266"
+         y="291.93524"
+         id="tspan13842">Reset NAVX </tspan><tspan
+         x="910.97266"
+         y="325.26862"
+         id="tspan13844">to 180</tspan></text>
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1.4727px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1987)"
+       d="M 703.25858,415.80661 800.5709,228.85502 h 63.15002"
+       id="path10657"
+       inkscape:label="RT"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       id="text10659"
+       style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect10661);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
+         x="874.00195"
+         y="234.25946"
+         id="tspan13846">Reset  NAVX</tspan></text>
   </g>
 </svg>

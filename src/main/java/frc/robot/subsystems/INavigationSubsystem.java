@@ -69,4 +69,7 @@ public interface INavigationSubsystem {
         // 0 is pointed at RED alliance driver station
         return new Rotation2d(trigClassHeadingInRadians);
     }
+
+    public double getPitch();
+    
 }

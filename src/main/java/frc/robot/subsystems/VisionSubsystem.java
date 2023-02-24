@@ -40,7 +40,7 @@ import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
   public enum FrontCameraMode {
-    APRILTAGS(2), CONES(1), CUBES(0);
+    APRILTAGS(0), CONES(1), CUBES(2);
 
     int pipelineIndex;
 
@@ -68,7 +68,7 @@ public class VisionSubsystem extends SubsystemBase {
       System.out.println("unable to load file");
     }
 
-    frontCamera = new PhotonCamera("Lifecam");
+    frontCamera = new PhotonCamera("FrontCamera");
     setFrontCameraMode(FrontCameraMode.APRILTAGS);
     Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
     frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);
@@ -261,7 +261,7 @@ public class VisionSubsystem extends SubsystemBase {
     VisionData(double t, PhotonPipelineResult photonPipelineResult) {
       this.time = t;
       this.odometry = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
-      this.blind_odometry = RobotContainer.odometrySubsystem.getBlindPoseMeters().getTranslation();
+      this.blind_odometry = null; // RobotContainer.odometrySubsystem.getBlindPoseMeters().getTranslation();
       this.robotHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
       this.photonPipelineResult = photonPipelineResult;
     }

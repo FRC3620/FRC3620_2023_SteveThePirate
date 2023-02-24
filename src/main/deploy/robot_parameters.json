@@ -22,9 +22,9 @@
     "swerveParameters": {
       // azimuth home encoders
       "he.lf": -9.9,  // left front
-      "he.rf": 172.4,   // right front
-      "he.lb": -40, // left back
-      "he.rb": -41.7,  // right back
+      "he.rf": 163.6,   // right front
+      "he.lb": -39.5, // left back
+      "he.rb": -48.6,  // right back
       //
       "chassis_width": 22.25,  // inches
       "chassis_length": 24.25,
@@ -37,7 +37,7 @@
     "makeAllCANDevices": false,
     "swerveParameters": {
       // azimuth home encoders
-      "he.rf": -134.82, // right front
+      "he.rf": 157.06, // right front
       "he.lf": 75.32,   // left front
       "he.lb": 17.16,  // left back
       "he.rb": -21.26,   // right back
@@ -55,6 +55,6 @@
   {
     "name": "simulator",
     "macAddress": "(simulation)",
-    "makeAllCANDevices": true
+    "makeAllCANDevices": false
   }
 ]

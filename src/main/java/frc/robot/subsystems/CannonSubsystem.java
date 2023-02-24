@@ -1,0 +1,227 @@
+package frc.robot.subsystems;
+
+import org.usfirst.frc3620.misc.CANDeviceFinder;
+import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.CANSparkMaxSendable;
+import org.usfirst.frc3620.misc.MotorSetup;
+
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CannonLocation;
+import frc.robot.RobotContainer;
+
+public class CannonSubsystem extends SubsystemBase {
+  public CannonExtendMechanism cannonExtendMechanism;
+  public CannonElevateMechanism cannonElevateMechanism;
+  public CannonPitchMechanism cannonPitchMechanism;
+  public CannonClawMechanism cannonClawMechanism;
+  
+  public CANSparkMaxSendable elevation;
+  public RelativeEncoder elevationEncoder;
+  public Encoder elevateEncoder;
+  public DigitalInput homeSwitch;
+  public DigitalInput notHomeSwitch;
+
+  public CANSparkMaxSendable extend;
+  public RelativeEncoder extendEncoder;
+
+  public CANSparkMaxSendable roll;
+  public RelativeEncoder rollEncoder;
+
+  public CANSparkMaxSendable pitch;
+  public RelativeEncoder pitchEncoder;
+
+  public CANSparkMaxSendable claw;
+  public RelativeEncoder clawEncoder;
+
+  /** Creates a new ArmSubsystem. */
+  public CannonSubsystem() {
+    setupMotors();
+    cannonExtendMechanism = new CannonExtendMechanism(extend);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder, homeSwitch, notHomeSwitch);
+    cannonPitchMechanism = new CannonPitchMechanism(pitch);
+    cannonClawMechanism = new CannonClawMechanism(claw);
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    cannonExtendMechanism.periodic();
+    cannonElevateMechanism.periodic();
+    cannonPitchMechanism.periodic();
+    cannonClawMechanism.periodic();
+  }
+
+  public void setExtension(double length) {
+    cannonExtendMechanism.setExtension(length);
+  }
+
+  public void setElevation(double height) {
+    cannonElevateMechanism.setElevation(height);
+  }
+
+  public void disableExtension() {
+    cannonExtendMechanism.disable();
+  }
+
+  public void setPitch(double pitch) {
+    cannonPitchMechanism.setPitch(pitch);
+  }
+
+  public void setClawSpeed(double clawSpeed) {
+    cannonClawMechanism.setClawSpeed(clawSpeed);
+  }
+
+  public double getClawSpeed(){
+    return cannonClawMechanism.getClawSpeed();
+  }
+
+  public double getElevation() {
+    return cannonElevateMechanism.getCurrentElevation();
+  }
+
+  public double getCurrentPitch() {
+    return cannonPitchMechanism.getCurrentPitch();
+  }
+
+  public double getRequestedElevation() {
+    return cannonElevateMechanism.getRequestedElevation();
+  }
+  
+  public double getRequestedExtension() {
+    return cannonExtendMechanism.getRequestedExtension();
+  }
+  
+  public double getRequestedPitch() {
+    return cannonPitchMechanism.getRequestedPitch();
+  }
+
+  //Sets length of arm for movement. (Endgame?)
+  public void setTravel() {
+    
+  }
+
+  void setupMotors() {
+    CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
+		boolean shouldMakeAllCANDevices = RobotContainer.shouldMakeAllCANDevices();
+
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation") || shouldMakeAllCANDevices) {
+      elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(elevation, true);
+      elevation.setSmartCurrentLimit(40);
+      elevation.setIdleMode(IdleMode.kBrake);
+      addChild("elevation", elevation);
+    }
+
+		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {
+      extend = new CANSparkMaxSendable(10, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(extend, true);
+      extend.setSmartCurrentLimit(40);
+      extend.setIdleMode(IdleMode.kBrake);
+      addChild("extend", extend);
+    }
+
+    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
+      pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(pitch, false);
+      pitch.setSmartCurrentLimit(20);
+      pitch.setIdleMode(IdleMode.kBrake);
+      addChild("pitch", pitch);
+    }
+
+    if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Claw") || shouldMakeAllCANDevices) {
+      claw = new CANSparkMaxSendable(12, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(claw, false);
+      claw.setSmartCurrentLimit(5);
+      claw.setIdleMode(IdleMode.kBrake);
+
+      addChild("claw", claw);
+    }
+    elevateEncoder = new Encoder(1, 2);
+    addChild("elevateEncoder", elevateEncoder);
+
+    homeSwitch = new DigitalInput(3);
+    addChild("homeSwitch", homeSwitch);
+
+    notHomeSwitch = new DigitalInput(4);
+    addChild("not home switch", notHomeSwitch);
+
+  }
+
+  public void setLocation(CannonLocation cannonLocation) {
+    cannonElevateMechanism.setElevation(cannonLocation.getElevation());
+    cannonExtendMechanism.setExtension(cannonLocation.getExtension());
+    cannonPitchMechanism.setPitch(cannonLocation.getWristPitch());
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//:D
