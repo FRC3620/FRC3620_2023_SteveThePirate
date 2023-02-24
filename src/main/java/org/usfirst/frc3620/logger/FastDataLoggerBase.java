@@ -1,5 +1,6 @@
 package org.usfirst.frc3620.logger;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,9 +30,11 @@ abstract public class FastDataLoggerBase extends DataLoggerBase implements IFast
 
 		t0 = getTimeInSeconds();
 
-		if (intervalInSeconds > 0) {
+		double interval_seconds = getInterval();
+
+		if (interval_seconds > 0) {
 			timer = new Timer();
-			long interval = Math.max(1, Math.round(intervalInSeconds * 1000));
+			long interval = Math.max(1, Math.round(interval_seconds * 1000));
 			timer.schedule(new FastLoggerTimerTask(), 0, interval);
 		}
 	}
@@ -73,6 +76,7 @@ abstract public class FastDataLoggerBase extends DataLoggerBase implements IFast
 		if (timer != null) {
 			timer.cancel();
 		}
+		File outputFile = getOutputFile();
 		if (outputFile != null) {
 			logger.info("fastLogger done, writing to {}", outputFile);
 			try {
