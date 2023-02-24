@@ -143,7 +143,7 @@ public class RobotContainer {
             .onTrue(new SetNavX180Command());
             
     new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
-            .onTrue(new SetCannonClawSpeedCommand(cannonSubsystem, 0.4));
+            .onTrue(new SetCannonClawSpeedCommand(cannonSubsystem, 0.8));
 
     new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
             .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.8));
@@ -171,32 +171,54 @@ public class RobotContainer {
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
             .onTrue(new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation));
+
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.chuteLocation));
             
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X)
-            .onTrue(new SetCannonLocationCommand(CannonLocation.floorPickLocation));        
-    
+            .onTrue(new SetCannonLocationCommand(CannonLocation.coneFloorPickLocation));
+
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y)
+            .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
+
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
             .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
              
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.1)
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
             .onTrue(new InstantCommand(() -> cannonSubsystem.setElevation(cannonSubsystem.getRequestedElevation() + 5)));
 
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.1)
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)
             .onTrue(new InstantCommand(() -> cannonSubsystem.setElevation(cannonSubsystem.getRequestedElevation() - 5)));
 
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.1)
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.2)
             .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() + 1)));
 
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.1)
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.2)
             .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() - 1)));
     
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
     operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() + 5)));
     operatorDPad.right().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() - 5)));
   }
+
+  /*public static double getOperatorJoystickRightY() {
+    double axisValue = operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y); //Grabs the joystick value
+    if (axisValue < 0.2 && axisValue > -0.2) { //Since the joystick doesnt stay at zero, make it not give a false value
+      return 0;
+    }
+    return -axisValue;
+  }
+
+  public static double getOperatorJoystickLeftY() {
+    double axisValue = operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y); //Grabs the joystick value
+    if (axisValue < 0.2 && axisValue > -0.2) { //Since the joystick doesnt stay at zero, make it not give a false value
+      return 0;
+    }
+    return -axisValue;
+  }*/
 
   private void setupSmartDashboardCommands() {
     // DriveSubsystem
