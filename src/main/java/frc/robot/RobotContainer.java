@@ -134,10 +134,10 @@ public class RobotContainer {
             .onTrue(new SetNavX180Command());
             
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE, 0,1)));
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE,0,1)));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneHighLocation));
