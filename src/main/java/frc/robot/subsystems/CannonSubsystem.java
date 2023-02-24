@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import org.usfirst.frc3620.misc.CANDeviceFinder;
@@ -9,18 +5,15 @@ import org.usfirst.frc3620.misc.CANDeviceType;
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.MotorSetup;
 
-import com.revrobotics.AnalogInput;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
-
 
 public class CannonSubsystem extends SubsystemBase {
   public CannonExtendMechanism cannonExtendMechanism;
@@ -34,7 +27,6 @@ public class CannonSubsystem extends SubsystemBase {
   public DigitalInput homeSwitch;
   public DigitalInput notHomeSwitch;
 
-
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
 
@@ -46,6 +38,7 @@ public class CannonSubsystem extends SubsystemBase {
 
   public CANSparkMaxSendable claw;
   public RelativeEncoder clawEncoder;
+
   /** Creates a new ArmSubsystem. */
   public CannonSubsystem() {
     setupMotors();
@@ -62,20 +55,21 @@ public class CannonSubsystem extends SubsystemBase {
     cannonElevateMechanism.periodic();
     cannonPitchMechanism.periodic();
     cannonClawMechanism.periodic();
-
   }
 
-  public void setLength(double length) {
-    cannonExtendMechanism.setLength(length);
+  public void setExtension(double length) {
+    cannonExtendMechanism.setExtension(length);
   }
 
-  public void setHeight(double height) {
-    cannonElevateMechanism.setHeight(height);
+  public void setElevation(double height) {
+    cannonElevateMechanism.setElevation(height);
   }
 
+  public void disableExtension() {
+    cannonExtendMechanism.disable();
+  }
 
-  public void setPitch(double pitch)
-  {
+  public void setPitch(double pitch) {
     cannonPitchMechanism.setPitch(pitch);
   }
 
@@ -88,22 +82,29 @@ public class CannonSubsystem extends SubsystemBase {
   }
 
   public double getElevation() {
-    return cannonElevateMechanism.getElevation();
+    return cannonElevateMechanism.getCurrentElevation();
+  }
+
+  public double getCurrentPitch() {
+    return cannonPitchMechanism.getCurrentPitch();
+  }
+
+  public double getRequestedElevation() {
+    return cannonElevateMechanism.getRequestedElevation();
   }
   
-  public double getExtension() {
-    return cannonExtendMechanism.getExtension();
+  public double getRequestedExtension() {
+    return cannonExtendMechanism.getRequestedExtension();
   }
   
-  public double getPitch() {
-    return cannonPitchMechanism.getPitch();
+  public double getRequestedPitch() {
+    return cannonPitchMechanism.getRequestedPitch();
   }
 
   //Sets length of arm for movement. (Endgame?)
   public void setTravel() {
     
   }
-
 
   void setupMotors() {
     CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
@@ -112,25 +113,32 @@ public class CannonSubsystem extends SubsystemBase {
     if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation") || shouldMakeAllCANDevices) {
       elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(elevation, true);
+      elevation.setSmartCurrentLimit(40);
+      elevation.setIdleMode(IdleMode.kBrake);
       addChild("elevation", elevation);
     }
 
 		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {
       extend = new CANSparkMaxSendable(10, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(extend, true);
+      extend.setSmartCurrentLimit(40);
+      extend.setIdleMode(IdleMode.kBrake);
       addChild("extend", extend);
     }
 
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
       pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(pitch, false);
+      pitch.setSmartCurrentLimit(35);
+      pitch.setIdleMode(IdleMode.kBrake);
       addChild("pitch", pitch);
     }
 
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Claw") || shouldMakeAllCANDevices) {
       claw = new CANSparkMaxSendable(12, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(claw, false);
-      claw.setSmartCurrentLimit(5);
+      claw.setSmartCurrentLimit(20);
+      claw.setIdleMode(IdleMode.kBrake);
 
       addChild("claw", claw);
     }
@@ -146,8 +154,8 @@ public class CannonSubsystem extends SubsystemBase {
   }
 
   public void setLocation(CannonLocation cannonLocation) {
-    cannonElevateMechanism.setHeight(cannonLocation.getElevation());
-    cannonExtendMechanism.setLength(cannonLocation.getExtension());
+    cannonElevateMechanism.setElevation(cannonLocation.getElevation());
+    cannonExtendMechanism.setExtension(cannonLocation.getExtension());
     cannonPitchMechanism.setPitch(cannonLocation.getWristPitch());
   }
 }

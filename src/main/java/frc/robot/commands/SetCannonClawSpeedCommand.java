@@ -53,7 +53,7 @@ public class SetCannonClawSpeedCommand extends CommandBase {
         getStartedTimer.start();
       } else {
         if (getStartedTimer.get() > 0.5) {
-          if (Math.abs(cannonSubsystem.getClawSpeed()) < 500) {
+          if (Math.abs(cannonSubsystem.getClawSpeed()) < 400) {
             getStartedTimer = null;
             return true;
             } else {
