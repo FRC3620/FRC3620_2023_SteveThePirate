@@ -211,8 +211,8 @@ public class RobotContainer {
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Drive to Game Piece", new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem));
     SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
-    SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem));
-    SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
+    SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem, cannonSubsystem));
+    SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem));
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
 
