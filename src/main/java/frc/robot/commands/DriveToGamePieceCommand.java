@@ -30,12 +30,13 @@ public class DriveToGamePieceCommand extends CommandBase {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   double targetHeading;
+  double startHeading; //when we turn at the end to center on the piece, we use this
 
   enum MyState {
-    SEARCHING, WAITING1, DRIVING, STOPPED
+    SEARCHING, WAITING1, DRIVING, TURNING, PICKUP, STOPPED
   }
 
-  Timer waiting1Timer;
+  Timer timer;
 
   MyState myState;
 
@@ -112,16 +113,16 @@ public class DriveToGamePieceCommand extends CommandBase {
           driveSubsystem.stopDrive();
         }
       } else if (myState == MyState.WAITING1) {
-        if (waiting1Timer == null) {
-          waiting1Timer = new Timer();
-          waiting1Timer.start();
+        if (timer == null) {
+          timer = new Timer();
+          timer.start();
           driveSubsystem.stopDrive();
           driveSubsystem.setWheelsToStrafe(90);
         } else {
-          if (waiting1Timer.hasElapsed(3.0)) {
+          if (timer.hasElapsed(3.0)) {
             if (target != null) {
               myState = MyState.DRIVING;
-              waiting1Timer = null;
+              timer = null;
               targetHeading = currentHeading + currentTargetYaw;
               logger.info ("done waiting; targetYaw = {}, currentHeading = {}, targetHeading = {}, targetPitch = {}", currentTargetYaw, currentHeading, targetHeading, currentTargetPitch);
             }
@@ -131,8 +132,32 @@ public class DriveToGamePieceCommand extends CommandBase {
         double spinPower = driveSubsystem.getSpinPower();
         driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
         if (target != null) {
-          if (currentTargetPitch < 1.6 && currentTargetPitch > 0) { // MAY CHANGE NUM
+          if (currentTargetPitch < 1.6) { // MAY CHANGE NUM
             logger.info ("done driving; targetPitch = {}", currentTargetPitch);
+            myState = MyState.TURNING;
+            startHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+            SmartDashboard.putNumber("gamepiece.startHeading", startHeading);
+
+          }
+        }
+      }
+
+      if(myState == MyState.TURNING){
+        driveSubsystem.autoDrive(startHeading, 0, -0.2);
+        if(currentHeading < startHeading - 15){
+          myState = MyState.PICKUP;
+        }
+      }
+
+      if (myState == MyState.PICKUP) {
+        if (timer == null) {
+          timer = new Timer();
+          timer.start();
+        } else {
+          driveSubsystem.autoDrive(0, 0.1, 0);
+
+          if (timer.advanceIfElapsed(1)) {
+            timer = null;
             myState = MyState.STOPPED;
           }
         }
