@@ -32,7 +32,7 @@ public class CannonElevateMechanism  {
   Encoder elevateEncoder;
   DigitalInput homeSwitch;
   DigitalInput notHomeSwitch;
-  private static final double kP = 0.01;
+  private static final double kP = 0.02;
   private static final double kI = 0;
   private static final double kD = 0;
 
@@ -96,7 +96,7 @@ public class CannonElevateMechanism  {
         } else {
           // encoder is valid
           double motorPower = m_pidController.calculate(getCurrentElevation());
-          motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
+          motorPower = MathUtil.clamp(motorPower, -0.4, 0.75);
           elevateCannon(motorPower);
         }
 
@@ -110,7 +110,7 @@ public class CannonElevateMechanism  {
    * @param elevation
    */
   public void setElevation(double elevation) {
-    elevation = MathUtil.clamp(elevation, -15, 125);
+    elevation = MathUtil.clamp(elevation, -25, 125);
     SmartDashboard.putNumber(name + ".requestedElevation", elevation);
     requestedPosition = elevation;
     if (encoderIsValid) {
