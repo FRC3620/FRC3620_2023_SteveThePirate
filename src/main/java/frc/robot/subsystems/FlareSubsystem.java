@@ -58,6 +58,9 @@ public class FlareSubsystem extends SubsystemBase {
 
     public static FlareColor YELLOWSTROBE = new FlareColor (Color.kYellow);
 
+    public static FlareColor GREENSTROBE = new FlareColor(Color.kGreen);
+
+    public static FlareColor REDSTROBE = new FlareColor(Color.kRed);
 
   
     public final Color value;
