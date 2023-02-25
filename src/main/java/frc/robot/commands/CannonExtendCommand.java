@@ -19,7 +19,7 @@ public class CannonExtendCommand extends CommandBase {
    */
   public CannonExtendCommand(CannonSubsystem _subsystem, double _desiredLength) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_subsystem);
+    //addRequirements(_subsystem);
     cannonSubsystem = _subsystem;
     desiredLength = _desiredLength;
   } 
