@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
@@ -90,6 +91,8 @@ public class RobotContainer {
       pneumaticModuleType = PneumaticsModuleType.CTREPCM;
     }
 
+   
+   
     makeSubsystems();
 
     // CAN bus ok?
@@ -150,10 +153,10 @@ public class RobotContainer {
 
     // driver colors
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE, 0,1)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLE, 0,1)));
 
     new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE,0,1)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW,0,1)));
 
 
     // operator cannon stuff
@@ -173,10 +176,10 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.lowLocation));
     
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLE)));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW)));
              
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.1)
             .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedElevation() + 5)));

@@ -42,10 +42,10 @@ public class RotateWheelsButton extends CommandBase {
     SmartDashboard.putBoolean("DiagnosticsAzimuthMotorTest", areAllAzimuthsok());
    
     if(this.areAllAzimuthsok()){
-      flareSubsystem.setColor(FlareColor.GREENSTROBE, 0, 1);
+      flareSubsystem.setColor(FlareColor.GREEN, 0, 1);
     
     } else {
-      flareSubsystem.setColor(FlareColor.REDSTROBE, 0, 1);
+      flareSubsystem.setColor(FlareColor.RED, 0, 1);
     }
   }
 
