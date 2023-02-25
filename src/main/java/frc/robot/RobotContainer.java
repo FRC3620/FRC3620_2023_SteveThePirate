@@ -143,10 +143,10 @@ public class RobotContainer {
             .onTrue(new SetNavX180Command());
             
     new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
-            .onTrue(new SetCannonClawSpeedCommand(cannonSubsystem, 0.8));
+            .onTrue(new CannonClawInCommand(cannonSubsystem, 0.6));
 
     new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
-            .whileTrue(new SetCannonClawSpeedCommand(cannonSubsystem, -0.8));
+            .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));
 
     // operator colors
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
@@ -169,23 +169,17 @@ public class RobotContainer {
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
 
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X)
             .onTrue(new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B)
             .onTrue(new SetCannonLocationCommand(CannonLocation.chuteLocation));
             
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X)
+    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A)
             .onTrue(new SetCannonLocationCommand(CannonLocation.coneFloorPickLocation));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y)
             .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
-
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
-
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
              
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
             .onTrue(new InstantCommand(() -> cannonSubsystem.setElevation(cannonSubsystem.getRequestedElevation() + 5)));
@@ -256,9 +250,9 @@ public class RobotContainer {
     SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 90));
     SmartDashboard.putData("PitchCommand-10", new CannonPitchCommand(cannonSubsystem, -10));
     SmartDashboard.putData("PitchCommand-70", new CannonPitchCommand(cannonSubsystem, -70));
-    SmartDashboard.putData("ClawIn", new SetCannonClawSpeedCommand(cannonSubsystem, 0.2));
-    SmartDashboard.putData("ClawOut", new SetCannonClawSpeedCommand(cannonSubsystem, -0.2));
-    SmartDashboard.putData("ClawStop", new SetCannonClawSpeedCommand(cannonSubsystem, 0));
+    SmartDashboard.putData("ClawIn", new CannonClawInCommand(cannonSubsystem, 0.2));
+    SmartDashboard.putData("ClawOut", new CannonClawInCommand(cannonSubsystem, -0.2));
+    SmartDashboard.putData("ClawStop", new CannonClawInCommand(cannonSubsystem, 0));
     SmartDashboard.putData("MidLocation", new SetCannonLocationCommand(CannonLocation.coneMidLocation));
     SmartDashboard.putData("HighLocation", new SetCannonLocationCommand(CannonLocation.coneHighLocation));
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
