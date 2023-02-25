@@ -60,7 +60,7 @@ public class FlareSubsystem extends SubsystemBase {
   }
   public void ProcessRobotModeChange(RobotMode robotMode) {
     if (robotMode == RobotMode.TELEOP ) {
-      
+
       if (DriverStation.getAlliance()==Alliance.Blue) {
         setColor(FlareColor.BLUE);
       }
@@ -70,6 +70,19 @@ public class FlareSubsystem extends SubsystemBase {
     }
 
     }
+    if (robotMode == RobotMode.AUTONOMOUS ) {
+
+      if (DriverStation.getAlliance()==Alliance.Blue) {
+        setColor(FlareColor.BLUE);
+      }
+
+    if (DriverStation.getAlliance() == Alliance.Red) {
+      setColor(FlareColor.RED);
+    }
+
+    }
+
+
   }
 
   public static class FlareColor{
