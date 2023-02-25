@@ -33,11 +33,11 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new SetCannonClawSpeedCommand(cannonSubsystem, -0.8)
+      new CannonClawOutCommand(cannonSubsystem, -0.8)
       ,
       new WaitCommand(1)
       ,
-      new SetCannonClawSpeedCommand(cannonSubsystem, 0)
+      new CannonClawInCommand(cannonSubsystem, 0)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
@@ -56,11 +56,11 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new SetCannonClawSpeedCommand(cannonSubsystem, -0.8)
+      new CannonClawOutCommand(cannonSubsystem, -0.8)
       ,
       new WaitCommand(1)
       ,
-      new SetCannonClawSpeedCommand(cannonSubsystem, 0)
+      new CannonClawInCommand(cannonSubsystem, 0)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
     );
