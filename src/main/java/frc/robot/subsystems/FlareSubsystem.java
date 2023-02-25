@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
-import org.ejml.dense.block.decomposition.qr.BlockHouseHolder_DDRB;
+
+
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -10,33 +12,46 @@ import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class FlareSubsystem extends SubsystemBase {
-  
+  final int numberOfPixels = 8;
   AddressableLED leds;
   AddressableLEDBuffer ledBuffer;
-
+  FlareColor[] flareColors;
+  boolean colorsNeedUpdated = false;
+  double onSeconds = 1;
+  double offSeconds = 0;
+  boolean lightsAreOn = true;
+  Timer timer = new Timer();
+  
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   public FlareSubsystem() {
 
     leds = new AddressableLED(9);
-    leds.setLength(8);;
-    ledBuffer = new AddressableLEDBuffer(8);
+    leds.setLength(numberOfPixels);;
+    ledBuffer = new AddressableLEDBuffer(numberOfPixels);
+    flareColors = new FlareColor[numberOfPixels];
     setColor(new FlareColor(Color.kBlue));
     leds.start();
+    timer.start();
+  }
+  public void setInterval(double onSeconds, double offSeconds) {
+    this.onSeconds = onSeconds;
+    this.offSeconds = offSeconds;
   }
   public void setColor(FlareColor flareColor){
     logger.info ("Set color to {}", flareColor);
 
     for (var i = 0; i < ledBuffer.getLength(); i++) {
-      // Sets the specified LED to the RGB values for red
-      ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen() , flareColor.getBlue());
+      flareColors[i] = flareColor;
    }
-    leds.setData(ledBuffer);
+    colorsNeedUpdated = true;
   }
 
   public void setColor(FlareColor flareColor, int firstLed, int lastLed){
@@ -51,11 +66,11 @@ public class FlareSubsystem extends SubsystemBase {
 
     for (var i = firstLed; i <= lastLed; i++) {
       // Sets the specified LED to the RGB values for red
-     
-      ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen() , flareColor.getBlue());
+      flareColors[i] = flareColor;
+      
    }
-    leds.setData(ledBuffer);
-
+    
+  colorsNeedUpdated = true;
     
   }
   public void ProcessRobotModeChange(RobotMode robotMode) {
@@ -121,11 +136,36 @@ public class FlareSubsystem extends SubsystemBase {
 
  // int m_rainbowFirstPixelHue = 0;
 
- int m_purpleFirstPixleHue = 0;
+ //int m_purpleFirstPixleHue = 0;
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+   
+    if (lightsAreOn) {
+      if (timer.get() > onSeconds) {
+        // turn lights off
+        for (var i = 0; i < ledBuffer.getLength(); i++) {
+          FlareColor flareColor = flareColors[i];
+          ledBuffer.setRGB(i, 0, 0, 0);
+        }
+        leds.setData(ledBuffer);
+        timer.reset();
+        lightsAreOn = false;
+      }
+    } else {
+        if (timer.get() > offSeconds) {
+          // turn lights on
+          for (var i = 0; i < ledBuffer.getLength(); i++) {
+            FlareColor flareColor = flareColors[i];
+            ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
+          }
+          leds.setData(ledBuffer);
+          timer.reset();
+          lightsAreOn = true;
+        }
+     }
+    }
+
     
 
     // For every pixel
@@ -134,4 +174,4 @@ public class FlareSubsystem extends SubsystemBase {
   }
 
   
-}
+
