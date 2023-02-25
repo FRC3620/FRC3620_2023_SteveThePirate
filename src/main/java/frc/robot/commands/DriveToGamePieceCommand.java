@@ -9,6 +9,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.SwerveCalculator;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
@@ -144,7 +145,7 @@ public class DriveToGamePieceCommand extends CommandBase {
 
       if(myState == MyState.TURNING){
         driveSubsystem.autoDrive(startHeading, 0, -0.2);
-        if(currentHeading < startHeading - 15){
+        if(SwerveCalculator.normalizeAngle(currentHeading - targetHeading) < 0){
           myState = MyState.PICKUP;
         }
       }
