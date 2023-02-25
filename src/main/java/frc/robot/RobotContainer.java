@@ -227,7 +227,7 @@ public class RobotContainer {
     SmartDashboard.putData("Drive to apirl tag", new DriveToAprilTagCommand(3, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.8, 4.7), 0.2, 0.1, -135, driveSubsystem));
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3), 0.2, 0.1, 180, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
@@ -238,6 +238,11 @@ public class RobotContainer {
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem));
     SmartDashboard.putData("RunWheelsForwardButton", new RunWheelsForwardButton());
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
+
+    // Autos
+    SmartDashboard.putData("Mid1BalanceAuto", new Mid1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Human1BalanceAuto", new Human1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Wall1BalanceAuto", new Wall1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
 
     // Cannon
     SmartDashboard.putData("ExtendCommand0" , new CannonExtendCommand(cannonSubsystem, 0));
@@ -271,6 +276,9 @@ public class RobotContainer {
     SmartDashboard.putData("Auto mode", chooser);
     chooser.setDefaultOption("Do nothing", new LogCommand("no autonomous specified, did nothing"));
     chooser.addOption("April Tag Auto Test", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+    chooser.addOption("Mid1BalanceAuto", new Mid1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human1BalanceAuto", new Human1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall1BalanceAuto", new Wall1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
   }
 
   static double driverStrafeDeadzone = 0.1;
