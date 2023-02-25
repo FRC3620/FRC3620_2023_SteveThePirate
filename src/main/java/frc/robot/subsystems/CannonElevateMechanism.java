@@ -61,12 +61,13 @@ public class CannonElevateMechanism  {
     if (motor != null) {
       SmartDashboard.putNumber(name + ".current", motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
+      SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
 
       double elevateSpeed = elevateEncoder.getRate();
       double elevatePosition = elevateEncoder.getDistance();
       SmartDashboard.putNumber(name + ".speed", elevateSpeed);
       SmartDashboard.putNumber(name + ".rawPosition", elevatePosition);
-      SmartDashboard.putNumber(name + ".offsetPosition", getElevation());
+      SmartDashboard.putNumber(name + ".offsetPosition", getCurrentElevation());
       SmartDashboard.putBoolean(name + "Am I home?", amIHome());
       SmartDashboard.putBoolean(name + "Am I in front?", amIInFront());
       // SmartDashboard.putNumber(name + ".velocityConversionFactor",
@@ -79,9 +80,9 @@ public class CannonElevateMechanism  {
             encoderIsValid = true;
             elevateCannon(0.0);
             elevationOffset = -elevateEncoder.getDistance() + 90;
-            setHeight(90);
+            setElevation(90);
             if (requestedPositionWhileCalibrating != null) {
-              setHeight(requestedPositionWhileCalibrating);
+              setElevation(requestedPositionWhileCalibrating);
               requestedPositionWhileCalibrating = null;
             }
           } else {
@@ -94,7 +95,7 @@ public class CannonElevateMechanism  {
           }
         } else {
           // encoder is valid
-          double motorPower = m_pidController.calculate(getElevation());
+          double motorPower = m_pidController.calculate(getCurrentElevation());
           motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
           elevateCannon(motorPower);
         }
@@ -104,30 +105,31 @@ public class CannonElevateMechanism  {
   }
 
   /**
-   * Sets the cannon to extend the arm to 'length' inches. Increasing
-   * length is a longer arm.
-   * "Extend" motor.
-   * @param height
+   * Sets the cannon to elevate the arm to 'elevation' degrees. 0 is horizontal
+   * in front. Increasing angle is up (90 is straight up).
+   * @param elevation
    */
-  public void setHeight(double height) {
-    height = MathUtil.clamp(height, -15, 125);
-    SmartDashboard.putNumber(name + ".requestedHeight", height);
-    requestedPosition = height;
+  public void setElevation(double elevation) {
+    elevation = MathUtil.clamp(elevation, -15, 125);
+    SmartDashboard.putNumber(name + ".requestedElevation", elevation);
+    requestedPosition = elevation;
     if (encoderIsValid) {
-      m_pidController.setSetpoint(height);
+      m_pidController.setSetpoint(elevation);
     } else {
-      requestedPositionWhileCalibrating = height;
+      requestedPositionWhileCalibrating = elevation;
     }
+  }
+
+  public double getRequestedElevation() {
+    return requestedPosition;
   }
 
   public void elevateCannon(double power) {
       motor.set(power);
   }
 
-  public double getElevation(){
-
+  public double getCurrentElevation(){
     return elevateEncoder.getDistance() + elevationOffset;
-
   }
 
   public boolean amIHome(){

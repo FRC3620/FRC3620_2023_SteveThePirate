@@ -29,6 +29,18 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("pdp.totalEnergy", () -> DataLogger.f2(powerDistribution.getTotalEnergy()));
 		}
 
+		if (RobotContainer.cannonSubsystem.elevation != null) {
+			dataLogger.addDataProvider("cannon.elevate.current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.elevate.power", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getAppliedOutput()));
+			dataLogger.addDataProvider("cannon.elevate.temp", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getMotorTemperature()));
+		}
+
+		if (RobotContainer.cannonSubsystem.extend != null) {
+			dataLogger.addDataProvider("cannon.extension.current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.extension.power", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getAppliedOutput()));
+			dataLogger.addDataProvider("cannon.extension.temp", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getMotorTemperature()));
+		}
+
 		if (RobotContainer.driveSubsystem.leftFrontDrive != null) {
 			dataLogger.addDataProvider("drive.lf.azimuth.home_encoder", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftFrontHomeEncoder.getVoltage()));
 			dataLogger.addDataProvider("drive.lf.azimuth.encoder", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftFrontAzimuthEncoder.getPosition()));
