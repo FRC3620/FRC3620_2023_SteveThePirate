@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
@@ -90,6 +91,8 @@ public class RobotContainer {
       pneumaticModuleType = PneumaticsModuleType.CTREPCM;
     }
 
+   
+   
     makeSubsystems();
 
     // CAN bus ok?
@@ -150,11 +153,10 @@ public class RobotContainer {
 
     // operator colors
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLESTROBE)));
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLE)));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOWSTROBE)));
-
+            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW)));
 
     // operator cannon stuff
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)

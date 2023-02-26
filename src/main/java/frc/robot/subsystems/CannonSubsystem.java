@@ -9,6 +9,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,11 +23,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonClawMechanism cannonClawMechanism;
   
   public CANSparkMaxSendable elevation;
-  public RelativeEncoder elevationEncoder;
-  public Encoder elevateEncoder;
-  public DigitalInput homeSwitch;
-  public DigitalInput notHomeSwitch;
-
+  public AnalogInput elevationEncoder;
+  
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
 
@@ -43,7 +41,7 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
-    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder, homeSwitch, notHomeSwitch);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder);
     cannonPitchMechanism = new CannonPitchMechanism(pitch);
     cannonClawMechanism = new CannonClawMechanism(claw);
   }
@@ -142,15 +140,9 @@ public class CannonSubsystem extends SubsystemBase {
 
       addChild("claw", claw);
     }
-    elevateEncoder = new Encoder(1, 2);
-    addChild("elevateEncoder", elevateEncoder);
 
-    homeSwitch = new DigitalInput(3);
-    addChild("homeSwitch", homeSwitch);
-
-    notHomeSwitch = new DigitalInput(4);
-    addChild("not home switch", notHomeSwitch);
-
+    elevationEncoder = new AnalogInput(4);
+    addChild("elevationEncoder", elevationEncoder);
   }
 
   public void setLocation(CannonLocation cannonLocation) {
@@ -159,69 +151,5 @@ public class CannonSubsystem extends SubsystemBase {
     cannonPitchMechanism.setPitch(cannonLocation.getWristPitch());
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //:D

@@ -30,6 +30,8 @@ public class Robot extends TimedRobot {
 
   private Logger logger;
 
+  private DataLogger robotDataLogger;
+
   static private RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 
   /**
@@ -71,9 +73,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     // get data logging going
-    DataLogger robotDataLogger = new DataLogger();
+    robotDataLogger = new DataLogger();
     new RobotDataLogger(robotDataLogger, RobotContainer.canDeviceFinder);
-    robotDataLogger.setInterval(0.25);
+    robotDataLogger.setInterval(1);
     robotDataLogger.start();
 
     FileSaver.add("networktables.ini");
@@ -99,6 +101,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     processRobotModeChange(RobotMode.DISABLED);
+    robotDataLogger.setInterval(1);
   }
 
   @Override
@@ -110,6 +113,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     logCANBusIfNecessary();
+
+    robotDataLogger.setInterval(0.25);
 
     processRobotModeChange(RobotMode.AUTONOMOUS);
 
@@ -128,6 +133,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logCANBusIfNecessary();
+
+    robotDataLogger.setInterval(0.25);
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -148,6 +155,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     logCANBusIfNecessary();
+
+    robotDataLogger.setInterval(0.25);
 
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
@@ -171,7 +180,7 @@ public class Robot extends TimedRobot {
     // if any subsystems need to know about mode changes, let
     // them know here.
     // exampleSubsystem.processRobotModeChange(newMode);
-    
+    RobotContainer.flareSubsystem.ProcessRobotModeChange(newMode);
   }
 
   public static RobotMode getCurrentRobotMode(){
