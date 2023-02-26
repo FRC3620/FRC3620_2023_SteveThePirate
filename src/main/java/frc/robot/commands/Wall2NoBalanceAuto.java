@@ -50,7 +50,7 @@ public class Wall2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallStart, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.2, 0.1, 180, driveSubsystem)
       ,
       new DriveToAprilTagCommand(1, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem)
       ,

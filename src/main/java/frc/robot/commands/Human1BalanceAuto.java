@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import org.usfirst.frc3620.misc.PoseOnField;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -23,37 +25,42 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Human1BalanceAuto extends SequentialCommandGroup {
   PoseOnField otherSide = PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3);
+  final DriveSubsystem driveSubsystem;
   /** Creates a new Mid1BalanceAuto. */
   public Human1BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
+    this.driveSubsystem = driveSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-      new WaitForSaneOdometryCommand()
-      ,
-      new DriveToAprilTagCommand(3, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
-      ,
+      //new WaitForSaneOdometryCommand()
+      //,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8)
+      new WaitCommand(4)
       ,
-      new WaitCommand(1)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(2)
       ,
-      new CannonClawInCommand(cannonSubsystem, 0)
-      ,
+      //new InstantCommand({} -> driveSubsystem.setWheelsToStrafe(90))
+      //,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new WaitCommand(2)
       ,
-      // set cannon down to gamepiece somewhere
+      new ParallelCommandGroup(
+        new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+        ,
+        new SetCannonLocationCommand(CannonLocation.lowLocation)
+      )
+      ,
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem)
+      //,
+      /*new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(FieldLocation.otherSide, 0.2, 0.1, 180, driveSubsystem)
-      ,
-      new AutoLevelingCommand(driveSubsystem)
+      new AutoLevelingCommand(driveSubsystem)*/
     );
   }
 }

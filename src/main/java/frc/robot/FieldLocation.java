@@ -8,10 +8,10 @@ import org.usfirst.frc3620.misc.PoseOnField;
 
 /** Add your docs here. */
 public class FieldLocation {
-    public static PoseOnField humanStart = PoseOnField.fromRedAlliancePositionInMeters(0,0);
-    public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(0, 0);
-    public static PoseOnField wallStart = PoseOnField.fromRedAlliancePositionInMeters(0, 0);
-    public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(0, 0);
-    public static PoseOnField wallMiddle = PoseOnField.fromRedAlliancePositionInMeters(0, 0);
-    public static PoseOnField otherSide = PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3);
+    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422,4.800);
+    public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.458);
+    public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963);
+    public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.800);
+    public static PoseOnField wallMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 3.458);
+    public static PoseOnField midMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 0.963);
 }

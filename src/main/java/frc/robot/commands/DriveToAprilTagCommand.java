@@ -127,8 +127,8 @@ public class DriveToAprilTagCommand extends CommandBase {
         dl_tagYaw = tagYaw;
         dl_tagPitch = tagPitch;
         dl_tagId = target.getFiducialId();
-        double targetYaw = 11.855;
-        double targetPitch = 9.91;
+        double targetYaw = 10.38;
+        double targetPitch = 10.9;
 
         double targetYawTolerance = 0.7;
         double targetPitchTolerance = 0.9;
@@ -193,7 +193,7 @@ public class DriveToAprilTagCommand extends CommandBase {
         SmartDashboard.putNumber("apriltag.speed", speed);
 
         if (myState == MyState.LAST) {
-          double strafeDistance = 0.3048;
+          double strafeDistance = 0.3048; //change this
           double y = whereIIs.getY();
           double power = 0.1;
 
