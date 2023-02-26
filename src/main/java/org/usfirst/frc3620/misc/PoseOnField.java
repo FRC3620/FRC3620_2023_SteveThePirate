@@ -11,27 +11,6 @@ abstract public class PoseOnField {
     public enum UnitsOfLength { INCH, METER };
     final static double inchesPerMeter = Units.metersToInches(1);
 
-    final static Translation2d t00 = new Translation2d(0, 0);
-    Translation2d translationInMeters = t00;
-    Rotation2d rotation = null;
-
-    PoseOnField(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
-        if (uol == null) uol = UnitsOfLength.INCH;
-        switch (uol) {
-            case INCH:
-                translationInMeters = where.div(inchesPerMeter);
-                break;
-            case METER:
-                translationInMeters = where;
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported enum value");
-        }
-        if (angleInDegrees != null) {
-            // TODO hmmmmm.
-        }
-    }
-
     public Translation2d getTranslationInMeters() {
         return getTranslationInMeters(DriverStation.getAlliance());
     }
@@ -46,7 +25,31 @@ abstract public class PoseOnField {
         return getTranslationInMeters(alliance).times(inchesPerMeter);
     }
 
-    static class PoseOnFieldSetFromCenterLine extends PoseOnField {
+    abstract static class PoseOnFieldBase extends PoseOnField {
+
+        final Translation2d translationInMeters;
+        final Rotation2d rotation = null;
+
+        PoseOnFieldBase(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
+            if (uol == null) uol = UnitsOfLength.INCH;
+            switch (uol) {
+                case INCH:
+                    translationInMeters = where.div(inchesPerMeter);
+                    break;
+                case METER:
+                    translationInMeters = where;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported enum value");
+            }
+            if (angleInDegrees != null) {
+                // TODO hmmmmm.
+            }
+        }
+
+    }
+
+    static class PoseOnFieldSetFromCenterLine extends PoseOnFieldBase {
         public PoseOnFieldSetFromCenterLine(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
             super(where, uol, angleInDegrees);
         }
@@ -77,7 +80,7 @@ abstract public class PoseOnField {
         return new PoseOnFieldSetFromCenterLine(t, UnitsOfLength.METER, null);
     }
 
-    static class PoseOnFieldSetFromMyWall extends PoseOnField {
+    static class PoseOnFieldSetFromMyWall extends PoseOnFieldBase {
         public PoseOnFieldSetFromMyWall(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
             super(where, uol, angleInDegrees);
         }
@@ -108,7 +111,7 @@ abstract public class PoseOnField {
         return new PoseOnFieldSetFromMyWall(t, UnitsOfLength.METER, null);
     }
 
-    static class PoseOnFieldSetFromRedAlliance extends PoseOnField {
+    static class PoseOnFieldSetFromRedAlliance extends PoseOnFieldBase {
         public PoseOnFieldSetFromRedAlliance(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
             super(where, uol, angleInDegrees);
         }

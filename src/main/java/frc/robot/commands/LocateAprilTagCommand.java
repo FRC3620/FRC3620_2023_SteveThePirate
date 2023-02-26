@@ -19,6 +19,7 @@ public class LocateAprilTagCommand extends CommandBase {
   DriveSubsystem driveSubsystem;
   VisionSubsystem visionSubsystem;
   AutoDriveCommand autoDriveCommand;
+  double lastTimestamp;
 
   public LocateAprilTagCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
     this.driveSubsystem = RobotContainer.driveSubsystem;
@@ -31,9 +32,10 @@ public class LocateAprilTagCommand extends CommandBase {
   @Override
   public void initialize() {
     // set the wheels to strafe here
-    visionSubsystem.clearTag1Transform();
+    //visionSubsystem.clearTag1Transform();
     iAmDriving = false;
     end = false;
+    lastTimestamp = -1;
     // driveSubsystem.setWheelsToStrafe(0);
   }
 
@@ -45,7 +47,7 @@ public class LocateAprilTagCommand extends CommandBase {
     double speed = 0.3;
     double offset = 36;
 
-    if (!iAmDriving) {
+    /*if (!iAmDriving) {
       Transform3d atag1transform = visionSubsystem.getTag1Transform();
       if (atag1transform != null) {
         double atag1TransformXm = atag1transform.getX();
@@ -73,7 +75,7 @@ public class LocateAprilTagCommand extends CommandBase {
 
       autoDriveCommand.execute();
 
-    }
+    }*/
   }
 
   // Called once the command ends or is interrupted.

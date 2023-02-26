@@ -16,7 +16,7 @@ public class CannonElevateCommand extends CommandBase {
 
   public CannonElevateCommand(CannonSubsystem _subsystem, double _desiredHeight) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_subsystem);
+    //addRequirements(_subsystem);
     cannonSubsystem = _subsystem;
     desiredHeight = _desiredHeight;
   } 
@@ -25,7 +25,7 @@ public class CannonElevateCommand extends CommandBase {
   @Override
   public void initialize() 
   {
-    cannonSubsystem.setHeight(desiredHeight);
+    cannonSubsystem.setElevation(desiredHeight);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

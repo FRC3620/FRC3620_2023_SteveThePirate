@@ -19,7 +19,7 @@ public class CannonExtendCommand extends CommandBase {
    */
   public CannonExtendCommand(CannonSubsystem _subsystem, double _desiredLength) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_subsystem);
+    //addRequirements(_subsystem);
     cannonSubsystem = _subsystem;
     desiredLength = _desiredLength;
   } 
@@ -27,7 +27,7 @@ public class CannonExtendCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cannonSubsystem.setLength(desiredLength);
+    cannonSubsystem.setExtension(desiredLength);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
