@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CannonSubsystem;
 
-public class SetCannonClawSpeedCommand extends CommandBase {
+public class CannonClawInCommand extends CommandBase {
     /** Creates a new CannonExtendCommand. */
     CannonSubsystem cannonSubsystem;
     double desiredSpeed;
@@ -17,9 +17,9 @@ public class SetCannonClawSpeedCommand extends CommandBase {
      * 
      * Creates a new MoveTurretCommand.
      */
-    public SetCannonClawSpeedCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
+    public CannonClawInCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
       // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(_subsystem);
+      //addRequirements(_subsystem);
       cannonSubsystem = _subsystem;
       desiredSpeed = _desiredSpeed;
     } 
@@ -41,7 +41,7 @@ public class SetCannonClawSpeedCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      cannonSubsystem.setClawSpeed(0);
+      cannonSubsystem.setClawSpeed(50);
     }
   
     // Returns true when the command should end.

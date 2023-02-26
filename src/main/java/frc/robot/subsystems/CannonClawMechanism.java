@@ -5,17 +5,12 @@
 package frc.robot.subsystems;
 
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
-import org.usfirst.frc3620.misc.RobotMode;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 
 public class CannonClawMechanism {
   /** Creates a new ClawMechanism. */

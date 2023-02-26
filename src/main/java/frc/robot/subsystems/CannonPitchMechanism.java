@@ -33,12 +33,12 @@ public class CannonPitchMechanism  {
       PID = motor.getPIDController();
 
       // set up PID for turretPID here
-      PID.setP(0.01);   //0.1
+      PID.setP(0.005);   //0.1
       PID.setI(0.0);     //0.0
       PID.setD(0.0);    //10
       PID.setFF(0.0);      //0.0
 
-      PID.setOutputRange(-0.15, 0.15);
+      PID.setOutputRange(-0.4, 0.4);
     }
 
     if (encoder != null) {
@@ -65,7 +65,7 @@ public class CannonPitchMechanism  {
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
-            pitchCannon(-0.015);
+            pitchCannon(-0.075);
           
             if (calibrationTimer == null) {
               calibrationTimer = new Timer();
@@ -102,7 +102,7 @@ public class CannonPitchMechanism  {
    * @param pitch
    */
   public void setPitch(double pitch) {
-    pitch = MathUtil.clamp(pitch, -120, 20);
+    pitch = MathUtil.clamp(pitch, -150, 20);
     SmartDashboard.putNumber(name + ".requestedHeight", pitch);
     requestedPosition = pitch;
     if (encoderIsValid) {
