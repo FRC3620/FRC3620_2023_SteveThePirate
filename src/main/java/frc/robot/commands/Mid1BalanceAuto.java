@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import org.usfirst.frc3620.misc.PoseOnField;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -31,6 +33,12 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
       ,
       new WaitForSaneOdometryCommand()
       ,
+      /*new ParallelCommandGroup(
+        new DriveToAprilTagCommand(2, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
+        ,
+        new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      )
+      ,*/ // might add this parallelcommandgroup
       new DriveToAprilTagCommand(2, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
@@ -41,6 +49,12 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
       ,
       new CannonClawInCommand(cannonSubsystem, 0)
       ,
+      /*new ParallelCommandGroup(
+        new SetCannonLocationCommand(CannonLocation.parkLocation)
+        ,
+        new DriveToCoordinateCommand(FieldLocation.otherSide, 0.2, 0.1, 180, driveSubsystem)
+      )
+      ,*/
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.otherSide, 0.2, 0.1, 180, driveSubsystem)

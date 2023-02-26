@@ -145,7 +145,7 @@ public class DriveToGamePieceCommand extends CommandBase {
 
       if(myState == MyState.TURNING){
         driveSubsystem.autoDrive(startHeading, 0, -0.2);
-        if(SwerveCalculator.normalizeAngle(currentHeading - targetHeading) < 0){
+        if(SwerveCalculator.normalizeAngle(currentHeading - startHeading) < 0){ // we want to be 15 degrees to the left of where we start
           myState = MyState.PICKUP;
         }
       }
