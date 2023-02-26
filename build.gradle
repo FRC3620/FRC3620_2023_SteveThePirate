@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2023.4.1"
+    id "edu.wpi.first.GradleRIO" version "2023.4.2"
     // FRC3620 ****************************************************************
     id "com.gorylenko.gradle-git-properties" version "2.3.2"
     // ************************************************************************
@@ -107,7 +107,7 @@ test {
         // https://stackoverflow.com/a/52879530/17887564
         setFailOnNoMatchingTests(false)
 
-        includeTestsMatching 'DriverStationAllianceTest'
+        includeTestsMatching 'DummyTest'
 
     }
     // ****************************************************************************

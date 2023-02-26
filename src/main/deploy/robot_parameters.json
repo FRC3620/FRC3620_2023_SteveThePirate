@@ -2,7 +2,7 @@
   {
     "name": "2022 competition",
     "macAddress": "00-80-2F-21-E4-EA",
-    "makeAllCANDevices": true,
+    "makeAllCANDevices": false,
     "swerveParameters": {
       // azimuth home encoders
       "he.lf": 87.3,  // left front
@@ -34,7 +34,7 @@
   {
     "name": "2023 Robot",
     "macAddress": "00-80-2F-18-5C-5F",
-    "makeAllCANDevices": false,
+    "makeAllCANDevices": true,
     "swerveParameters": {
       // azimuth home encoders
       "he.rf": 157.06, // right front
@@ -44,7 +44,9 @@
       //
       "chassis_width": 19.00,  // inches
       "chassis_length": 19.00,
-      "drive_gear_ratio": 5.85
+      "drive_gear_ratio": 5.85,
+      //
+      "elevationEncoderValueAt90Degrees": 1000
     }
   },
   {
