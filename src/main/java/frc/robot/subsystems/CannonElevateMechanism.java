@@ -77,8 +77,7 @@ public class CannonElevateMechanism  {
   }
 
   public void elevateCannon(double power) {
-    // NOT YET, need to debug
-    //motor.set(power);
+    motor.set(power);
   }
 
   public double getCurrentElevation(){
@@ -90,33 +89,5 @@ public class CannonElevateMechanism  {
 		return elevation;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //:D
