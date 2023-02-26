@@ -8,11 +8,13 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class BackwardsAutoLevelingCommand extends CommandBase {
   AHRS ahrs; 
   private DriveSubsystem driveSubsystem;
+  private CannonSubsystem cannonSubsystem;
   double pitch;
 
   enum MyState {
@@ -22,16 +24,23 @@ public class BackwardsAutoLevelingCommand extends CommandBase {
   MyState myState;
   
   /** Creates a new AutoLevelingCommand. */
-  public BackwardsAutoLevelingCommand(DriveSubsystem driveSubsystem) {
+  public BackwardsAutoLevelingCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
+    this.cannonSubsystem = cannonSubsystem;
     addRequirements(driveSubsystem);
     myState = MyState.LEVEL;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    driveSubsystem.setDriveToBrake();
+
+    cannonSubsystem.setPitch(-117);
+    cannonSubsystem.setElevation(30);
+    cannonSubsystem.setExtension(0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -56,7 +65,7 @@ public class BackwardsAutoLevelingCommand extends CommandBase {
 
     if(myState == MyState.COUNTER){
       if(pitch > -10){
-        driveSubsystem.autoDrive(0, .2, 0);
+        driveSubsystem.autoDrive(0, .23, 0);
       } else {
         driveSubsystem.stopDrive();
         myState = MyState.DONE;
@@ -68,6 +77,7 @@ public class BackwardsAutoLevelingCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     myState = MyState.LEVEL;
+    driveSubsystem.setDriveToCoast();
   }
 
   // Returns true when the command should end.
