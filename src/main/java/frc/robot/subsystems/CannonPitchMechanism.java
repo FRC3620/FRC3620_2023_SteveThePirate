@@ -53,7 +53,7 @@ public class CannonPitchMechanism  {
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
+      SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
 
       if (encoder != null) {

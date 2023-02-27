@@ -44,15 +44,33 @@ public class RobotDataLogger {
 		}
 
 		if (RobotContainer.cannonSubsystem.elevation != null) {
-			dataLogger.addDataProvider("cannon.elevate.current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.elevate.motor_current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getOutputCurrent()));
 			dataLogger.addDataProvider("cannon.elevate.power", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getAppliedOutput()));
-			dataLogger.addDataProvider("cannon.elevate.temp", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getMotorTemperature()));
+			dataLogger.addDataProvider("cannon.elevate.temperature", () -> DataLogger.f2(RobotContainer.cannonSubsystem.elevation.getMotorTemperature()));
+			dataLogger.addDataProvider("cannon.elevate.requested_position", () -> DataLogger.f2(RobotContainer.cannonSubsystem.getRequestedElevation()));
+			dataLogger.addDataProvider("cannon.elevate.current_position", () -> DataLogger.f2(RobotContainer.cannonSubsystem.getCurrentElevation()));
 		}
 
 		if (RobotContainer.cannonSubsystem.extend != null) {
-			dataLogger.addDataProvider("cannon.extension.current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.extension.motor_current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getOutputCurrent()));
 			dataLogger.addDataProvider("cannon.extension.power", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getAppliedOutput()));
-			dataLogger.addDataProvider("cannon.extension.temp", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getMotorTemperature()));
+			dataLogger.addDataProvider("cannon.extension.temperature", () -> DataLogger.f2(RobotContainer.cannonSubsystem.extend.getMotorTemperature()));
+			dataLogger.addDataProvider("cannon.extension.requested_position", () -> DataLogger.f2(RobotContainer.cannonSubsystem.getRequestedExtension()));
+			dataLogger.addDataProvider("cannon.extension.current_position", () -> DataLogger.f2(RobotContainer.cannonSubsystem.getCurrentExtension()));
+		}
+
+		if (RobotContainer.cannonSubsystem.pitch != null) {
+			dataLogger.addDataProvider("cannon.pitch.motor_current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.pitch.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.pitch.power", () -> DataLogger.f2(RobotContainer.cannonSubsystem.pitch.getAppliedOutput()));
+			dataLogger.addDataProvider("cannon.pitch.temperature", () -> DataLogger.f2(RobotContainer.cannonSubsystem.pitch.getMotorTemperature()));
+			dataLogger.addDataProvider("cannon.pitch.requested_position", () -> DataLogger.f2(RobotContainer.cannonSubsystem.getRequestedPitch()));
+			dataLogger.addDataProvider("cannon.pitch.current_position", () -> DataLogger.f2(RobotContainer.cannonSubsystem.getCurrentPitch()));
+		}
+
+		if (RobotContainer.cannonSubsystem.claw != null) {
+			dataLogger.addDataProvider("cannon.claw.motor_current", () -> DataLogger.f2(RobotContainer.cannonSubsystem.claw.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.claw.power", () -> DataLogger.f2(RobotContainer.cannonSubsystem.claw.getAppliedOutput()));
+			dataLogger.addDataProvider("cannon.claw.temperature", () -> DataLogger.f2(RobotContainer.cannonSubsystem.claw.getMotorTemperature()));
 		}
 
 		if (RobotContainer.driveSubsystem.leftFrontDrive != null) {
@@ -70,10 +88,10 @@ public class RobotDataLogger {
 				dataLogger.addDataProvider("drive.rf.drive.power", () -> DataLogger.f2(RobotContainer.driveSubsystem.rightFrontDrive.getAppliedOutput()));
 				dataLogger.addDataProvider("drive.lb.drive.power", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftBackDrive.getAppliedOutput()));
 				dataLogger.addDataProvider("drive.rb.drive.power", () -> DataLogger.f2(RobotContainer.driveSubsystem.rightBackDrive.getAppliedOutput()));
-				dataLogger.addDataProvider("drive.lf.drive.current", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftFrontDrive.getOutputCurrent()));
-				dataLogger.addDataProvider("drive.rf.drive.current", () -> DataLogger.f2(RobotContainer.driveSubsystem.rightFrontDrive.getOutputCurrent()));
-				dataLogger.addDataProvider("drive.lb.drive.current", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftBackDrive.getOutputCurrent()));
-				dataLogger.addDataProvider("drive.rb.drive.current", () -> DataLogger.f2(RobotContainer.driveSubsystem.rightBackDrive.getOutputCurrent()));
+				dataLogger.addDataProvider("drive.lf.drive.motor_current", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftFrontDrive.getOutputCurrent()));
+				dataLogger.addDataProvider("drive.rf.drive.motor_current", () -> DataLogger.f2(RobotContainer.driveSubsystem.rightFrontDrive.getOutputCurrent()));
+				dataLogger.addDataProvider("drive.lb.drive.motor_current", () -> DataLogger.f2(RobotContainer.driveSubsystem.leftBackDrive.getOutputCurrent()));
+				dataLogger.addDataProvider("drive.rb.drive.motor_current", () -> DataLogger.f2(RobotContainer.driveSubsystem.rightBackDrive.getOutputCurrent()));
 			}
 		}
 
