@@ -37,3 +37,7 @@ Auto is named with a combination of start position (Wall, Mid, Human), number of
 * id 12 = cannon claw
 
 # PDB assignments
+
+# Vision
+
+The camera we are using was calibrated at 640x480. FOV was determined by filling the field of view with a 8" by 6" target; distance to the target was measured as 5.75". This worked out to a 68 degree horizontal FOV, 55 degree vertical FOV, and 82 degree diagonal FOV.

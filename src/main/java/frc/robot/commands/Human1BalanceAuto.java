@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
 import frc.robot.FieldLocation;
 import frc.robot.RobotContainer;
+import frc.robot.TargetPoseOnField;
 import frc.robot.commands.DriveToAprilTagCommand.Position;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -34,18 +35,21 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-      new SeeCubeCommand()
+
+      // tell odometry where we is
+      new ZapOdometryCommand(FieldLocation.humanStart)
       ,
-      //new WaitForSaneOdometryCommand()
-      //,
+
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.CUBES))
+      ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new WaitCommand(4)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(2)
       ,
-      //new InstantCommand({} -> driveSubsystem.setWheelsToStrafe(90))
-      //,
+      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
+      ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       new WaitCommand(2)
@@ -57,8 +61,12 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       )
       ,
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem)
-      //,
-      /*new SetCannonLocationCommand(CannonLocation.parkLocation)
+      /*
+      ,
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
+      ,
+      // should we do this or go to the position for leveling?
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,

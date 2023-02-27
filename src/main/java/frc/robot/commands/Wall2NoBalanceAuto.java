@@ -27,8 +27,11 @@ public class Wall2NoBalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-      new WaitForSaneOdometryCommand()
+
+      // tell odometry where we is
+      new ZapOdometryCommand(FieldLocation.wallStart)
       ,
+
       new DriveToAprilTagCommand(1, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)

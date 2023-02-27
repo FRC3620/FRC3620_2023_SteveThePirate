@@ -31,8 +31,10 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-      new WaitForSaneOdometryCommand()
+      // tell odometry where we is
+      new ZapOdometryCommand(FieldLocation.midStart)
       ,
+
       /*new ParallelCommandGroup(
         new DriveToAprilTagCommand(2, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
         ,

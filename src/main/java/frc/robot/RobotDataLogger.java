@@ -18,6 +18,20 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("robotModeInt", () -> Robot.getCurrentRobotMode().ordinal());
 		dataLogger.addDataProvider("batteryVoltage", () -> DataLogger.f2(RobotController.getBatteryVoltage()));
 
+		dataLogger.addDataProvider("alliance", () -> DriverStation.getAlliance().toString());
+		dataLogger.addDataProvider("allianceInt", () -> DriverStation.getAlliance().ordinal());
+		dataLogger.addDataProvider("station", () -> DriverStation.getLocation());
+
+		dataLogger.addDataProvider("vision.frontcamera.pipeline_requested", () -> RobotContainer.visionSubsystem.frontCameraMode.getPipelineIndex());
+		dataLogger.addDataProvider("vision.frontcamera.pipeline_actual", () -> RobotContainer.visionSubsystem.frontCamera.getPipelineIndex());
+
+		dataLogger.addDataProvider("vision.lastAprilTagTimestamp", () -> RobotContainer.visionSubsystem.getLastAprilTagTimestamp());
+		dataLogger.addDataProvider("vision.camera_x", () -> RobotContainer.visionSubsystem.whereIsTheCameraX());
+		dataLogger.addDataProvider("vision.camera_y", () -> RobotContainer.visionSubsystem.whereIsTheCameraX());
+
+		dataLogger.addDataProvider("odometry.x", () -> RobotContainer.odometrySubsystem.getPoseMeters().getX());
+		dataLogger.addDataProvider("odometry.y", () -> RobotContainer.odometrySubsystem.getPoseMeters().getY());
+		
 		dataLogger.addDataProvider("nav.heading_raw", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getRawHeading()));
 		dataLogger.addDataProvider("nav.heading", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getCorrectedHeading()));
 		dataLogger.addDataProvider("nav.heading_offset", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getHeadingOffset()));

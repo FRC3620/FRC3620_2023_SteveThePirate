@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class DriveToCoordinateCommand extends CommandBase {
   Translation2d destination;
   double distance;
 
-  Logger logger = EventLogging.getLogger(RobotContainer.class, Level.INFO);
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   final boolean doLog = false;
   final boolean putNumbersOnDashboard = true;
@@ -55,10 +56,12 @@ public class DriveToCoordinateCommand extends CommandBase {
       adjustedHeading = heading;
     }
 
+    Translation2d whereIAm = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
     destination = destinationPoseOnField.getTranslationInMeters();
     driveSubsystem.setAutoSpinMode();
     driveSubsystem.setTargetHeading(adjustedHeading); //RobotContainer.navigationSubsystem.getCorrectedHeading()
-    logger.info ("Destination field coordinates x={} y={}, robot heading={}", destination.getX(), destination.getY(), adjustedHeading);
+    logger.info ("@ {}, {}; going to field coordinates {}, {}, robot heading={}",
+      f2(whereIAm.getX()), f2(whereIAm.getY()), f2(destination.getX()), f2(destination.getY()), f2(adjustedHeading));
 
     if (putNumbersOnDashboard) {
       SmartDashboard.putNumber("ourPath.dest_x", destination.getX());
@@ -135,6 +138,12 @@ public class DriveToCoordinateCommand extends CommandBase {
     } else {
       return false;
     }
+  }
+
+  DecimalFormat f2format = new DecimalFormat("#.##");
+
+  String f2 (double d) {
+    return f2format.format(d);
   }
 
   @Override
