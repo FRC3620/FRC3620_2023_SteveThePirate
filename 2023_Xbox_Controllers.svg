@@ -32,12 +32,12 @@
      id="namedview105"
      showgrid="true"
      inkscape:zoom="0.67620012"
-     inkscape:cx="800.05901"
-     inkscape:cy="395.59295"
+     inkscape:cx="801.53786"
+     inkscape:cy="397.0718"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1327"
+     inkscape:current-layer="g1255"
      inkscape:document-rotation="0"
      units="in"
      inkscape:snap-global="true"
@@ -449,6 +449,66 @@
          xlink:href="#g5897"
          id="use5903" />
     </clipPath>
+    <marker
+       style="overflow:visible"
+       id="marker1406-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1404-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1896-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1894-1" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1896-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1894-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1896-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1894-7" />
+    </marker>
   </defs>
   <metadata
      id="metadata3028">
@@ -1080,7 +1140,7 @@
      id="g1255"
      inkscape:groupmode="layer"
      inkscape:label="Operator Legend"
-     style="display:none">
+     style="display:inline">
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1115,12 +1175,6 @@
        inkscape:label="L_STICK"
        sodipodi:nodetypes="cc" />
     <path
-       style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1990)"
-       d="M 446.81942,532.38058 240,680 h 60"
-       id="path1195"
-       inkscape:label="POV"
-       sodipodi:nodetypes="ccc" />
-    <path
        style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2090)"
        d="M 646.46214,545.99528 550,680 h 70"
        id="path1197"
@@ -1146,7 +1200,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1406)"
-       d="M 759.27094,374.53327 920,320"
+       d="m 759.27094,374.53327 153.3348,-79.67376"
        id="path1207"
        inkscape:label="Y"
        sodipodi:nodetypes="cc" />
@@ -1158,13 +1212,13 @@
        sodipodi:nodetypes="cc" />
     <path
        style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1320)"
-       d="M 756.32062,467.90456 920,440"
+       d="M 756.32062,467.90456 912.60574,542.0408"
        id="path1211"
        sodipodi:nodetypes="cc"
        inkscape:label="A" />
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart)"
-       d="M 700.66991,425.84072 740,520 920,500"
+       d="M 700.66991,425.84072 740,520 903.73263,627.18129"
        id="path1213"
        inkscape:label="X"
        sodipodi:nodetypes="ccc" />
@@ -1173,63 +1227,71 @@
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:196.907;display:inline"
        x="301.37476"
        y="680"
-       id="text1219"><tspan
+       id="text1219"
+       transform="translate(-177.46226,-2.9577039)"><tspan
          x="301.37476"
          y="680"
-         id="tspan13790">Manual Adjust </tspan><tspan
+         id="tspan4306">Manual Adjust </tspan><tspan
          x="301.37476"
          y="713.33338"
-         id="tspan13792">Wrist
+         id="tspan4308">Wrist
 </tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
+       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
        x="275.22046"
        y="100.49694"
        id="text1223"><tspan
          sodipodi:role="line"
-         id="tspan1221"
-         x="275.22046"
-         y="100.49694">Place Cube Mid`</tspan></text>
+         id="tspan4007">Place Cube Mid</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:145.955;display:inline"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:145.955;display:inline"
        x="920"
        y="500"
-       id="text1227"><tspan
+       id="text1227"
+       transform="translate(2.9577043,127.18128)"><tspan
          x="920"
          y="500"
-         id="tspan13794">Pick From </tspan><tspan
+         id="tspan4310">Pick Cube/</tspan><tspan
          x="920"
          y="533.33338"
-         id="tspan13796">Floor</tspan></text>
+         id="tspan4312">Sideways </tspan><tspan
+         x="920"
+         y="566.66675"
+         id="tspan4314">Cone</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:154.777;display:inline"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:154.777;display:inline"
        x="920"
        y="440"
-       id="text1231"><tspan
+       id="text1231"
+       transform="matrix(1.1204421,0,0,1,-112.44936,66.548347)"><tspan
          x="920"
          y="440"
-         id="tspan13798">Place Piece </tspan><tspan
+         id="tspan4316">Pick </tspan><tspan
          x="920"
          y="473.33338"
-         id="tspan13800">Low</tspan></text>
+         id="tspan4318">Standing </tspan><tspan
+         x="920"
+         y="506.66675"
+         id="tspan4320">Cone</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:152.738;display:inline"
        x="920"
        y="320"
-       id="text1235"><tspan
+       id="text1235"
+       transform="translate(0,-44.365564)"><tspan
          x="920"
          y="320"
-         id="tspan13802">Pick From </tspan><tspan
+         id="tspan4322">Pick From </tspan><tspan
          x="920"
          y="353.33338"
-         id="tspan13804">Human </tspan><tspan
+         id="tspan4324">Human </tspan><tspan
          x="920"
          y="386.66675"
-         id="tspan13806">Station</tspan></text>
+         id="tspan4326">Station</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:145.283;display:inline"
@@ -1239,18 +1301,18 @@
        transform="translate(48.802121,-42.886712)"><tspan
          x="39.958714"
          y="340"
-         id="tspan13810"><tspan
+         id="tspan4330"><tspan
            style="display:inline"
-           id="tspan13808">Manual </tspan></tspan><tspan
+           id="tspan4328">Manual </tspan></tspan><tspan
          x="39.958714"
          y="373.33338"
-         id="tspan13814"><tspan
+         id="tspan4334"><tspan
            style="display:inline"
-           id="tspan13812">Adjust Arm
+           id="tspan4332">Adjust Arm
 </tspan></tspan><tspan
          x="39.958714"
          y="406.66675"
-         id="tspan13816">In/Out</tspan></text>
+         id="tspan4336">In/Out</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1281,10 +1343,10 @@
        inkscape:export-ydpi="96"><tspan
          x="880"
          y="180"
-         id="tspan13818">Place Cone </tspan><tspan
+         id="tspan4338">Place Cone </tspan><tspan
          x="880"
          y="213.33338"
-         id="tspan13820">High</tspan></text>
+         id="tspan4340">High</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
@@ -1331,10 +1393,6 @@
        style="fill:#000000"
        d="M 618.1602,75.42146 548.65415,57.675234"
        id="path2315" />
-    <path
-       style="fill:#000000;stroke-width:1.49571;stroke-dasharray:none"
-       d="M 558.35698,210.25481 C 556.8798,315.47439 549.3033,427.13043 549.3033,427.13043"
-       id="path4110" />
     <text
        xml:space="preserve"
        id="text4112"
@@ -1343,37 +1401,37 @@
        xml:space="preserve"
        id="text4244"
        style="font-size:18.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect4246);shape-padding:0;display:inline;fill:#000000;stroke-width:2.016;stroke-dasharray:none"
-       transform="translate(-32.534748,-54.71753)"><tspan
+       transform="translate(-150.84292,511.68285)"><tspan
          x="529.42969"
          y="189.89423"
-         id="tspan13824"><tspan
+         id="tspan4344"><tspan
            style="font-size:26.6667px"
-           id="tspan13822">Home </tspan></tspan><tspan
+           id="tspan4342">Home </tspan></tspan><tspan
          x="529.42969"
          y="223.2276"
-         id="tspan13828"><tspan
+         id="tspan4348"><tspan
            style="font-size:26.6667px"
-           id="tspan13826">Position </tspan></tspan><tspan
+           id="tspan4346">Position </tspan></tspan><tspan
          x="529.42969"
          y="256.56098"
-         id="tspan13832"><tspan
+         id="tspan4352"><tspan
            style="font-size:26.6667px"
-           id="tspan13830">(Field </tspan></tspan><tspan
+           id="tspan4350">(Field </tspan></tspan><tspan
          x="529.42969"
          y="289.89435"
-         id="tspan13836"><tspan
+         id="tspan4356"><tspan
            style="font-size:26.6667px"
-           id="tspan13834">Transition)</tspan></tspan></text>
+           id="tspan4354">Transition)</tspan></tspan></text>
     <text
        xml:space="preserve"
        id="text6588"
        style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect6590);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
          x="675.83594"
          y="70.107119"
-         id="tspan13838">Yellow </tspan><tspan
+         id="tspan4358">Yellow </tspan><tspan
          x="675.83594"
          y="103.44049"
-         id="tspan13840">Light</tspan></text>
+         id="tspan4360">Light</tspan></text>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 477.97887,407.84144 492.11479,51.126887 h 20"
@@ -1394,12 +1452,49 @@
          x="520.55597"
          y="67.346977"
          id="tspan10261">Lights</tspan></text>
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1406-1)"
+       d="m 820.26308,418.19732 89.74417,1.66311"
+       id="path1207-1"
+       inkscape:label="Y"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:152.738;display:inline"
+       x="920"
+       y="320"
+       id="text1235-0"
+       transform="translate(0.09112278,92.928021)"><tspan
+         x="920"
+         y="320"
+         id="tspan4362">Pick From </tspan><tspan
+         x="920"
+         y="353.33338"
+         id="tspan4364">Chute</tspan></text>
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1896-9)"
+       d="M 446.10219,508.32909 417.72915,679.95633"
+       id="path1193-4"
+       inkscape:label="L_STICK"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1896-1)"
+       d="M 407.65203,533.46957 293.50557,660.73125"
+       id="path1193-7"
+       inkscape:label="L_STICK"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1896-5)"
+       d="M 488.9889,529.03301 292.02671,660.73125"
+       id="path1193-43"
+       inkscape:label="L_STICK"
+       sodipodi:nodetypes="cc" />
   </g>
   <g
      id="g1327"
      inkscape:groupmode="layer"
      inkscape:label="Driver Legend"
-     style="display:inline">
+     style="display:none">
     <path
        style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1475)"
        d="M 356.18827,237.66939 286.61934,135.63444"
@@ -1597,10 +1692,10 @@
        transform="translate(-14.788521)"><tspan
          x="910.97266"
          y="291.93524"
-         id="tspan13842">Reset NAVX </tspan><tspan
+         id="tspan4366">Reset NAVX </tspan><tspan
          x="910.97266"
          y="325.26862"
-         id="tspan13844">to 180</tspan></text>
+         id="tspan4368">to 180</tspan></text>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1.4727px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1987)"
        d="M 703.25858,415.80661 800.5709,228.85502 h 63.15002"
@@ -1613,6 +1708,6 @@
        style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect10661);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
          x="874.00195"
          y="234.25946"
-         id="tspan13846">Reset  NAVX</tspan></text>
+         id="tspan4370">Reset  NAVX</tspan></text>
   </g>
 </svg>

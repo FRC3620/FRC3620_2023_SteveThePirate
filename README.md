@@ -5,11 +5,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 # IO Assignments
 ## Digital IO
 * DIO 0: Practice Robot Jumper
-* DIO 1, 2: Arm Elevation Encoder
-* DIO 3: homeSwitch
+* ~~DIO 1, 2: Arm Elevation Encoder~~
+* ~~DIO 3: Elevation homeSwitch~~
+* ~~DIO 4: Elevation "infront" switch~~
+
 
 ## Analog IO
-* Analog 0: ?
+* Analog 0: right front home encoder
+* Analog 1: left front home encoder
+* Analog 2: left back home encoder
+* Analog 3: right back home encoder
+* Analog 4: cannon elevation encoder
 
 ## Motor Controllers
 
@@ -21,30 +27,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 * id 6 = leftBackAzimuth motor
 * id 7 = rightBackDrive motor
 * id 8 = rightBackAzimuth motor
-* id 9 = armElevation
-* id 10 = armExtention
-* id 11 = armPitch
-* id 12 = armRoll
+* id 9 = cannon elevation
+* id 10 = cannon extention
+* id 11 = cannon pitch
+* id 12 = cannon claw
 
 # PDB assignments
-
-# Driver controller
-* Intake = LT
-* Driver Strafe = Left joystick
-* Drive Spin = Right Joystick
-* Reset NavX = Button X
-* Reset NavX to 180 = Button Y
-* Intake out = RT
-
-# Operator Controller
-* Place Cube Mid = LT
-* Home Position (Field Transistion) = X box button
-* Place Cone Mid = RT
-* Place Cone High = RB
-* Place Cube High = LB
-* Manual Adjust Arm In/Out = Left Joystick
-* Manual Adjust Arm Up/Down = Right Joystick
-* Manual Adjust Wrist = Dpad
-* Pick From Human Station = Button Y
-* Place Piece Low = Button A
-* Pick From Floor = Button x
