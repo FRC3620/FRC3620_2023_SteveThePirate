@@ -60,7 +60,7 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
         new SetCannonLocationCommand(CannonLocation.lowLocation)
       )
       ,
-      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem)
+      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
       /*
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))

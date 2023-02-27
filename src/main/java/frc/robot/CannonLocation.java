@@ -16,7 +16,7 @@ public class CannonLocation {
     public static CannonLocation chuteLocation = new CannonLocation(38.7, 0.82, -32.5);
     public static CannonLocation stationLocation = new CannonLocation(69.3, 13.9, -100.2);
     public static CannonLocation parkLocation = new CannonLocation(90, 1, -90);
-    public static CannonLocation sidewaysConeLocation = new CannonLocation(-31, 2.27, 7.33);
+    public static CannonLocation sidewaysConeLocation = new CannonLocation(-21, 2.27, 7.33);
     double elevation;
     double extension;
     double wristPitch;

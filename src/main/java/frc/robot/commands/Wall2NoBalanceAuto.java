@@ -47,7 +47,7 @@ public class Wall2NoBalanceAuto extends SequentialCommandGroup {
       new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
       // set cannon down to gamepiece somewhere
-      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem)
+      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
