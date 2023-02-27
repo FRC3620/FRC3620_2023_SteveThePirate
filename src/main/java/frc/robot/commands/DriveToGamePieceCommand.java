@@ -64,6 +64,7 @@ public class DriveToGamePieceCommand extends CommandBase {
     lastTimestamp = -1;
     currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
     logger.info("Searching for {}", pipeline);
+    cannonSubsystem.setLocation(CannonLocation.coneFloorPickLocation);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
