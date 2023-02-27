@@ -5,10 +5,11 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
-public class SeeCubeCommand extends CommandBase {
+public class SeeCubeCommand extends InstantCommand {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   FrontCameraMode savedCameraMode;
@@ -25,8 +26,8 @@ public class SeeCubeCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    logger.info ("setting camera mode back to {}", savedCameraMode);
-    RobotContainer.visionSubsystem.setFrontCameraMode(savedCameraMode);
+    //logger.info ("setting camera mode back to {}", savedCameraMode);
+    //RobotContainer.visionSubsystem.setFrontCameraMode(savedCameraMode);
   }
 
   @Override

@@ -53,7 +53,7 @@ public class Wall1BalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,
-      new AutoLevelingCommand(driveSubsystem)
+      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

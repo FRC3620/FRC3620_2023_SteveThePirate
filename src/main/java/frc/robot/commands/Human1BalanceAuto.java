@@ -34,6 +34,8 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
+      new SeeCubeCommand()
+      ,
       //new WaitForSaneOdometryCommand()
       //,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)

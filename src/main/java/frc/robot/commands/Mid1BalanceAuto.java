@@ -59,7 +59,7 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.3, 0.1, 180, driveSubsystem)
       ,
-      new AutoLevelingCommand(driveSubsystem)
+      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }
