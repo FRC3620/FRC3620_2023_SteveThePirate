@@ -30,7 +30,7 @@ public class CannonClawOutCommand extends CommandBase {
     @Override
     public void initialize() {
       logger.info("started");
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called every time the scheduler runs while the command is scheduled.
@@ -38,14 +38,14 @@ public class CannonClawOutCommand extends CommandBase {
     @Override
     public void execute() 
     {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
       logger.info("ended, interrupted = {}", interrupted);
-      cannonSubsystem.setClawSpeed(0);
+      cannonSubsystem.setClawPower(0);
     }
   
     // Returns true when the command should end.
