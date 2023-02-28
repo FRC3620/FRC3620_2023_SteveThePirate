@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
-import org.ejml.dense.block.decomposition.qr.BlockHouseHolder_DDRB;
+
+
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -10,33 +12,51 @@ import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class FlareSubsystem extends SubsystemBase {
-  
+  final int numberOfPixels = 19;
   AddressableLED leds;
   AddressableLEDBuffer ledBuffer;
-
+  FlareColor[] flareColors;
+  boolean colorsNeedUpdated = false;
+  double onSeconds = 1;
+  double offSeconds = 0;
+  boolean lightsAreOn = true;
+  Timer timer = new Timer();
+  
+  
+  
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   public FlareSubsystem() {
-
+    setInterval(1, 0);
     leds = new AddressableLED(9);
-    leds.setLength(8);;
-    ledBuffer = new AddressableLEDBuffer(8);
+    leds.setLength(numberOfPixels);;
+    ledBuffer = new AddressableLEDBuffer(numberOfPixels);
+    flareColors = new FlareColor[numberOfPixels];
     setColor(new FlareColor(Color.kBlue));
     leds.start();
+    timer.start();
+  }
+  public void setInterval(double onSeconds, double offSeconds) {
+    this.onSeconds = onSeconds;
+    this.offSeconds = offSeconds;
+    SmartDashboard.putNumber("offseconds", offSeconds);
+    SmartDashboard.putNumber("onseconds", onSeconds);
   }
   public void setColor(FlareColor flareColor){
     logger.info ("Set color to {}", flareColor);
 
     for (var i = 0; i < ledBuffer.getLength(); i++) {
-      // Sets the specified LED to the RGB values for red
-      ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen() , flareColor.getBlue());
+      flareColors[i] = flareColor;
    }
-    leds.setData(ledBuffer);
+    colorsNeedUpdated = true;
   }
 
   public void setColor(FlareColor flareColor, int firstLed, int lastLed){
@@ -51,14 +71,18 @@ public class FlareSubsystem extends SubsystemBase {
 
     for (var i = firstLed; i <= lastLed; i++) {
       // Sets the specified LED to the RGB values for red
-     
-      ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen() , flareColor.getBlue());
+      flareColors[i] = flareColor;
+      
    }
-    leds.setData(ledBuffer);
-
     
+  colorsNeedUpdated = true;
+
   }
+
+  RobotMode robotMode = RobotMode.INIT;  
+
   public void ProcessRobotModeChange(RobotMode robotMode) {
+    this.robotMode = robotMode;
     if (robotMode == RobotMode.TELEOP ) {
 
       if (DriverStation.getAlliance()==Alliance.Blue) {
@@ -121,17 +145,78 @@ public class FlareSubsystem extends SubsystemBase {
 
  // int m_rainbowFirstPixelHue = 0;
 
- int m_purpleFirstPixleHue = 0;
+ //int m_purpleFirstPixleHue = 0;
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+   
+    double matchTime = DriverStation.getMatchTime();
+
+    SmartDashboard.putNumber("match time", matchTime);
+    if (robotMode == RobotMode.TELEOP) {
+      if (matchTime > 30) {
+        setInterval(1, 0);
+      }
+
+      if (matchTime <= 30) {
+        setInterval(.75, .75);
+      }
+
+      if (matchTime <= 20) {
+        setInterval(.3, .3);
+      }
+
+      if (matchTime <= 10) {
+        setInterval(.2, .2);
+      }
+
+      if (matchTime < 5) {
+        setInterval(.1, .1);
+      }
+
+  }
+  
+  if (robotMode == RobotMode.DISABLED) {
+    setInterval(1, 0);
+  }
+
+    if (lightsAreOn) {
+      if (timer.get() > onSeconds) {
+        // turn lights off
+        for (var i = 0; i < ledBuffer.getLength(); i++) {
+          FlareColor flareColor = flareColors[i];
+          ledBuffer.setRGB(i, 0, 0, 0);
+        }
+        leds.setData(ledBuffer);
+        timer.reset();
+        lightsAreOn = false;
+      }
+    } else {
+        if (timer.get() > offSeconds) {
+          // turn lights on
+          for (var i = 0; i < ledBuffer.getLength(); i++) {
+            FlareColor flareColor = flareColors[i];
+            ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
+          }
+          leds.setData(ledBuffer);
+          timer.reset();
+          lightsAreOn = true;
+        }
+
+        if(offSeconds == 0) {
+          lightsAreOn = false;
+        }
+     }
+
+    }
+
     
 
     // For every pixel
 
+    
    
   }
 
   
-}
+
