@@ -69,12 +69,12 @@ public class CannonSubsystem extends SubsystemBase {
     cannonPitchMechanism.setPitch(pitch);
   }
 
-  public void setClawSpeed(double clawSpeed) {
-    cannonClawMechanism.setClawSpeed(clawSpeed);
+  public void setClawPower(double clawSpeed) {
+    cannonClawMechanism.setClawPower(clawSpeed);
   }
 
-  public double getClawSpeed(){
-    return cannonClawMechanism.getClawSpeed();
+  public double getClawPower(){
+    return cannonClawMechanism.getClawPower();
   }
 
   public double getRequestedPitch() {

@@ -223,12 +223,12 @@ public class RobotContainer {
     SmartDashboard.putData("Drive to apirl tag", new DriveToAprilTagCommand(3, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3), 0.2, 0.1, 180, driveSubsystem));
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(FieldLocation.humanStart, 0.2, 0.1, 180, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to Cone", new DriveToGamePieceCommand(FrontCameraMode.CONES, driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to Cube", new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem));
+    SmartDashboard.putData("Drive to Cone", new DriveToGamePieceCommand(FrontCameraMode.CONES, driveSubsystem, visionSubsystem, cannonSubsystem));
+    SmartDashboard.putData("Drive to Cube", new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem));
     SmartDashboard.putData("Simple test auto", new SimpleTestAuto(driveSubsystem));
     SmartDashboard.putData("Auto Leveling Command", new AutoLevelingCommand(driveSubsystem, cannonSubsystem));
     SmartDashboard.putData("Backwards Auto Leveling Command", new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem));

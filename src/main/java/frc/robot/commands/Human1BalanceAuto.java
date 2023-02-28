@@ -46,22 +46,22 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(4)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(2)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
       new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new WaitCommand(2)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,
       new ParallelCommandGroup(
-        new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+        new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0, 0, driveSubsystem)
         ,
         new SetCannonLocationCommand(CannonLocation.lowLocation)
       )
       ,
-      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem)
-      /*
+      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
+      
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
       ,
@@ -70,7 +70,7 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,
-      new AutoLevelingCommand(driveSubsystem)*/
+      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

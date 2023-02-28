@@ -17,7 +17,7 @@ public class FieldLocation {
     public static PoseOnField midMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 3.458);
     public static PoseOnField wallMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 0.963);
 
-    public static PoseOnField humanStart = TargetPoseOnField.humanTarget(-0.5, Units.inchesToMeters(22));
-    public static PoseOnField midStart = TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22));
-    public static PoseOnField wallStart = TargetPoseOnField.wallTarget(-0.5, Units.inchesToMeters(22));
+    public static PoseOnField humanStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 4.986); //TargetPoseOnField.humanTarget(-0.5, Units.inchesToMeters(22));
+    public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 3.402); //TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22));
+    public static PoseOnField wallStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 0.651); //TargetPoseOnField.wallTarget(-0.5, Units.inchesToMeters(22));
 }

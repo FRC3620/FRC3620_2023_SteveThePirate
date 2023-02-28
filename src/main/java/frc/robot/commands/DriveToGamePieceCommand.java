@@ -15,7 +15,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
@@ -23,6 +25,7 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 public class DriveToGamePieceCommand extends CommandBase {
   DriveSubsystem driveSubsystem;
   VisionSubsystem visionSubsystem;
+  CannonSubsystem cannonSubsystem;
   double tolerance = 2;
   double lastTimestamp;
   FrontCameraMode currentCameraMode;
@@ -42,9 +45,10 @@ public class DriveToGamePieceCommand extends CommandBase {
   MyState myState;
 
   /** Creates a new DriveToGamePieceCommand. */
-  public DriveToGamePieceCommand(FrontCameraMode pipeline, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+  public DriveToGamePieceCommand(FrontCameraMode pipeline, DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem) {
     this.driveSubsystem = driveSubsystem;
     this.visionSubsystem = visionSubsystem;
+    this.cannonSubsystem = cannonSubsystem;
     this.pipeline = pipeline;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -60,6 +64,7 @@ public class DriveToGamePieceCommand extends CommandBase {
     lastTimestamp = -1;
     currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
     logger.info("Searching for {}", pipeline);
+    cannonSubsystem.setLocation(CannonLocation.coneFloorPickLocation);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -120,7 +125,7 @@ public class DriveToGamePieceCommand extends CommandBase {
           driveSubsystem.stopDrive();
           driveSubsystem.setWheelsToStrafe(90);
         } else {
-          if (timer.hasElapsed(3.0)) {
+          if (timer.hasElapsed(0.5)) {
             if (target != null) {
               myState = MyState.DRIVING;
               timer = null;
@@ -132,6 +137,7 @@ public class DriveToGamePieceCommand extends CommandBase {
       } else if (myState == MyState.DRIVING) {
         double spinPower = driveSubsystem.getSpinPower();
         driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
+        cannonSubsystem.setLocation(CannonLocation.sidewaysConeLocation);
         if (target != null) {
           if (currentTargetPitch < 1.6) { // MAY CHANGE NUM
             logger.info ("done driving; targetPitch = {}", currentTargetPitch);
@@ -145,7 +151,7 @@ public class DriveToGamePieceCommand extends CommandBase {
 
       if(myState == MyState.TURNING){
         driveSubsystem.autoDrive(startHeading, 0, -0.2);
-        if(SwerveCalculator.normalizeAngle(currentHeading - startHeading) < 0){ // we want to be 15 degrees to the left of where we start
+        if(SwerveCalculator.normalizeAngle(currentHeading - startHeading) < -5){ // we want to be 15 degrees to the left of where we start
           myState = MyState.PICKUP;
         }
       }
@@ -155,10 +161,14 @@ public class DriveToGamePieceCommand extends CommandBase {
           timer = new Timer();
           timer.start();
         } else {
+          cannonSubsystem.setClawPower(0.6);
           driveSubsystem.autoDrive(0, 0.1, 0);
+          cannonSubsystem.setClawPower(0.6);
+          
 
-          if (timer.advanceIfElapsed(1)) {
+          if (timer.advanceIfElapsed(2)) {
             timer = null;
+            cannonSubsystem.setClawPower(0.1);
             myState = MyState.STOPPED;
           }
         }

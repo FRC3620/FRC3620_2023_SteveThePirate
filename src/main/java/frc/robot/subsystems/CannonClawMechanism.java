@@ -83,13 +83,13 @@ public class CannonClawMechanism {
    * length is a longer arm.
    * "Extend" motor.*/
 
-  public void setClawSpeed(double speed) {
+  public void setClawPower(double speed) {
     if (motor != null) {
       motor.set(speed);
     }
   }
 
-  public double getClawSpeed() {
+  public double getClawPower() {
     if (encoder == null) return 0;
     return encoder.getVelocity();
   }
