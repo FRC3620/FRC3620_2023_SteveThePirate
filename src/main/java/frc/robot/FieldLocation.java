@@ -20,4 +20,7 @@ public class FieldLocation {
     public static PoseOnField humanStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 4.986); //TargetPoseOnField.humanTarget(-0.5, Units.inchesToMeters(22));
     public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 3.402); //TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22));
     public static PoseOnField wallStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 0.651); //TargetPoseOnField.wallTarget(-0.5, Units.inchesToMeters(22));
+
+    public static PoseOnField humanHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876,4.8);
+    public static PoseOnField wallHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876, 0.963);
 }

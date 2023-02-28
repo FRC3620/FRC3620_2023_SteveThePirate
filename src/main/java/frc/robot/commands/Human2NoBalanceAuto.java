@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -30,41 +31,42 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.humanStart)
       ,
-      
-      new DriveToAprilTagCommand(3, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.CUBES))
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8)
+      new WaitCommand(4)
       ,
-      new WaitCommand(1)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
-      new CannonClawInCommand(cannonSubsystem, 0)
+      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
       // set cannon down to gamepiece somewhere
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
       ,
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
+      ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.2, 0.1, 180, driveSubsystem)
       ,
       new DriveToAprilTagCommand(3, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
-      ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8)
-      ,
-      new WaitCommand(1)
-      ,
-      new CannonClawInCommand(cannonSubsystem, 0)
-      ,
-      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
     );
   }
 }
