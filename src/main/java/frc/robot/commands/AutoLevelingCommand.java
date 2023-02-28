@@ -49,6 +49,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     cannonSubsystem.setPitch(-117);
     cannonSubsystem.setElevation(30);
     cannonSubsystem.setExtension(0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,7 +59,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
 
     if(myState == LevelingState.LEVEL){
       //drive
-      driveSubsystem.autoDrive(0, .3, 0);
+      driveSubsystem.autoDrive(0, .5, 0);
       if(pitch < -13) {
         logger.info("switching to tilted, pitch = {}", pitch);
         myState = LevelingState.TILTED;

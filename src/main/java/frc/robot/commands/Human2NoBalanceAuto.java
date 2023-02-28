@@ -35,7 +35,7 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new WaitCommand(4)
+      new WaitCommand(2)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
@@ -56,15 +56,18 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 180, driveSubsystem)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
-      ,
-      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      
       ,
       new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.2, 0.1, 180, driveSubsystem)
       ,
       new DriveToAprilTagCommand(3, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      ,
+      new WaitCommand(2)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
     );
