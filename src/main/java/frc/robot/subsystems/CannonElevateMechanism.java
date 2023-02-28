@@ -81,6 +81,7 @@ public class CannonElevateMechanism  {
   }
 
   public double getCurrentElevation(){
+    if (elevateEncoder == null) return 0;
 		int elevationEncoderValue = elevateEncoder.getValue();
     // converting heading from tics (ranging from 0 to 4095) to degrees
 		double elevation = (elevationEncoderValue - elevateEncoderValueAt90Degrees)*(360.0/4096.0) + 90;

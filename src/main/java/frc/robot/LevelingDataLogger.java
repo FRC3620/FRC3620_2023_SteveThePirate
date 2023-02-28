@@ -26,6 +26,9 @@ public class LevelingDataLogger {
 
         dataLogger.addDataProvider("navx.heading", () -> RobotContainer.navigationSubsystem.getCorrectedHeading());
 
+        dataLogger.addDataProvider("pitch", () -> iLevelingDataSource.getLevelingData().getPitch());
+        dataLogger.addDataProvider("state", () -> iLevelingDataSource.getLevelingData().getLevelingState());
+
         dataLogger.addDataProvider("odometry.x", () -> odometrySubsystem.getPoseMeters().getX());
         dataLogger.addDataProvider("odometry.y", () -> odometrySubsystem.getPoseMeters().getY());
 
@@ -33,6 +36,11 @@ public class LevelingDataLogger {
         dataLogger.addDataProvider("rf.drive.velocity", () -> RobotContainer.driveSubsystem.getCornerDriveVelocity(DriveSubsystem.Corner.RF));
         dataLogger.addDataProvider("lb.drive.velocity", () -> RobotContainer.driveSubsystem.getCornerDriveVelocity(DriveSubsystem.Corner.LB));
         dataLogger.addDataProvider("rb.drive.velocity", () -> RobotContainer.driveSubsystem.getCornerDriveVelocity(DriveSubsystem.Corner.RB));
+
+        dataLogger.addDataProvider("lf.drive.position", () -> RobotContainer.driveSubsystem.getCornerDrivePosition(DriveSubsystem.Corner.LF));
+        dataLogger.addDataProvider("rf.drive.position", () -> RobotContainer.driveSubsystem.getCornerDrivePosition(DriveSubsystem.Corner.RF));
+        dataLogger.addDataProvider("lb.drive.position", () -> RobotContainer.driveSubsystem.getCornerDrivePosition(DriveSubsystem.Corner.LB));
+        dataLogger.addDataProvider("rb.drive.position", () -> RobotContainer.driveSubsystem.getCornerDrivePosition(DriveSubsystem.Corner.RB));
 
         dataLogger.addDataProvider("lf.azimuth.position", () -> RobotContainer.driveSubsystem.getCornerAzimuthPosition(DriveSubsystem.Corner.LF));
         dataLogger.addDataProvider("rf.azimuth.position", () -> RobotContainer.driveSubsystem.getCornerAzimuthPosition(DriveSubsystem.Corner.RF));

@@ -932,38 +932,6 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		return WHEEL_CIRCUMFERENCE;
 	}
 
-	public double getDriveMotorPositionRightFront(){
-		if (rightFrontDriveEncoder != null) {
-			return rightFrontDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getDriveMotorPositionLeftFront(){
-		if (leftFrontDriveEncoder != null) {
-			return leftFrontDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getDriveMotorPositionRightBack(){
-		if (rightBackDriveEncoder != null) {
-			return rightBackDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getDriveMotorPositionLeftBack(){
-		if (leftBackDriveEncoder != null) {
-			return leftBackDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
 	public void switchFieldRelative(){
 		fieldRelative = !fieldRelative;
 	}
@@ -1054,6 +1022,14 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		RelativeEncoder encoder = getDriveEncoderForCorner(corner);
 		if (encoder != null) {
 			return encoder.getVelocity();
+		}
+		return 0;
+	}
+
+	public double getCornerDrivePosition(Corner corner) {
+		RelativeEncoder encoder = getDriveEncoderForCorner(corner);
+		if (encoder != null) {
+			return encoder.getPosition();
 		}
 		return 0;
 	}

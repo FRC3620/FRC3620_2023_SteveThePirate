@@ -25,6 +25,10 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   double pitch;
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
+  enum LevelingState {
+    LEVEL, TILTED, COUNTER, DONE
+  }
+
   LevelingState myState;
 
   final static boolean doLog = true;
@@ -106,9 +110,6 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
 
   @Override
   public LevelingData getLevelingData() {
-    LevelingData rv = new LevelingData();
-    rv.levelingState = myState;
-    rv.pitch = pitch;
-    return rv;
+    return new LevelingData("" + myState, pitch);
   }
 }

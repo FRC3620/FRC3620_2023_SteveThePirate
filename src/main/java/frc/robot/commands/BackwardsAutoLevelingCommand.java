@@ -21,6 +21,10 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
   private CannonSubsystem cannonSubsystem;
   double pitch;
 
+  enum LevelingState {
+    LEVEL, TILTED, COUNTER, DONE
+  }
+
   LevelingState myState;
 
   final static boolean doLog = true;
@@ -99,9 +103,6 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
 
   @Override
   public LevelingData getLevelingData() {
-    LevelingData rv = new LevelingData();
-    rv.levelingState = myState;
-    rv.pitch = pitch;
-    return rv;
+    return new LevelingData("" + myState, pitch);
   }
 }
