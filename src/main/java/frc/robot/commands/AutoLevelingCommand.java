@@ -69,7 +69,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     if(myState == LevelingState.TILTED){
       //drive
       driveSubsystem.autoDrive(0, .1, 0);
-     if(pitch > -10 && pitch < 1){
+     if(pitch > -8){
       logger.info("switching to counter, pitch = {}", pitch);
        myState = LevelingState.COUNTER;
       }
@@ -77,7 +77,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
 
     if(myState == LevelingState.COUNTER){
       if(pitch < 10){
-        driveSubsystem.autoDrive(0, -.2, 0);
+        driveSubsystem.autoDrive(0, -.3, 0);
       } else {
         driveSubsystem.stopDrive();
         logger.info("switching to done, pitch = {}", pitch);
