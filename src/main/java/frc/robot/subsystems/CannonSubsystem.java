@@ -10,8 +10,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
@@ -79,8 +77,8 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonClawMechanism.getClawPower();
   }
 
-  public double getElevation() {
-    return cannonElevateMechanism.getCurrentElevation();
+  public double getRequestedPitch() {
+    return cannonPitchMechanism.getRequestedPitch();
   }
 
   public double getCurrentPitch() {
@@ -91,17 +89,16 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonElevateMechanism.getRequestedElevation();
   }
   
+  public double getCurrentElevation() {
+    return cannonElevateMechanism.getCurrentElevation();
+  }
+
   public double getRequestedExtension() {
     return cannonExtendMechanism.getRequestedExtension();
   }
-  
-  public double getRequestedPitch() {
-    return cannonPitchMechanism.getRequestedPitch();
-  }
 
-  //Sets length of arm for movement. (Endgame?)
-  public void setTravel() {
-    
+  public double getCurrentExtension() {
+    return cannonExtendMechanism.getCurrentExtension();
   }
 
   void setupMotors() {

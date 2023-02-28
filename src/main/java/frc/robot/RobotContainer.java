@@ -261,6 +261,7 @@ public class RobotContainer {
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
 
     // Odometry and Vision Tests
+    SmartDashboard.putData(new InstrumentOdometryAndVisionCommand());
     SmartDashboard.putData(new SeeConeCommand());
     SmartDashboard.putData(new SeeCubeCommand());
     SmartDashboard.putData(new TestPhotonVisionPipelineSwitchCommand());
