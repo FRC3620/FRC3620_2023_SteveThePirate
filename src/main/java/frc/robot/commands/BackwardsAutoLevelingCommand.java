@@ -109,6 +109,6 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
 
   @Override
   public LevelingData getLevelingData() {
-    return new LevelingData("" + myState, pitch);
+    return new LevelingData("" + myState, myState.ordinal(), pitch);
   }
 }

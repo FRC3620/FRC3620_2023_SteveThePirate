@@ -25,13 +25,10 @@ public class LevelingDataLogger {
         dataLogger.addMetadata("timestamp", timestamp.toString());
 
         dataLogger.addDataProvider("state", () -> iLevelingDataSource.getLevelingData().levelingState);
-        dataLogger.addDataProvider("stateInt", () -> iLevelingDataSource.getLevelingData().levelingState.ordinal());
+        dataLogger.addDataProvider("stateInt", () -> iLevelingDataSource.getLevelingData().levelingStateInt);
         dataLogger.addDataProvider("pitch", () -> iLevelingDataSource.getLevelingData().pitch);
 
         dataLogger.addDataProvider("navx.heading", () -> RobotContainer.navigationSubsystem.getCorrectedHeading());
-
-        dataLogger.addDataProvider("pitch", () -> iLevelingDataSource.getLevelingData().getPitch());
-        dataLogger.addDataProvider("state", () -> iLevelingDataSource.getLevelingData().getLevelingState());
 
         dataLogger.addDataProvider("odometry.x", () -> odometrySubsystem.getPoseMeters().getX());
         dataLogger.addDataProvider("odometry.y", () -> odometrySubsystem.getPoseMeters().getY());

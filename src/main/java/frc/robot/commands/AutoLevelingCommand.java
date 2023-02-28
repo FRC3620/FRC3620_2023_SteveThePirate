@@ -117,6 +117,6 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
 
   @Override
   public LevelingData getLevelingData() {
-    return new LevelingData("" + myState, pitch);
+    return new LevelingData("" + myState, myState.ordinal(), pitch);
   }
 }
