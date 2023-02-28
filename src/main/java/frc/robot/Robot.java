@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.Date;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class Robot extends TimedRobot {
   private DataLogger robotDataLogger;
 
   static private RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
+
+  Date dateAtInitialization = new Date();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -214,6 +217,8 @@ public class Robot extends TimedRobot {
         if (missingDevices.size() > 0) {
           logger.warn ("Missing devices: " + missingDevices);
         }
+
+        logger.info ("Initialization date was {}", dateAtInitialization);
         hasCANBusBeenLogged = true;
       }
     }

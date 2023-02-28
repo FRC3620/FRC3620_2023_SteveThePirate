@@ -22,7 +22,10 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   AHRS ahrs; 
   private DriveSubsystem driveSubsystem;
   private CannonSubsystem cannonSubsystem;
+
+  double power;
   double pitch;
+
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   enum LevelingState {
@@ -62,11 +65,12 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    power = 0;
     pitch = RobotContainer.navigationSubsystem.getPitch();
 
     if(myState == LevelingState.LEVEL){
       //drive
-      driveSubsystem.autoDrive(0, .5, 0);
+      power = 0.5;
       if(pitch < -13) {
         logger.info("switching to tilted, pitch = {}", pitch);
         myState = LevelingState.TILTED;
@@ -74,23 +78,29 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     }
     
     if(myState == LevelingState.TILTED){
-      //drive
-      driveSubsystem.autoDrive(0, .1, 0);
-     if(pitch > -10 && pitch < 1){
-      logger.info("switching to counter, pitch = {}", pitch);
-       myState = LevelingState.COUNTER;
+      power = 0.1;
+      if(pitch > -10 && pitch < 1){
+        logger.info("switching to counter, pitch = {}", pitch);
+        myState = LevelingState.COUNTER;
       }
     }
 
     if(myState == LevelingState.COUNTER){
       if(pitch < 10){
-        driveSubsystem.autoDrive(0, -.2, 0);
+        power = -0.2;
       } else {
-        driveSubsystem.stopDrive();
+        power = 0;
         logger.info("switching to done, pitch = {}", pitch);
         myState = LevelingState.DONE;
       }
     }
+
+    if (power == 0) {
+      driveSubsystem.stopDrive();
+    } else {
+      driveSubsystem.autoDrive(0, power, 0);
+    }
+  
 
     if (levelingDataLogger != null) levelingDataLogger.update();
   }
@@ -103,7 +113,10 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
       levelingDataLogger.done();
       levelingDataLogger = null;
     }
-    driveSubsystem.setDriveToCoast();
+    driveSubsystem.stopDrive();
+
+    // don't do this: teleop will set it to coast
+    // driveSubsystem.setDriveToCoast();
   }
 
   // Returns true when the command should end.
@@ -117,6 +130,6 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
 
   @Override
   public LevelingData getLevelingData() {
-    return new LevelingData("" + myState, myState.ordinal(), pitch);
+    return new LevelingData("" + myState, myState.ordinal(), pitch, power);
   }
 }

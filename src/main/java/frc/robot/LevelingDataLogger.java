@@ -27,6 +27,7 @@ public class LevelingDataLogger {
         dataLogger.addDataProvider("state", () -> iLevelingDataSource.getLevelingData().levelingState);
         dataLogger.addDataProvider("stateInt", () -> iLevelingDataSource.getLevelingData().levelingStateInt);
         dataLogger.addDataProvider("pitch", () -> iLevelingDataSource.getLevelingData().pitch);
+        dataLogger.addDataProvider("power", () -> iLevelingDataSource.getLevelingData().power);
 
         dataLogger.addDataProvider("navx.heading", () -> RobotContainer.navigationSubsystem.getCorrectedHeading());
 

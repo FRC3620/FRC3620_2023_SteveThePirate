@@ -19,7 +19,9 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
   AHRS ahrs; 
   private DriveSubsystem driveSubsystem;
   private CannonSubsystem cannonSubsystem;
+
   double pitch;
+  double power;
 
   enum LevelingState {
     LEVEL, TILTED, COUNTER, DONE
@@ -57,31 +59,36 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    power = 0;
     pitch = RobotContainer.navigationSubsystem.getPitch();
 
     if(myState == LevelingState.LEVEL){
-      //drive
-      driveSubsystem.autoDrive(0, -.3, 0);
+      power = -0.3;
       if(pitch > 13) {
         myState = LevelingState.TILTED;
       }
     }
     
     if(myState == LevelingState.TILTED){
-      //drive
-      driveSubsystem.autoDrive(0, -.1, 0);
-     if(pitch < 10 && pitch > -1){
-       myState = LevelingState.COUNTER;
+      power = -0.1;
+      if(pitch < 10 && pitch > -1){
+        myState = LevelingState.COUNTER;
       }
     }
 
     if(myState == LevelingState.COUNTER){
       if(pitch > -10){
-        driveSubsystem.autoDrive(0, .23, 0);
+        power = 0.23;
       } else {
-        driveSubsystem.stopDrive();
+        power = 0;
         myState = LevelingState.DONE;
       }
+    }
+
+    if (power == 0) {
+      driveSubsystem.stopDrive();
+    } else {
+      driveSubsystem.autoDrive(0, power, 0);
     }
 
     if (levelingDataLogger != null) levelingDataLogger.update();
@@ -95,7 +102,10 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
       levelingDataLogger.done();
       levelingDataLogger = null;
     }
-    driveSubsystem.setDriveToCoast();
+    driveSubsystem.stopDrive();
+
+    // don't do this: teleop will set it to coast
+    // driveSubsystem.setDriveToCoast();
   }
 
   // Returns true when the command should end.
@@ -109,6 +119,6 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
 
   @Override
   public LevelingData getLevelingData() {
-    return new LevelingData("" + myState, myState.ordinal(), pitch);
+    return new LevelingData("" + myState, myState.ordinal(), pitch, power);
   }
 }
