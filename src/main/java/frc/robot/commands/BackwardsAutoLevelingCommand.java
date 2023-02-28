@@ -37,8 +37,6 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
     this.cannonSubsystem = cannonSubsystem;
     addRequirements(driveSubsystem);
     myState = LevelingState.LEVEL;
-
-    if (doLog) levelingDataLogger = LevelingDataLogger.getDataLogger(getClass().getSimpleName(), this);
   }
 
   // Called when the command is initially scheduled.
@@ -49,6 +47,11 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
     cannonSubsystem.setPitch(-117);
     cannonSubsystem.setElevation(30);
     cannonSubsystem.setExtension(0);
+
+    if (doLog) {
+      levelingDataLogger = LevelingDataLogger.getDataLogger(getClass().getSimpleName(), this);
+      levelingDataLogger.start();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -88,7 +91,10 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
   @Override
   public void end(boolean interrupted) {
     myState = LevelingState.LEVEL;
-    if (levelingDataLogger != null) levelingDataLogger.done();
+    if (levelingDataLogger != null) {
+      levelingDataLogger.done();
+      levelingDataLogger = null;
+    }
     driveSubsystem.setDriveToCoast();
   }
 
