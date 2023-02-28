@@ -14,12 +14,13 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class FlareSubsystem extends SubsystemBase {
-  final int numberOfPixels = 8;
+  final int numberOfPixels = 19;
   AddressableLED leds;
   AddressableLEDBuffer ledBuffer;
   FlareColor[] flareColors;
@@ -29,10 +30,12 @@ public class FlareSubsystem extends SubsystemBase {
   boolean lightsAreOn = true;
   Timer timer = new Timer();
   
+  
+  
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   public FlareSubsystem() {
-
+    setInterval(1, 0);
     leds = new AddressableLED(9);
     leds.setLength(numberOfPixels);;
     ledBuffer = new AddressableLEDBuffer(numberOfPixels);
@@ -44,6 +47,8 @@ public class FlareSubsystem extends SubsystemBase {
   public void setInterval(double onSeconds, double offSeconds) {
     this.onSeconds = onSeconds;
     this.offSeconds = offSeconds;
+    SmartDashboard.putNumber("offseconds", offSeconds);
+    SmartDashboard.putNumber("onseconds", onSeconds);
   }
   public void setColor(FlareColor flareColor){
     logger.info ("Set color to {}", flareColor);
@@ -71,9 +76,13 @@ public class FlareSubsystem extends SubsystemBase {
    }
     
   colorsNeedUpdated = true;
-    
+
   }
+
+  RobotMode robotMode = RobotMode.INIT;  
+
   public void ProcessRobotModeChange(RobotMode robotMode) {
+    this.robotMode = robotMode;
     if (robotMode == RobotMode.TELEOP ) {
 
       if (DriverStation.getAlliance()==Alliance.Blue) {
@@ -141,6 +150,36 @@ public class FlareSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
    
+    double matchTime = DriverStation.getMatchTime();
+
+    SmartDashboard.putNumber("match time", matchTime);
+    if (robotMode == RobotMode.TELEOP) {
+      if (matchTime > 30) {
+        setInterval(1, 0);
+      }
+
+      if (matchTime <= 30) {
+        setInterval(.75, .75);
+      }
+
+      if (matchTime <= 20) {
+        setInterval(.3, .3);
+      }
+
+      if (matchTime <= 10) {
+        setInterval(.2, .2);
+      }
+
+      if (matchTime < 5) {
+        setInterval(.1, .1);
+      }
+
+  }
+  
+  if (robotMode == RobotMode.DISABLED) {
+    setInterval(1, 0);
+  }
+
     if (lightsAreOn) {
       if (timer.get() > onSeconds) {
         // turn lights off
@@ -163,13 +202,19 @@ public class FlareSubsystem extends SubsystemBase {
           timer.reset();
           lightsAreOn = true;
         }
+
+        if(offSeconds == 0) {
+          lightsAreOn = false;
+        }
      }
+
     }
 
     
 
     // For every pixel
 
+    
    
   }
 
