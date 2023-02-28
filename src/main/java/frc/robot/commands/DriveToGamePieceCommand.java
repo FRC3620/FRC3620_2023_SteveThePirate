@@ -161,14 +161,14 @@ public class DriveToGamePieceCommand extends CommandBase {
           timer = new Timer();
           timer.start();
         } else {
-          cannonSubsystem.setClawSpeed(0.6);
+          cannonSubsystem.setClawPower(0.6);
           driveSubsystem.autoDrive(0, 0.1, 0);
-          cannonSubsystem.setClawSpeed(0.6);
+          cannonSubsystem.setClawPower(0.6);
           
 
           if (timer.advanceIfElapsed(2)) {
             timer = null;
-            cannonSubsystem.setClawSpeed(0.1);
+            cannonSubsystem.setClawPower(0.1);
             myState = MyState.STOPPED;
           }
         }

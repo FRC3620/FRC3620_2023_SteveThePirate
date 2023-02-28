@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.CannonLocation;
 import frc.robot.Robot;
 
 public class CannonPitchMechanism  {
@@ -33,7 +34,7 @@ public class CannonPitchMechanism  {
       PID = motor.getPIDController();
 
       // set up PID for turretPID here
-      PID.setP(0.005);   //0.1
+      PID.setP(0.0025);   //0.1
       PID.setI(0.0);     //0.0
       PID.setD(0.0);    //10
       PID.setFF(0.0);      //0.0
@@ -77,6 +78,7 @@ public class CannonPitchMechanism  {
                   encoderIsValid = true;
                   pitchCannon(0.0);
                   encoder.setPosition(-140);
+                  setPitch(-140);
                   
                   if (requestedPositionWhileCalibrating != null) {
                     setPitch(requestedPositionWhileCalibrating);

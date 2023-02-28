@@ -27,7 +27,7 @@ public class CannonClawInCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called every time the scheduler runs while the command is scheduled.
@@ -35,13 +35,13 @@ public class CannonClawInCommand extends CommandBase {
     @Override
     public void execute() 
     {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      cannonSubsystem.setClawSpeed(50);
+      cannonSubsystem.setClawPower(.1);
     }
   
     // Returns true when the command should end.
@@ -53,7 +53,7 @@ public class CannonClawInCommand extends CommandBase {
         getStartedTimer.start();
       } else {
         if (getStartedTimer.get() > 0.5) {
-          if (Math.abs(cannonSubsystem.getClawSpeed()) < 500) {
+          if (Math.abs(cannonSubsystem.getClawPower()) < 500) {
             getStartedTimer = null;
             return true;
             } else {
