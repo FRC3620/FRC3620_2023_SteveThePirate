@@ -37,8 +37,6 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     this.cannonSubsystem = cannonSubsystem;
     addRequirements(driveSubsystem);
     myState = LevelingState.LEVEL;
-
-    if (doLog) levelingDataLogger = LevelingDataLogger.getDataLogger(getClass().getSimpleName(), this);
   }
 
   // Called when the command is initially scheduled.
@@ -49,6 +47,11 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     cannonSubsystem.setPitch(-117);
     cannonSubsystem.setElevation(30);
     cannonSubsystem.setExtension(0);
+
+    if (doLog) {
+      levelingDataLogger = LevelingDataLogger.getDataLogger(getClass().getSimpleName(), this);
+      levelingDataLogger.start();
+    }
 
   }
 
@@ -92,7 +95,10 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   @Override
   public void end(boolean interrupted) {
     myState = LevelingState.LEVEL;
-    if (levelingDataLogger != null) levelingDataLogger.done();
+    if (levelingDataLogger != null) {
+      levelingDataLogger.done();
+      levelingDataLogger = null;
+    }
     driveSubsystem.setDriveToCoast();
   }
 
