@@ -61,9 +61,9 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     setColor(Color.kRed);
     driveSubsystem.setDriveToBrake();
 
-    cannonSubsystem.setPitch(-117);
-    cannonSubsystem.setElevation(30);
-    cannonSubsystem.setExtension(0);
+    //cannonSubsystem.setPitch(-117);
+    //cannonSubsystem.setElevation(30);
+    //cannonSubsystem.setExtension(0);
 
     if (doLog) {
       levelingDataLogger = LevelingDataLogger.getDataLogger(getClass().getSimpleName(), this);
@@ -100,8 +100,8 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     }
 
     if(myState == LevelingState.COUNTER){
-      power = -.3;
-      if(pitch > 5){ //was 10
+      power = -.2;
+      if(pitch > 3){ //was 10
         power = 0;
         logger.info("switching to done, pitch = {}", pitch);
         myState = LevelingState.DONE;
