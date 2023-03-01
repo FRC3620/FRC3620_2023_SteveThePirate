@@ -41,11 +41,13 @@ public class RotateWheelsButton extends CommandBase {
     driveSubsystem.testDrive(.25, 0);
     SmartDashboard.putBoolean("DiagnosticsAzimuthMotorTest", areAllAzimuthsok());
    
-    if(this.areAllAzimuthsok()){
-      flareSubsystem.setColor(FlareColor.GREEN, 0, 1);
-    
-    } else {
-      flareSubsystem.setColor(FlareColor.RED, 0, 1);
+    if (flareSubsystem != null) {
+      if(this.areAllAzimuthsok()){
+        flareSubsystem.setColor(FlareColor.GREEN, 0, 1);
+      
+      } else {
+        flareSubsystem.setColor(FlareColor.RED, 0, 1);
+      }
     }
   }
 

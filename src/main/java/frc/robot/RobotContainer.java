@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.hal.AllianceStationID;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,7 +19,6 @@ import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
-import frc.robot.subsystems.CannonPitchMechanism;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem;
@@ -31,12 +28,10 @@ import frc.robot.subsystems.OdometrySubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.JoystickAnalogButton;
-import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
 
@@ -64,7 +59,7 @@ public class RobotContainer {
   public static VisionSubsystem visionSubsystem;
   public static OdometrySubsystem odometrySubsystem;
   public static CannonSubsystem cannonSubsystem;
-  public static FlareSubsystem flareSubsystem;
+  public static FlareSubsystem flareSubsystem, balanceLights;
 
   // joysticks here....
   public static Joystick driverJoystick;
@@ -76,7 +71,6 @@ public class RobotContainer {
 
     robotParameters = RobotParametersContainer.getRobotParameters(RobotParameters.class);
     logger.info ("got parameters for chassis '{}'", robotParameters.getName());
-    System.out.println("!!!!!!!!!!!!!!!!!!!!! " + robotParameters);
 
     practiceBotJumper = new DigitalInput(0);
     SendableRegistry.add(practiceBotJumper, "RobotContainer", "Practice Bot Jumper");
@@ -90,8 +84,6 @@ public class RobotContainer {
     } else if (canDeviceFinder.isDevicePresent(CANDeviceType.CTRE_PCM, 0, "CTRE PCM")) {
       pneumaticModuleType = PneumaticsModuleType.CTREPCM;
     }
-
-   
    
     makeSubsystems();
 
@@ -119,6 +111,8 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
     cannonSubsystem = new CannonSubsystem();
+    //balanceLights = new FlareSubsystem("balanceLights", 8);
+    //balanceLights.setWatchTheClock(false);
     flareSubsystem = new FlareSubsystem();
   }
 
@@ -152,11 +146,13 @@ public class RobotContainer {
             .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));
 
     // operator colors
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLE)));
+    if (flareSubsystem != null) {
+      new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK)
+              .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.PURPLE)));
 
-    new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
-            .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW)));
+      new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
+              .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW)));
+    }
 
     // operator cannon stuff
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER)

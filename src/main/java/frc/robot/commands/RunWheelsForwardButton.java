@@ -41,13 +41,16 @@ public class RunWheelsForwardButton extends CommandBase {
   public void execute() {
     driveSubsystem.testDrive(0, .25);
     SmartDashboard.putBoolean("DiagnosticsDriveMotorTest", areAllwheelsok());
-   // SmartDashboard.putBoolean("Wheel Current", testWheelCurrent());
-   if(this.areAllwheelsok()){
-    flareSubsystem.setColor(FlareColor.GREEN, 2, 3);
-  
-  } else {
-    flareSubsystem.setColor(FlareColor.RED, 2, 3);
-  }
+    // SmartDashboard.putBoolean("Wheel Current", testWheelCurrent());
+
+    if (flareSubsystem != null) {
+      if(this.areAllwheelsok()){
+        flareSubsystem.setColor(FlareColor.GREEN, 2, 3);
+      
+      } else {
+        flareSubsystem.setColor(FlareColor.RED, 2, 3);
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.
