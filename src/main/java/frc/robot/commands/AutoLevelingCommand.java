@@ -70,8 +70,9 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
 
     if(myState == LevelingState.LEVEL){
       //drive
-      power = 0.5;
+      power = 0.3;
       if(pitch < -13) {
+        // we are going uphill, slow down
         logger.info("switching to tilted, pitch = {}", pitch);
         myState = LevelingState.TILTED;
       }
@@ -79,16 +80,16 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     
     if(myState == LevelingState.TILTED){
       power = 0.1;
-      if(pitch > -10 && pitch < 1){
+      if(pitch > -8){ //was -10
+        // we are still going up hill, but not as much. it must be swinging?
         logger.info("switching to counter, pitch = {}", pitch);
         myState = LevelingState.COUNTER;
       }
     }
 
     if(myState == LevelingState.COUNTER){
-      if(pitch < 10){
-        driveSubsystem.autoDrive(0, -.3, 0);
-      } else {
+      power = -.3;
+      if(pitch > 5){ //was 10
         power = 0;
         logger.info("switching to done, pitch = {}", pitch);
         myState = LevelingState.DONE;
