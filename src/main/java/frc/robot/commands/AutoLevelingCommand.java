@@ -11,12 +11,14 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ILevelingDataSource;
 import frc.robot.LevelingDataLogger;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlareSubsystem.FlareColor;
 
 public class AutoLevelingCommand extends CommandBase implements ILevelingDataSource {
   AHRS ahrs; 
@@ -46,9 +48,17 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
     myState = LevelingState.LEVEL;
   }
 
+  void setColor(Color color){
+    if(RobotContainer.balanceLights != null){
+      RobotContainer.balanceLights.setColor(new FlareColor(color));
+    }
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    myState = LevelingState.LEVEL;
+    setColor(Color.kRed);
     driveSubsystem.setDriveToBrake();
 
     cannonSubsystem.setPitch(-117);
@@ -75,6 +85,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
         // we are going uphill, slow down
         logger.info("switching to tilted, pitch = {}", pitch);
         myState = LevelingState.TILTED;
+        setColor(Color.kBlue);
       }
     }
     
@@ -84,6 +95,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
         // we are still going up hill, but not as much. it must be swinging?
         logger.info("switching to counter, pitch = {}", pitch);
         myState = LevelingState.COUNTER;
+        setColor(Color.kYellow);
       }
     }
 
@@ -93,6 +105,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
         power = 0;
         logger.info("switching to done, pitch = {}", pitch);
         myState = LevelingState.DONE;
+        setColor(Color.kGreen);
       }
     }
 
@@ -109,7 +122,6 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    myState = LevelingState.LEVEL;
     if (levelingDataLogger != null) {
       levelingDataLogger.done();
       levelingDataLogger = null;

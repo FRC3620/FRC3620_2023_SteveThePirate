@@ -183,7 +183,9 @@ public class Robot extends TimedRobot {
     // if any subsystems need to know about mode changes, let
     // them know here.
     // exampleSubsystem.processRobotModeChange(newMode);
-    RobotContainer.flareSubsystem.ProcessRobotModeChange(newMode);
+    if(RobotContainer.flareSubsystem != null){
+      RobotContainer.flareSubsystem.ProcessRobotModeChange(newMode);
+    }
   }
 
   public static RobotMode getCurrentRobotMode(){

@@ -111,9 +111,9 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
     cannonSubsystem = new CannonSubsystem();
-    //balanceLights = new FlareSubsystem("balanceLights", 8);
-    //balanceLights.setWatchTheClock(false);
-    flareSubsystem = new FlareSubsystem();
+    balanceLights = new FlareSubsystem("balanceLights", 8);
+    balanceLights.setWatchTheClock(false);
+    //flareSubsystem = new FlareSubsystem();
   }
 
   /**
