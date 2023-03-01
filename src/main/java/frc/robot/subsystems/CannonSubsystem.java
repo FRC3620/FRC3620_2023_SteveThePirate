@@ -59,16 +59,28 @@ public class CannonSubsystem extends SubsystemBase {
     cannonExtendMechanism.setExtension(length);
   }
 
-  public void setElevation(double height) {
-    cannonElevateMechanism.setElevation(height);
+  public void extendCannon(double power) {
+    cannonExtendMechanism.extendCannon(power);
   }
 
   public void disableExtension() {
     cannonExtendMechanism.disable();
   }
 
+  public void setElevation(double height) {
+    cannonElevateMechanism.setElevation(height);
+  }
+
+  public void elevateCannon(double power) {
+    cannonElevateMechanism.elevateCannon(power);
+  }
+
   public void setPitch(double pitch) {
     cannonPitchMechanism.setPitch(pitch);
+  }
+
+  public void pitchCannon(double power) {
+    cannonPitchMechanism.pitchCannon(power);
   }
 
   public void setClawPower(double clawSpeed) {

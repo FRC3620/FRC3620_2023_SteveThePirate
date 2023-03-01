@@ -113,8 +113,8 @@ public class CannonExtendMechanism  {
     }
   }
 
-  public void extendCannon(double speed) {
-    motor.set(speed);
+  public void extendCannon(double power) {
+    motor.set(power);
   }
 
   public void disable() {
