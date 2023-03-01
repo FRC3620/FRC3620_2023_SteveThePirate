@@ -63,7 +63,7 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
     pitch = RobotContainer.navigationSubsystem.getPitch();
 
     if(myState == LevelingState.LEVEL){
-      power = -0.3;
+      power = -0.5;
       if(pitch > 13) {
         myState = LevelingState.TILTED;
       }
@@ -78,7 +78,7 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
 
     if(myState == LevelingState.COUNTER){
       if(pitch > -10){
-        power = 0.23;
+        power = 0.18;
       } else {
         power = 0;
         myState = LevelingState.DONE;
