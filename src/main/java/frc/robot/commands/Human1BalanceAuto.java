@@ -62,9 +62,9 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
-      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }
