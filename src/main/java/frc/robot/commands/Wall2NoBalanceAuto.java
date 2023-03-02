@@ -43,11 +43,11 @@ public class Wall2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.6, 0.22, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.4, 0.22, 0, driveSubsystem)
       ,
       // set cannon down to gamepiece somewhere
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
@@ -56,15 +56,17 @@ public class Wall2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.4, 0.22, 0, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.2, 0.1, 180, driveSubsystem)
-      ,
-      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.4, 0.22, 180, driveSubsystem)
       ,
       new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.2, 0.1, 180, driveSubsystem)
       ,
       new DriveToAprilTagCommand(1, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      ,
+      new WaitCommand(1.6)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
     );

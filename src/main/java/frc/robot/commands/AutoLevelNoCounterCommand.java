@@ -98,15 +98,14 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
       }
       timer.start();
       power = 0.3;
-      if(timer.advanceIfElapsed(1)){
+      if(timer.advanceIfElapsed(0.75)){
         myState = LevelingState.TILTED;
       }
     }
     
     if(myState == LevelingState.TILTED){
       power = 0.1;
-      if(pitch > -10
-      ){ //was -10
+      if(pitch > -11){ //was -10
         // we are still going up hill, but not as much. it must be swinging?
         logger.info("switching to counter, pitch = {}", pitch);
         myState = LevelingState.DONE;

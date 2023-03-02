@@ -35,7 +35,7 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new WaitCommand(2)
+      new WaitCommand(2) // change later??
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
@@ -43,11 +43,11 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.6, 0.21, 180, driveSubsystem) // speed = 0.2
       ,
       new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.45, 0.21, 0, driveSubsystem) // 0.2
       ,
       // set cannon down to gamepiece somewhere
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
@@ -56,10 +56,9 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.4, 0.21, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
-      
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.4, 0.22, 180, driveSubsystem)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.2, 0.1, 180, driveSubsystem)
       ,
@@ -67,7 +66,7 @@ public class Human2NoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
-      new WaitCommand(2)
+      new WaitCommand(1.8)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
     );
