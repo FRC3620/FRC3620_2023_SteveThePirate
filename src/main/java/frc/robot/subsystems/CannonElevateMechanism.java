@@ -53,7 +53,7 @@ public class CannonElevateMechanism  {
 
       if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
         double motorPower = m_pidController.calculate(getCurrentElevation());
-        motorPower = MathUtil.clamp(motorPower, -0.4, 0.75);
+        motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
         elevateCannon(motorPower);
       }
     }

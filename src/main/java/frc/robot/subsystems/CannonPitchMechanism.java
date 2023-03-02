@@ -8,6 +8,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.CannonLocation;
@@ -18,35 +20,28 @@ public class CannonPitchMechanism  {
   boolean encoderIsValid = false;
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
-  RelativeEncoder encoder;
-  SparkMaxPIDController PID = null;
+  //RelativeEncoder encoder;
+  Encoder pitchEncoder;
   
   Double requestedPositionWhileCalibrating = null;
   Double requestedPosition = null;
 
+  private static final double kP = 0.0025;
+  private static final double kI = 0;
+  private static final double kD = 0;
+
+  private final PIDController m_pidController = new PIDController(kP, kI, kD);
+
+  double pitchOffset;
+
   final String name = "Pitch";
 
-  public CannonPitchMechanism(CANSparkMaxSendable motor) {
+  public CannonPitchMechanism(CANSparkMaxSendable motor, Encoder pitchEncoder) {
     this.motor = motor;
     if (motor != null) {
-      this.encoder = motor.getEncoder();
+      this.pitchEncoder = pitchEncoder;
+      pitchEncoder.setDistancePerPulse(-360/256.0);
 
-      PID = motor.getPIDController();
-
-      // set up PID for turretPID here
-      PID.setP(0.0025);   //0.1
-      PID.setI(0.0);     //0.0
-      PID.setD(0.0);    //10
-      PID.setFF(0.0);      //0.0
-
-      PID.setOutputRange(-0.4, 0.4);
-    }
-
-    if (encoder != null) {
-      //calculated by two positions difference of angle over difference in encoder value
-      encoder.setPositionConversionFactor(191/6.05);
-      //encoder.setPositionConversionFactor(1);
-      //encoder.setVelocityConversionFactor(1);
     }
   }
 
@@ -57,11 +52,9 @@ public class CannonPitchMechanism  {
       SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
 
-      if (encoder != null) {
-        double elevateSpeed = encoder.getVelocity();
-        double elevatePosition = encoder.getPosition();
-        SmartDashboard.putNumber(name + ".speed", elevateSpeed);
-        SmartDashboard.putNumber(name + ".position", elevatePosition);
+      if (pitchEncoder != null) {
+        SmartDashboard.putNumber(name + ".speed", pitchEncoder.getRate());
+        SmartDashboard.putNumber(name + ".position", getCurrentPitch());
         // SmartDashboard.putNumber(name + ".velocityConversionFactor", encoder.getVelocityConversionFactor());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
@@ -74,21 +67,25 @@ public class CannonPitchMechanism  {
               calibrationTimer.start();
             } else {
               if (calibrationTimer.get() > 0.75){
-                if (Math.abs(elevateSpeed) < 15) {
+                if (Math.abs(pitchEncoder.getRate()) < 15) {
                   encoderIsValid = true;
                   pitchCannon(0.0);
-                  encoder.setPosition(-140);
-                  setPitch(-140);
+                  pitchOffset = pitchEncoder.getDistance() + 130;
+                  setPitch(-130);
                   
                   if (requestedPositionWhileCalibrating != null) {
                     setPitch(requestedPositionWhileCalibrating);
                     requestedPositionWhileCalibrating = null;
                   } else {
-                    setPitch(encoder.getPosition());
+                    setPitch(pitchEncoder.getDistance() - pitchOffset);
                   }
                 }
               }
             }
+          } else {
+          double motorPower = m_pidController.calculate(getCurrentPitch());
+          motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
+          motor.set(motorPower);
           }
         } else {
           calibrationTimer = null; // start over!
@@ -104,11 +101,11 @@ public class CannonPitchMechanism  {
    * @param pitch
    */
   public void setPitch(double pitch) {
-    pitch = MathUtil.clamp(pitch, -150, 20);
+    pitch = MathUtil.clamp(pitch, -130, 0);
     SmartDashboard.putNumber(name + ".requestedHeight", pitch);
     requestedPosition = pitch;
     if (encoderIsValid) {
-      PID.setReference(pitch, ControlType.kPosition);
+      m_pidController.setSetpoint(pitch);;;; //UVVU
     } else {
       requestedPositionWhileCalibrating = pitch;
     }
@@ -119,8 +116,8 @@ public class CannonPitchMechanism  {
   }
 
   public double getCurrentPitch() {
-    if (encoder != null) {
-      return encoder.getPosition();
+    if (pitchEncoder != null) {
+      return pitchEncoder.getDistance() - pitchOffset;
     }
     return 0;
   }

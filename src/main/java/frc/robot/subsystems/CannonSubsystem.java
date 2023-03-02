@@ -32,7 +32,7 @@ public class CannonSubsystem extends SubsystemBase {
   public RelativeEncoder rollEncoder;
 
   public CANSparkMaxSendable pitch;
-  public RelativeEncoder pitchEncoder;
+  public Encoder pitchEncoder;
 
   public CANSparkMaxSendable claw;
   public RelativeEncoder clawEncoder;
@@ -42,7 +42,7 @@ public class CannonSubsystem extends SubsystemBase {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
     cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder);
-    cannonPitchMechanism = new CannonPitchMechanism(pitch);
+    cannonPitchMechanism = new CannonPitchMechanism(pitch, pitchEncoder);
     cannonClawMechanism = new CannonClawMechanism(claw);
   }
 
@@ -155,6 +155,9 @@ public class CannonSubsystem extends SubsystemBase {
 
     elevationEncoder = new AnalogInput(4);
     addChild("elevationEncoder", elevationEncoder);
+
+    pitchEncoder = new Encoder(5,6);
+    addChild("pitchEncoder", pitchEncoder);
   }
 
   public void setLocation(CannonLocation cannonLocation) {
