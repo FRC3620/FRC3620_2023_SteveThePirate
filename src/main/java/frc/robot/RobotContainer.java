@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.hal.AllianceStationID;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,7 +19,6 @@ import org.usfirst.frc3620.logger.LogCommand;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
-import frc.robot.subsystems.CannonPitchMechanism;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem;
@@ -31,14 +28,15 @@ import frc.robot.subsystems.OdometrySubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.ChameleonController;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.JoystickAnalogButton;
 import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
+import org.usfirst.frc3620.misc.FlySkyConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -67,7 +65,7 @@ public class RobotContainer {
   public static FlareSubsystem flareSubsystem;
 
   // joysticks here....
-  public static Joystick driverJoystick;
+  public static ChameleonController driverJoystick;
   public static Joystick operatorJoystick;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -76,7 +74,6 @@ public class RobotContainer {
 
     robotParameters = RobotParametersContainer.getRobotParameters(RobotParameters.class);
     logger.info ("got parameters for chassis '{}'", robotParameters.getName());
-    System.out.println("!!!!!!!!!!!!!!!!!!!!! " + robotParameters);
 
     practiceBotJumper = new DigitalInput(0);
     SendableRegistry.add(practiceBotJumper, "RobotContainer", "Practice Bot Jumper");
@@ -90,8 +87,6 @@ public class RobotContainer {
     } else if (canDeviceFinder.isDevicePresent(CANDeviceType.CTRE_PCM, 0, "CTRE PCM")) {
       pneumaticModuleType = PneumaticsModuleType.CTREPCM;
     }
-
-   
    
     makeSubsystems();
 
@@ -129,26 +124,25 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driverJoystick = new Joystick(0);
+    driverJoystick = new ChameleonController(new Joystick(0));
     operatorJoystick = new Joystick(1);
 
-    DPad driverDPad = new DPad(driverJoystick, 0);
     DPad operatorDPad = new DPad(operatorJoystick, 0);
 
     //Driver
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A)
+    driverJoystick.button(XBoxConstants.BUTTON_A, 0)
             .whileTrue(new XModeCommand(driveSubsystem));
 
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
+    driverJoystick.button(XBoxConstants.BUTTON_X, 1)
             .onTrue(new ResetNavXCommand());
     
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y)
+    driverJoystick.button(XBoxConstants.BUTTON_Y, 2)
             .onTrue(new SetNavX180Command());
             
-    new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
+    driverJoystick.analogButton(XBoxConstants.AXIS_LEFT_TRIGGER, 0)
             .onTrue(new CannonClawInCommand(cannonSubsystem, 0.6));
 
-    new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
+    driverJoystick.analogButton(XBoxConstants.AXIS_RIGHT_TRIGGER, 1)
             .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));
 
     // operator colors
@@ -271,7 +265,7 @@ public class RobotContainer {
   static double driverStrafeDeadzone = 0.1;
 
   public static double getDriveVerticalJoystick() {
-    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y);
+    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y, FlySkyConstants.AXIS_LEFT_Y);
     SmartDashboard.putNumber("driver.y.raw", axisValue);
     if (Math.abs(axisValue) < driverStrafeDeadzone) {
       return 0;
@@ -283,7 +277,7 @@ public class RobotContainer {
   }
 
   public static double getDriveHorizontalJoystick() {
-    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X);
+    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X, FlySkyConstants.AXIS_LEFT_X);
     SmartDashboard.putNumber("driver.x.raw", axisValue);
     if (Math.abs(axisValue) < driverStrafeDeadzone) {
       return 0;
@@ -296,7 +290,7 @@ public class RobotContainer {
 
   static double driverSpinDeadzone = 0.1;
   public static double getDriveSpinJoystick() {
-    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X);
+    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X, FlySkyConstants.AXIS_RIGHT_X);
     SmartDashboard.putNumber("driver.spin.raw", axisValue);
     double rv = 0;
     if (Math.abs(axisValue) >= driverSpinDeadzone) {
@@ -308,19 +302,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("driver.spin.processed", rv);
     return rv;
   }
-
-  /*static double operatorDeadzone = 0.2;
-
-  public static double getOperatorLeftY() {
-    double axisValue = operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y);
-    if (Math.abs(axisValue) < operatorDeadzone) {
-      return 0;
-    }
-    if (axisValue < 0){
-      return -(axisValue*axisValue);
-    }
-    return axisValue*axisValue;
-  }*/
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
