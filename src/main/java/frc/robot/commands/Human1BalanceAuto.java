@@ -25,7 +25,6 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Human1BalanceAuto extends SequentialCommandGroup {
-  PoseOnField otherSide = PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3);
   final DriveSubsystem driveSubsystem;
   /** Creates a new Mid1BalanceAuto. */
   public Human1BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
@@ -35,16 +34,14 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.humanStart)
       ,
-
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.CUBES))
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new WaitCommand(4)
+      new WaitCommand(2)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
@@ -52,25 +49,22 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
       ,
-      new ParallelCommandGroup(
-        new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0, 0, driveSubsystem)
-        ,
-        new SetCannonLocationCommand(CannonLocation.lowLocation)
-      )
+      new SetCannonLocationCommand(CannonLocation.lowLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
-      
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
       ,
       // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
-      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

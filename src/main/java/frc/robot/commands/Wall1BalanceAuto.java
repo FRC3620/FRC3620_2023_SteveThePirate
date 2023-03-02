@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import org.usfirst.frc3620.misc.PoseOnField;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -30,33 +31,37 @@ public class Wall1BalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
-
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.wallStart)
       ,
-
-      new DriveToAprilTagCommand(1, Position.WALL, driveSubsystem, visionSubsystem, odometrySubsystem)
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.CUBES))
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8)
+      new WaitCommand(4)
       ,
-      new WaitCommand(1)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
-      new CannonClawInCommand(cannonSubsystem, 0)
+      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.2, 0.1, 180, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
-      // set cannon down to gamepiece somewhere
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
       ,
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
+      ,
+      // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 0, driveSubsystem)
       ,
-      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

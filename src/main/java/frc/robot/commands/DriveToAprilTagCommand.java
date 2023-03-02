@@ -127,8 +127,8 @@ public class DriveToAprilTagCommand extends CommandBase {
         dl_tagYaw = tagYaw;
         dl_tagPitch = tagPitch;
         dl_tagId = target.getFiducialId();
-        double targetYaw = 10.38;
-        double targetPitch = 10.9;
+        double targetYaw = 10.0;
+        double targetPitch = 9.7;
 
         double targetYawTolerance = 0.7;
         double targetPitchTolerance = 0.9;
@@ -145,6 +145,7 @@ public class DriveToAprilTagCommand extends CommandBase {
             speed = 0.1;
           }
 
+          // TODO probably need normalizeAngle() here
           if (tagYaw == null || tagYaw > targetYaw - targetYawTolerance && tagYaw < targetYaw + targetYawTolerance) {
             driveSubsystem.stopDrive();
             myState = MyState.SET_TO_FORWARD;
@@ -177,6 +178,7 @@ public class DriveToAprilTagCommand extends CommandBase {
             speed = 0.1;
           }
 
+          // TODO probably need normalizeAngle() here
           if (tagPitch == null || tagPitch > targetPitch - targetPitchTolerance && tagPitch < targetPitch + targetPitchTolerance) {
             driveSubsystem.stopDrive();
             staticYInLast = whereIIs.getY();

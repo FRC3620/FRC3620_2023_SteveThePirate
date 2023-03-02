@@ -40,12 +40,11 @@ public class CannonClawMechanism {
   public void periodic() {
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
+      SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
 
       if (encoder != null) {
         double elevateSpeed = encoder.getVelocity();
-        double elevatePosition = encoder.getPosition();
         SmartDashboard.putNumber(name + ".speed", elevateSpeed);
         // SmartDashboard.putNumber(name + ".velocityConversionFactor", encoder.getVelocityConversionFactor());
 

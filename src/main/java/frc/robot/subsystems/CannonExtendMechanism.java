@@ -53,7 +53,7 @@ public class CannonExtendMechanism  {
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
+      SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
       SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
 
@@ -123,5 +123,10 @@ public class CannonExtendMechanism  {
 
   public double getRequestedExtension() {
     return requestedPosition;
+  }
+
+  public double getCurrentExtension() {
+    if (encoder == null) return 0;
+    return  encoder.getPosition();
   }
 }

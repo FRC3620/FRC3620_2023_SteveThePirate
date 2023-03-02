@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
@@ -12,11 +15,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.CannonLocation;
 import frc.robot.Robot;
 
 public class CannonPitchMechanism  {
-  /** Creates a new ExtendSubSubsystem. */
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
   boolean encoderIsValid = false;
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
@@ -49,7 +52,7 @@ public class CannonPitchMechanism  {
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
+      SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
 
       if (pitchEncoder != null) {
@@ -95,9 +98,8 @@ public class CannonPitchMechanism  {
 }
 
   /**
-   * Sets the cannon to extend the arm to 'length' inches. Increasing
-   * length is a longer arm.
-   * "Extend" motor.
+   * Sets the cannon to angle the wrist to 'pitch' degrees. 0 is perpendicular to
+   * the end of the arm. Negative is more towards the front bumper.
    * @param pitch
    */
   public void setPitch(double pitch) {

@@ -210,6 +210,11 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		SmartDashboard.putNumber("drive.lb.home_encoder", getHomeEncoderHeading(leftBackHomeEncoder));
 		SmartDashboard.putNumber("drive.rb.home_encoder", getHomeEncoderHeading(rightBackHomeEncoder));
 
+		SmartDashboard.putNumber("drive.rf.encoder_diff", encoderDifference(Corner.RF));
+		SmartDashboard.putNumber("drive.lf.encoder_diff", encoderDifference(Corner.LF));
+		SmartDashboard.putNumber("drive.lb.encoder_diff", encoderDifference(Corner.LB));
+		SmartDashboard.putNumber("drive.rb.encoder_diff", encoderDifference(Corner.RB));
+
 		if (rightFrontDriveEncoder != null) {
 			SmartDashboard.putNumber("drive.rf.drive.velocity", rightFrontDriveEncoder.getVelocity());
 			SmartDashboard.putNumber("drive.rf.drive.position", rightFrontDriveEncoder.getPosition());
@@ -932,38 +937,6 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		return WHEEL_CIRCUMFERENCE;
 	}
 
-	public double getDriveMotorPositionRightFront(){
-		if (rightFrontDriveEncoder != null) {
-			return rightFrontDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getDriveMotorPositionLeftFront(){
-		if (leftFrontDriveEncoder != null) {
-			return leftFrontDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getDriveMotorPositionRightBack(){
-		if (rightBackDriveEncoder != null) {
-			return rightBackDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
-	public double getDriveMotorPositionLeftBack(){
-		if (leftBackDriveEncoder != null) {
-			return leftBackDriveEncoder.getPosition();
-		} else {
-			return 0.0;
-		}
-	}
-
 	public void switchFieldRelative(){
 		fieldRelative = !fieldRelative;
 	}
@@ -1015,6 +988,36 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		LF, RF, LB, RB;
 	}
 
+	double getHomeOffsetForCorner(Corner corner) {
+		switch (corner) {
+			case LF:
+				return swerveParameters.getLeftFrontAbsoluteOffset();
+			case RF:
+				return swerveParameters.getRightFrontAbsoluteOffset();
+			case LB:
+				return swerveParameters.getLeftBackAbsoluteOffset();
+			case RB:
+				return swerveParameters.getRightBackAbsoluteOffset();
+			default:
+				return 0.0;
+		}
+	}
+
+	AnalogInput getHomeEncoderForCorner(Corner corner) {
+		switch (corner) {
+			case LF:
+				return leftFrontHomeEncoder;
+			case RF:
+				return rightFrontHomeEncoder;
+			case LB:
+				return leftBackHomeEncoder;
+			case RB:
+				return rightBackHomeEncoder;
+			default:
+				return null;
+		}
+	}
+
 	RelativeEncoder getAzimuthEncoderForCorner(Corner corner) {
 		switch (corner) {
 			case LF:
@@ -1045,6 +1048,22 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		}
 	}
 
+	public double homeEncoderOffset(Corner corner) {
+		RelativeEncoder motorEncoder = getAzimuthEncoderForCorner(corner);
+		AnalogInput homeEncoder = getHomeEncoderForCorner(corner);
+		double motorEncoderHeading = (motorEncoder == null) ? 0.0 : motorEncoder.getPosition();
+		return SwerveCalculator.calculateAngleDifference(motorEncoderHeading, getHomeEncoderHeading(homeEncoder));
+	}
+
+	public double encoderDifference(Corner corner) {
+		RelativeEncoder motorEncoder = getAzimuthEncoderForCorner(corner);
+		AnalogInput homeEncoder = getHomeEncoderForCorner(corner);
+		double offset = getHomeOffsetForCorner(corner);
+		double motorEncoderPosition = (motorEncoder) == null ? 0 : motorEncoder.getPosition();
+		double homeEncoderPosition = getHomeEncoderHeading(homeEncoder) - offset;
+		return SwerveCalculator.calculateAngleDifference(motorEncoderPosition, homeEncoderPosition);
+	}
+
 	public double getCornerAzimuthPosition(Corner corner) {
 		RelativeEncoder encoder = getAzimuthEncoderForCorner(corner);
 		return getFixedPosition(encoder);
@@ -1054,6 +1073,14 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		RelativeEncoder encoder = getDriveEncoderForCorner(corner);
 		if (encoder != null) {
 			return encoder.getVelocity();
+		}
+		return 0;
+	}
+
+	public double getCornerDrivePosition(Corner corner) {
+		RelativeEncoder encoder = getDriveEncoderForCorner(corner);
+		if (encoder != null) {
+			return encoder.getPosition();
 		}
 		return 0;
 	}

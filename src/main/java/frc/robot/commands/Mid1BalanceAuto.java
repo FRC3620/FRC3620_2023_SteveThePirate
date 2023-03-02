@@ -43,11 +43,13 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
       ,*/ // might add this parallelcommandgroup
       new SetNavX180Command()
       ,
+      new ZapOdometryCommand(FieldLocation.midStart)
+      ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new WaitCommand(4)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(2)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
       /*new ParallelCommandGroup(
         new SetCannonLocationCommand(CannonLocation.parkLocation)
@@ -57,7 +59,7 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
       ,*/
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new WaitCommand(2)
+      new WaitCommand(1)
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.3, 0.1, 180, driveSubsystem)
       ,
