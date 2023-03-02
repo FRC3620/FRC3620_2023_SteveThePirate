@@ -33,7 +33,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   enum LevelingState {
-    LEVEL, TIMED, PRETILTED, TILTED, DONE
+    LEVEL, TIMED, PRETILTED, TILTED, ARMADJUST, DONE
   }
 
   LevelingState myState;
@@ -102,6 +102,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
         myState = LevelingState.PRETILTED;
         logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kYellow);
+        timer = null;
       }
     }
 
@@ -115,6 +116,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
         myState = LevelingState.TILTED;
         logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kPurple);
+        timer = null;
       }
     }
     
@@ -127,6 +129,13 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
         power = 0;
         setColor(Color.kGreen);
       }
+    }
+
+    if(myState == LevelingState.ARMADJUST){
+      if(pitch < -10){
+        cannonSubsystem.setElevation(30);
+      }
+      myState = LevelingState.DONE;
     }
 
     /*if(myState == LevelingState.COUNTER){
@@ -167,7 +176,14 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   public boolean isFinished() {
     if(myState == LevelingState.DONE) {
       driveSubsystem.xMode();
-      return true;
+      if(timer == null){
+        timer = new Timer();
+        timer.start();
+      }
+      if(timer.advanceIfElapsed(2)){
+        timer = null;
+        return true;
+      }
     }
     return false;
   }
