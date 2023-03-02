@@ -136,6 +136,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   @Override
   public boolean isFinished() {
     if(myState == LevelingState.DONE) {
+      driveSubsystem.xMode();
       return true;
     }
     return false;

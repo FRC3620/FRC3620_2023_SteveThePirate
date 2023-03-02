@@ -33,7 +33,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   enum LevelingState {
-    LEVEL, TIMED, TILTED, DONE
+    LEVEL, TIMED, PRETILTED, TILTED, DONE
   }
 
   LevelingState myState;
@@ -63,9 +63,9 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     setColor(Color.kRed);
     driveSubsystem.setDriveToBrake();
 
-    cannonSubsystem.setPitch(-117);
-    cannonSubsystem.setElevation(30);
-    cannonSubsystem.setExtension(0);
+    //cannonSubsystem.setPitch(-117);
+    //cannonSubsystem.setElevation(30);
+    //cannonSubsystem.setExtension(0);
 
     if (doLog) {
       levelingDataLogger = LevelingDataLogger.getDataLogger(getClass().getSimpleName(), this);
@@ -86,8 +86,8 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
       power = 0.3;
       if(pitch < -13) {
         // we are going uphill, slow down
-        logger.info("switching to tilted, pitch = {}", pitch);
         myState = LevelingState.TIMED;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kBlue);
       }
     }
@@ -98,18 +98,34 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
       }
       timer.start();
       power = 0.3;
-      if(timer.advanceIfElapsed(0.75)){
+      if(timer.advanceIfElapsed(1)){
+        myState = LevelingState.PRETILTED;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
+        setColor(Color.kYellow);
+      }
+    }
+
+    if(myState == LevelingState.PRETILTED){
+      power = .1;
+      if(timer == null){
+        timer = new Timer();
+        timer.start();
+      }
+      if(timer.advanceIfElapsed(.5)){
         myState = LevelingState.TILTED;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
+        setColor(Color.kPurple);
       }
     }
     
     if(myState == LevelingState.TILTED){
       power = 0.1;
-      if(pitch > -11){ //was -10
+      if(pitch > -12.5){ //was -10
         // we are still going up hill, but not as much. it must be swinging?
-        logger.info("switching to counter, pitch = {}", pitch);
         myState = LevelingState.DONE;
-        setColor(Color.kYellow);
+        logger.info("switching to {}, pitch = {}", myState, pitch);
+        power = 0;
+        setColor(Color.kGreen);
       }
     }
 
@@ -150,6 +166,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   @Override
   public boolean isFinished() {
     if(myState == LevelingState.DONE) {
+      driveSubsystem.xMode();
       return true;
     }
     return false;

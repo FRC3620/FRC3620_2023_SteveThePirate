@@ -112,6 +112,7 @@ public class BackwardsAutoLevelingCommand extends CommandBase implements ILeveli
   @Override
   public boolean isFinished() {
     if(myState == LevelingState.DONE){
+      driveSubsystem.xMode();
       return true;
     }
     return false;
