@@ -103,7 +103,7 @@ public class CannonPitchMechanism  {
    * @param pitch
    */
   public void setPitch(double pitch) {
-    pitch = MathUtil.clamp(pitch, -130, 0);
+    pitch = MathUtil.clamp(pitch, -130, 10);
     SmartDashboard.putNumber(name + ".requestedHeight", pitch);
     requestedPosition = pitch;
     if (encoderIsValid) {

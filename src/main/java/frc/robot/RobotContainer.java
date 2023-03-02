@@ -180,20 +180,20 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
              
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
-            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 5));
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 8));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)
-            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -5));
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -8));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.2)
-            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, 1));
+            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, 4));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.2)
-            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, -1));   
+            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, -4));   
              
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
-    operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() + 5)));
-    operatorDPad.right().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() - 5)));
+    operatorDPad.left().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, 1));
+    operatorDPad.right().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, -1));
   }
 
   /*public static double getOperatorJoystickRightY() {
