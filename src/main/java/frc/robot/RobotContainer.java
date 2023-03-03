@@ -36,6 +36,7 @@ import org.usfirst.frc3620.misc.JoystickAnalogButton;
 import org.usfirst.frc3620.misc.PoseOnField;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
+import org.usfirst.frc3620.misc.ChameleonController.ControllerType;
 import org.usfirst.frc3620.misc.FlySkyConstants;
 
 /**
@@ -65,6 +66,7 @@ public class RobotContainer {
   public static FlareSubsystem flareSubsystem;
 
   // joysticks here....
+  public static Joystick rawDriverJoystick;
   public static ChameleonController driverJoystick;
   public static Joystick operatorJoystick;
 
@@ -117,6 +119,14 @@ public class RobotContainer {
     flareSubsystem = new FlareSubsystem();
   }
 
+  public String getDriverControllerName() {
+    return rawDriverJoystick.getName();
+  }
+
+  public void setDriverControllerName(ControllerType driveControllerType) {
+    driverJoystick.setCurrentControllerType(driveControllerType);
+  }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -124,25 +134,26 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driverJoystick = new ChameleonController(new Joystick(0));
+    rawDriverJoystick = new Joystick(0);
+    driverJoystick = new ChameleonController(rawDriverJoystick);
     operatorJoystick = new Joystick(1);
 
     DPad operatorDPad = new DPad(operatorJoystick, 0);
 
     //Driver
-    driverJoystick.button(XBoxConstants.BUTTON_A, 0)
+    driverJoystick.button(XBoxConstants.BUTTON_A, FlySkyConstants.BUTTON_SWD)
             .whileTrue(new XModeCommand(driveSubsystem));
 
-    driverJoystick.button(XBoxConstants.BUTTON_X, 1)
+    driverJoystick.button(XBoxConstants.BUTTON_X, FlySkyConstants.BUTTON_SWC)
             .onTrue(new ResetNavXCommand());
     
-    driverJoystick.button(XBoxConstants.BUTTON_Y, 2)
+    driverJoystick.button(XBoxConstants.BUTTON_Y, FlySkyConstants.BUTTON_SWA)
             .onTrue(new SetNavX180Command());
             
-    driverJoystick.analogButton(XBoxConstants.AXIS_LEFT_TRIGGER, 0)
+    driverJoystick.analogButton(XBoxConstants.AXIS_LEFT_TRIGGER, FlySkyConstants.AXIS_SWE)
             .onTrue(new CannonClawInCommand(cannonSubsystem, 0.6));
 
-    driverJoystick.analogButton(XBoxConstants.AXIS_RIGHT_TRIGGER, 1)
+    driverJoystick.analogButton(XBoxConstants.AXIS_RIGHT_TRIGGER, FlySkyConstants.AXIS_SWH)
             .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));
 
     // operator colors

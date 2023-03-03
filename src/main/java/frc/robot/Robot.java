@@ -9,6 +9,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.FileSaver;
 import org.usfirst.frc3620.misc.GitNess;
 import org.usfirst.frc3620.misc.RobotMode;
+import org.usfirst.frc3620.misc.ChameleonController.ControllerType;
 
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -146,6 +147,13 @@ public class Robot extends TimedRobot {
 
     processRobotModeChange(RobotMode.TELEOP);
     logMatchInfo();
+    String driveControllerName = m_robotContainer.getDriverControllerName();
+    logger.info("Drive Controller Name: {}", driveControllerName);
+    if (driveControllerName.startsWith("FlySky")) {
+      m_robotContainer.setDriverControllerName(ControllerType.B);
+    } else {
+      m_robotContainer.setDriverControllerName(ControllerType.A);
+    }
   }
 
   /** This function is called periodically during operator control. */
