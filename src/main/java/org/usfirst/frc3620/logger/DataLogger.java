@@ -115,7 +115,6 @@ public class DataLogger extends DataLoggerBase {
                     w.print(v);
                 }
                 w.println();
-                System.out.println("ping " + t + " " + timer);
 
                 // flush once every couple seconds
                 if (t - tFlushed > flushInterval)
