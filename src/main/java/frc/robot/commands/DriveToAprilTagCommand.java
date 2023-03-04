@@ -127,10 +127,10 @@ public class DriveToAprilTagCommand extends CommandBase {
         dl_tagYaw = tagYaw;
         dl_tagPitch = tagPitch;
         dl_tagId = target.getFiducialId();
-        double targetYaw = 12.040;
-        double targetPitch =3.118;
+        double targetYaw = 10.0;
+        double targetPitch = 9.7;
 
-        double targetYawTolerance = 0.8;
+        double targetYawTolerance = 0.7;
         double targetPitchTolerance = 0.9;
 
         double speed = 0.0;
@@ -145,6 +145,7 @@ public class DriveToAprilTagCommand extends CommandBase {
             speed = 0.1;
           }
 
+          // TODO probably need normalizeAngle() here
           if (tagYaw == null || tagYaw > targetYaw - targetYawTolerance && tagYaw < targetYaw + targetYawTolerance) {
             driveSubsystem.stopDrive();
             myState = MyState.SET_TO_FORWARD;
@@ -177,6 +178,7 @@ public class DriveToAprilTagCommand extends CommandBase {
             speed = 0.1;
           }
 
+          // TODO probably need normalizeAngle() here
           if (tagPitch == null || tagPitch > targetPitch - targetPitchTolerance && tagPitch < targetPitch + targetPitchTolerance) {
             driveSubsystem.stopDrive();
             staticYInLast = whereIIs.getY();
@@ -193,7 +195,7 @@ public class DriveToAprilTagCommand extends CommandBase {
         SmartDashboard.putNumber("apriltag.speed", speed);
 
         if (myState == MyState.LAST) {
-          double strafeDistance = 0.3048;
+          double strafeDistance = 0.3048; //change this
           double y = whereIIs.getY();
           double power = 0.1;
 

@@ -40,12 +40,11 @@ public class CannonClawMechanism {
   public void periodic() {
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
+      SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
 
       if (encoder != null) {
         double elevateSpeed = encoder.getVelocity();
-        double elevatePosition = encoder.getPosition();
         SmartDashboard.putNumber(name + ".speed", elevateSpeed);
         // SmartDashboard.putNumber(name + ".velocityConversionFactor", encoder.getVelocityConversionFactor());
 
@@ -84,13 +83,13 @@ public class CannonClawMechanism {
    * length is a longer arm.
    * "Extend" motor.*/
 
-  public void setClawSpeed(double speed) {
+  public void setClawPower(double speed) {
     if (motor != null) {
       motor.set(speed);
     }
   }
 
-  public double getClawSpeed() {
+  public double getClawPower() {
     if (encoder == null) return 0;
     return encoder.getVelocity();
   }

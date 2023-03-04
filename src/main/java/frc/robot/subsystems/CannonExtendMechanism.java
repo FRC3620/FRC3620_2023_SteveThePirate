@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
@@ -8,7 +10,10 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -23,8 +28,16 @@ public class CannonExtendMechanism  {
   
   Double requestedPositionWhileCalibrating = null;
   double requestedPosition = 0;
+  double adjustmentAddition = 0;
+  double adjustedLength = requestedPosition;
 
   final String name = "Extension";
+
+  public GenericEntry adjustemEntry = Shuffleboard.getTab("numberSlider")
+    .add(name + ".adjustmentSlider", 0)
+    .withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", -5, "max", 5))
+    .getEntry();
 
   public CannonExtendMechanism(CANSparkMaxSendable motor) {
     this.motor = motor;
@@ -34,26 +47,30 @@ public class CannonExtendMechanism  {
       PID = motor.getPIDController();
 
       // set up PID for turretPID here
-      PID.setP(0.2);   //0.1
+      PID.setP(0.075);   //0.1
       PID.setI(0.0);     //0.0
       PID.setD(0);    //10
       PID.setFF(0.0);      //0.0
 
-      PID.setOutputRange(-0.2, 0.2);
+      PID.setOutputRange(-0.4, 0.75);
     }
 
     if (encoder != null) {
       encoder.setPositionConversionFactor(15/30.4);
       //encoder.setVelocityConversionFactor(1);
     }
+
+        
+    
   }
+  
 
   public void periodic() {
-    
+
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current",  motor.getOutputCurrent());
+      SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
       SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
 
@@ -103,18 +120,22 @@ public class CannonExtendMechanism  {
    * @param length
    */
   public void setExtension(double length) {
-    length = MathUtil.clamp(length, 0, 45);
-    SmartDashboard.putNumber(name + ".requestedLength", length);
-    requestedPosition = length;
+    adjustmentAddition = adjustemEntry.getDouble(0);
+    adjustedLength = length + adjustmentAddition;
+    adjustedLength = MathUtil.clamp(adjustedLength, 0, 45);
+    SmartDashboard.putNumber(name + ".rawRequestedLength", length);
+    SmartDashboard.putNumber(name + ".requestedLength", adjustedLength);
+    
+    requestedPosition = adjustedLength;
     if (encoderIsValid) {
-      PID.setReference(length, ControlType.kPosition);
+      PID.setReference(adjustedLength, ControlType.kPosition);
     } else {
-      requestedPositionWhileCalibrating = length;
+      requestedPositionWhileCalibrating = adjustedLength;
     }
   }
 
-  public void extendCannon(double speed) {
-    motor.set(speed);
+  public void extendCannon(double power) {
+    motor.set(power);
   }
 
   public void disable() {
@@ -123,5 +144,14 @@ public class CannonExtendMechanism  {
 
   public double getRequestedExtension() {
     return requestedPosition;
+  }
+
+  public double getCurrentExtension() {
+    if (encoder == null) return 0;
+    return  encoder.getPosition();
+  }
+
+  public double getAdjustedRequestedExtension() {
+    return adjustedLength;
   }
 }

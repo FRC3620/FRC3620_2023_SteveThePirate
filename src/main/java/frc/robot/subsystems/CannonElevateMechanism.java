@@ -44,18 +44,18 @@ public class CannonElevateMechanism  {
   public void periodic() {
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current", motor.getOutputCurrent());
+      if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
+        double motorPower = m_pidController.calculate(getCurrentElevation());
+        motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
+        elevateCannon(motorPower);
+      }
+      
+      SmartDashboard.putNumber(name + ".motor_current", motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
       SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
 
       SmartDashboard.putNumber(name + ".currentEncoderValue", elevateEncoder.getValue());
       SmartDashboard.putNumber(name + ".currentPosition", getCurrentElevation());
-
-      if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
-        double motorPower = m_pidController.calculate(getCurrentElevation());
-        motorPower = MathUtil.clamp(motorPower, -0.4, 0.75);
-        elevateCannon(motorPower);
-      }
     }
   }
 
@@ -65,7 +65,8 @@ public class CannonElevateMechanism  {
    * @param elevation
    */
   public void setElevation(double elevation) {
-    elevation = MathUtil.clamp(elevation, -45, 125);
+    elevation = MathUtil.clamp(elevation, -45, 125
+    );
     SmartDashboard.putNumber(name + ".requestedElevation", elevation);
     requestedPosition = elevation;
 
@@ -81,6 +82,7 @@ public class CannonElevateMechanism  {
   }
 
   public double getCurrentElevation(){
+    if (elevateEncoder == null) return 0;
 		int elevationEncoderValue = elevateEncoder.getValue();
     // converting heading from tics (ranging from 0 to 4095) to degrees
 		double elevation = (elevationEncoderValue - elevateEncoderValueAt90Degrees)*(360.0/4096.0) + 90;

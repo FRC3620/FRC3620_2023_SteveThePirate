@@ -40,13 +40,13 @@
       "he.rf": 157.06, // right front
       "he.lf": 75.32,   // left front
       "he.lb": 17.16,  // left back
-      "he.rb": -21.26,   // right back
+      "he.rb": -126.8,   // right back
       //
       "chassis_width": 19.00,  // inches
       "chassis_length": 19.00,
       "drive_gear_ratio": 5.85
     },
-    "elevationEncoderValueAt90Degrees": 1510
+    "elevationEncoderValueAt90Degrees": 1531
   },
   {
     "name": "Fancy Mule Board",

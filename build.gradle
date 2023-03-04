@@ -108,7 +108,6 @@ test {
         setFailOnNoMatchingTests(false)
 
         includeTestsMatching 'DummyTest'
-
     }
     // ****************************************************************************
 }

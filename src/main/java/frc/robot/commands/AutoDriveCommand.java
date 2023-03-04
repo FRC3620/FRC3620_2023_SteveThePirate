@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem.Corner;
+
 import org.usfirst.frc3620.misc.IAutonomousLogger;
 
 public class AutoDriveCommand extends CommandBase {
@@ -49,11 +51,11 @@ public class AutoDriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    initialPositionRightFront = driveSubsystem.getDriveMotorPositionRightFront(); // looks at the encoder on one
+    initialPositionRightFront = driveSubsystem.getCornerDrivePosition(Corner.RF);
     // drive motor
-    initialPositionLeftFront = driveSubsystem.getDriveMotorPositionLeftFront();
-    initialPositionRightBack = driveSubsystem.getDriveMotorPositionRightBack();
-    initialPositionLeftBack = driveSubsystem.getDriveMotorPositionLeftBack();
+    initialPositionLeftFront = driveSubsystem.getCornerDrivePosition(Corner.LF);
+    initialPositionRightBack = driveSubsystem.getCornerDrivePosition(Corner.RB);
+    initialPositionLeftBack = driveSubsystem.getCornerDrivePosition(Corner.LB);
     if (autonomousLogger != null) {
       if (legName == null) {
         autonomousLogger.setLegName(getClass().getName());
@@ -82,10 +84,10 @@ public class AutoDriveCommand extends CommandBase {
     double desiredAngleRelativeToRobot = desiredAngle - RobotContainer.navigationSubsystem.getCorrectedHeading();
     driveSubsystem.autoDrive(desiredAngleRelativeToRobot, pathSpeed, spinX);
 
-    double currentPositionRightFront = driveSubsystem.getDriveMotorPositionRightFront();
-    double currentPositionLeftFront = driveSubsystem.getDriveMotorPositionLeftFront();
-    double currentPositionRightBack = driveSubsystem.getDriveMotorPositionRightBack();
-    double currentPositionLeftBack = driveSubsystem.getDriveMotorPositionLeftBack();
+    double currentPositionRightFront = driveSubsystem.getCornerDrivePosition(Corner.RF);
+    double currentPositionLeftFront = driveSubsystem.getCornerDrivePosition(Corner.LF);
+    double currentPositionRightBack = driveSubsystem.getCornerDrivePosition(Corner.RB);
+    double currentPositionLeftBack = driveSubsystem.getCornerDrivePosition(Corner.LB);
 
     double distanceTravelledRightFront = Math.abs(currentPositionRightFront - initialPositionRightFront);
     double distanceTravelledLeftFront = Math.abs(currentPositionLeftFront - initialPositionLeftFront);
