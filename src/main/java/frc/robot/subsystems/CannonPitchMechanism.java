@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.CannonSubsystem;
 
 public class CannonPitchMechanism  {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -36,6 +38,8 @@ public class CannonPitchMechanism  {
   private final PIDController m_pidController = new PIDController(kP, kI, kD);
 
   double pitchOffset;
+  CannonSubsystem cannonSubsystem;
+
 
   final String name = "Pitch";
 
@@ -49,6 +53,9 @@ public class CannonPitchMechanism  {
   }
 
   public void periodic() {
+    if(cannonSubsystem == null){
+      cannonSubsystem = RobotContainer.cannonSubsystem;
+    }
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
@@ -86,9 +93,14 @@ public class CannonPitchMechanism  {
               }
             }
           } else {
-          double motorPower = m_pidController.calculate(getCurrentPitch());
-          motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
-          motor.set(motorPower);
+            double minPitch = (cannonSubsystem.getCurrentElevation() < 0) ? -10 : -130;
+            double clampPitch = MathUtil.clamp(requestedPosition, minPitch, 10);
+            m_pidController.setSetpoint(clampPitch);
+
+
+            double motorPower = m_pidController.calculate(getCurrentPitch());
+            motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
+            motor.set(motorPower);
           }
         } else {
           calibrationTimer = null; // start over!
@@ -103,11 +115,9 @@ public class CannonPitchMechanism  {
    * @param pitch
    */
   public void setPitch(double pitch) {
-    pitch = MathUtil.clamp(pitch, -130, 10);
     SmartDashboard.putNumber(name + ".requestedHeight", pitch);
-    requestedPosition = pitch;
     if (encoderIsValid) {
-      m_pidController.setSetpoint(pitch);;;; //UVVU
+      requestedPosition = pitch;
     } else {
       requestedPositionWhileCalibrating = pitch;
     }

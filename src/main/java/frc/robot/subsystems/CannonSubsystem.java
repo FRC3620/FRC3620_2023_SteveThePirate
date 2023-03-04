@@ -114,8 +114,7 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonExtendMechanism.getCurrentExtension();
   }
 
-  public double getAdjustedRequestedExtension() 
-  {
+  public double getAdjustedRequestedExtension() {
     return cannonExtendMechanism.getAdjustedRequestedExtension();
   }
 
