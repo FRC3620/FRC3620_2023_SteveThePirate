@@ -4,16 +4,12 @@
 
 package frc.robot.commands;
 
-import org.usfirst.frc3620.misc.PoseOnField;
-
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
 import frc.robot.FieldLocation;
 import frc.robot.RobotContainer;
-import frc.robot.TargetPoseOnField;
 import frc.robot.commands.DriveToAprilTagCommand.Position;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,11 +20,9 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Human1BalanceAuto extends SequentialCommandGroup {
-  final DriveSubsystem driveSubsystem;
-  /** Creates a new Mid1BalanceAuto. */
-  public Human1BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
-    this.driveSubsystem = driveSubsystem;
+public class Human2NoPickupNoBalanceAuto extends SequentialCommandGroup {
+  /** Creates a new Human2NoBalanceAuto. */
+  public Human2NoPickupNoBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -41,7 +35,7 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new WaitCommand(2)
+      new WaitCommand(2) // change later??
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
@@ -49,22 +43,32 @@ public class Human1BalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.6, 0.21, 180, driveSubsystem) // speed = 0.2
       ,
       new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.45, 0.21, 0, driveSubsystem) // 0.2
       ,
+      // set cannon down to gamepiece somewhere
       new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
       ,
-      // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.4, 0.21, 180, driveSubsystem)
       ,
-      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.4, 0.22, 180, driveSubsystem)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.2, 0.1, 180, driveSubsystem)
+      ,
+      new DriveToAprilTagCommand(3, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      ,
+      new WaitCommand(1.8)
+      ,
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
     );
   }
 }

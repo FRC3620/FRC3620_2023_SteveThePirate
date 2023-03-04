@@ -233,10 +233,10 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Level No Counter", new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem));
 
     // Autos
-    SmartDashboard.putData("Mid1BalanceAuto", new Mid1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    SmartDashboard.putData("Human1BalanceAuto", new Human1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    SmartDashboard.putData("Wall1BalanceAuto", new Wall1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    SmartDashboard.putData("Human2NoBalanceAuto", new Human2NoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Mid1BalanceAuto", new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Human1BalanceAuto", new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Wall1BalanceAuto", new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Human2NoBalanceAuto", new Human2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
 
     // Cannon
     SmartDashboard.putData("ExtendCommand0" , new CannonExtendCommand(cannonSubsystem, 0));
@@ -272,9 +272,9 @@ public class RobotContainer {
     SmartDashboard.putData("Auto mode", chooser);
     chooser.setDefaultOption("Do nothing", new LogCommand("no autonomous specified, did nothing"));
     chooser.addOption("April Tag Auto Test", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-    chooser.addOption("Mid1BalanceAuto", new Mid1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Human1BalanceAuto", new Human1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Wall1BalanceAuto", new Wall1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Mid1BalanceAuto", new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human1BalanceAuto", new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall1BalanceAuto", new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
   }
 
   static double driverStrafeDeadzone = 0.1;

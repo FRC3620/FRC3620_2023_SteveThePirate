@@ -26,7 +26,7 @@ public class DriveToGamePieceCommand extends CommandBase {
   DriveSubsystem driveSubsystem;
   VisionSubsystem visionSubsystem;
   CannonSubsystem cannonSubsystem;
-  double tolerance = 2;
+  double tolerance = 4;
   double lastTimestamp;
   FrontCameraMode currentCameraMode;
   FrontCameraMode pipeline;
@@ -102,6 +102,14 @@ public class DriveToGamePieceCommand extends CommandBase {
       }
 
       if (myState == MyState.SEARCHING) {
+        if(timer == null){
+          timer = new Timer();
+          timer.start();
+        }
+        if(timer.advanceIfElapsed(2)){
+          timer = null;
+          myState = MyState.WAITING1;
+        }
         if (target != null) {
           double spinPower = currentTargetYaw * 0.010;
           spinPower = MathUtil.clamp(spinPower, -.3, .3);
@@ -115,6 +123,7 @@ public class DriveToGamePieceCommand extends CommandBase {
             logger.info ("done searching; targetYaw = {}, currentHeading = {}, targetHeading = {}", currentTargetYaw, currentHeading, targetHeading);
             driveSubsystem.setTargetHeading(targetHeading);
             myState = MyState.WAITING1;
+            timer = null;
           }
         } else {
           driveSubsystem.stopDrive();
@@ -167,7 +176,7 @@ public class DriveToGamePieceCommand extends CommandBase {
           cannonSubsystem.setClawPower(0.6);
           
 
-          if (timer.advanceIfElapsed(2)) {
+          if (timer.advanceIfElapsed(1.5)) {
             timer = null;
             cannonSubsystem.setClawPower(0.1);
             myState = MyState.STOPPED;

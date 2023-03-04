@@ -6,8 +6,7 @@ package frc.robot.commands;
 
 import org.usfirst.frc3620.misc.PoseOnField;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -18,32 +17,24 @@ import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Mid1BalanceAuto extends SequentialCommandGroup {
+public class Wall1PickupBalanceAuto extends SequentialCommandGroup {
   PoseOnField otherSide = PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3);
   /** Creates a new Mid1BalanceAuto. */
-  public Mid1BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
+  public Wall1PickupBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
       // tell odometry where we is
-      new ZapOdometryCommand(FieldLocation.midStart)
+      new ZapOdometryCommand(FieldLocation.wallStart)
       ,
-
-      /*new ParallelCommandGroup(
-        new DriveToAprilTagCommand(2, Position.HUMAN, driveSubsystem, visionSubsystem, odometrySubsystem)
-        ,
-        new SetCannonLocationCommand(CannonLocation.coneHighLocation)
-      )
-      ,*/ // might add this parallelcommandgroup
-      new SetNavX180Command()
-      ,
-      new ZapOdometryCommand(FieldLocation.midStart)
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.CUBES))
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
@@ -51,19 +42,26 @@ public class Mid1BalanceAuto extends SequentialCommandGroup {
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
-      /*new ParallelCommandGroup(
-        new SetCannonLocationCommand(CannonLocation.parkLocation)
-        ,
-        new DriveToCoordinateCommand(FieldLocation.otherSide, 0.2, 0.1, 180, driveSubsystem)
-      )
-      ,*/
+      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
+      ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new WaitCommand(1)
+      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.2, 0.1, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.3, 0.1, 180, driveSubsystem)
+      new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
-      new AutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.2, 0.1, 0, driveSubsystem)
+      ,
+      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
+      ,
+      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
+      ,
+      // should we do this or go to the position for leveling?
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.1, 0, driveSubsystem)
+      ,
+      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

@@ -4,7 +4,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 # Auto Names
 
-Auto is named with a combination of start position (Wall, Mid, Human), number of pieces placed (currently 1 or 2), and whether we balance (Balance or NoBalance)
+Auto is named with a combination of start position (Wall, Mid, Human), number of pieces placed (currently 1 or 2), whether we pickup a piece w/o placing or not (Pickup or NoPickup), and whether we balance (Balance or NoBalance)
 
 # IO Assignments
 ## Digital IO
