@@ -989,6 +989,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	}
 
 	double getHomeOffsetForCorner(Corner corner) {
+		if (swerveParameters == null) return 0;
 		switch (corner) {
 			case LF:
 				return swerveParameters.getLeftFrontAbsoluteOffset();

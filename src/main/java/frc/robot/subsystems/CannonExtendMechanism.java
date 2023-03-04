@@ -10,6 +10,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -32,6 +34,12 @@ public class CannonExtendMechanism  {
 
   final String name = "Extension";
 
+  public GenericEntry adjustemEntry = Shuffleboard.getTab("numberSlider")
+    .add(name + ".adjustmentSlider", 0)
+    .withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", -5, "max", 5))
+    .getEntry();
+
   public CannonExtendMechanism(CANSparkMaxSendable motor) {
     this.motor = motor;
     if (motor != null) {
@@ -52,15 +60,16 @@ public class CannonExtendMechanism  {
       encoder.setPositionConversionFactor(15/30.4);
       //encoder.setVelocityConversionFactor(1);
     }
+
+        
+    
   }
+  
 
   public void periodic() {
-    
-      adjustmentAddition = Shuffleboard.getTab("numberSlider")
-        .add(name + ".adjustmentSlider", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 5))
-        .getEntry().getDouble(0);
+
+    adjustmentAddition = adjustemEntry.getDouble(0);
+    SmartDashboard.putNumber("adjustmentAdditiono UWU",adjustmentAddition);
 
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
@@ -116,7 +125,7 @@ public class CannonExtendMechanism  {
    */
   public void setExtension(double length) {
     adjustedLength = length + adjustmentAddition;
-    length = MathUtil.clamp(length, 0, 45);
+    adjustedLength = MathUtil.clamp(adjustedLength, 0, 45);
     SmartDashboard.putNumber(name + ".requestedLength", length);
     SmartDashboard.putNumber(name + ".adjustedLength", adjustedLength);
     
