@@ -94,7 +94,8 @@ public class CannonPitchMechanism  {
             }
           } else {
             double minPitch = (cannonSubsystem.getCurrentElevation() < 0) ? -10 : -130;
-            double clampPitch = MathUtil.clamp(requestedPosition, minPitch, 10);
+            double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -10 : 10;
+            double clampPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
             m_pidController.setSetpoint(clampPitch);
 
 
