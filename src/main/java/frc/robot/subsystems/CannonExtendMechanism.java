@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
@@ -9,6 +11,8 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -23,6 +27,8 @@ public class CannonExtendMechanism  {
   
   Double requestedPositionWhileCalibrating = null;
   double requestedPosition = 0;
+  double adjustmentAddition = 0;
+  double adjustedLength = requestedPosition;
 
   final String name = "Extension";
 
@@ -50,6 +56,12 @@ public class CannonExtendMechanism  {
 
   public void periodic() {
     
+      adjustmentAddition = Shuffleboard.getTab("numberSlider")
+        .add(name + ".adjustmentSlider", 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 5))
+        .getEntry().getDouble(0);
+
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
@@ -103,13 +115,16 @@ public class CannonExtendMechanism  {
    * @param length
    */
   public void setExtension(double length) {
+    adjustedLength = length + adjustmentAddition;
     length = MathUtil.clamp(length, 0, 45);
     SmartDashboard.putNumber(name + ".requestedLength", length);
-    requestedPosition = length;
+    SmartDashboard.putNumber(name + ".adjustedLength", adjustedLength);
+    
+    requestedPosition = adjustedLength;
     if (encoderIsValid) {
-      PID.setReference(length, ControlType.kPosition);
+      PID.setReference(adjustedLength, ControlType.kPosition);
     } else {
-      requestedPositionWhileCalibrating = length;
+      requestedPositionWhileCalibrating = adjustedLength;
     }
   }
 
