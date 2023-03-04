@@ -212,7 +212,9 @@ public class VisionSubsystem extends SubsystemBase {
           if (vectorFromOriginToTag != null) {
             whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
             if (targetId == bestTargetId) {
-              RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+              if(vectorFromCameraToTag.getX() < 4.2){
+                RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+              }
 
               SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
               SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
