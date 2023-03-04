@@ -69,7 +69,7 @@ public class CannonExtendMechanism  {
   public void periodic() {
 
     adjustmentAddition = adjustemEntry.getDouble(0);
-    SmartDashboard.putNumber("adjustmentAdditiono UWU",adjustmentAddition);
+    SmartDashboard.putNumber("adjustmentAddition",adjustmentAddition);
 
     SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
@@ -152,5 +152,9 @@ public class CannonExtendMechanism  {
   public double getCurrentExtension() {
     if (encoder == null) return 0;
     return  encoder.getPosition();
+  }
+
+  public double getAdjustedRequestedExtension() {
+    return adjustedLength;
   }
 }
