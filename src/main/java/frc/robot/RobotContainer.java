@@ -4,7 +4,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.*;
 import frc.robot.commands.DriveToAprilTagCommand.Position;
 import frc.robot.subsystems.VisionSubsystem;
@@ -63,7 +63,7 @@ public class RobotContainer {
   public static VisionSubsystem visionSubsystem;
   public static OdometrySubsystem odometrySubsystem;
   public static CannonSubsystem cannonSubsystem;
-  public static FlareSubsystem flareSubsystem, balanceLights;
+  public static FlareSubsystem flareSubsystem;
 
   // joysticks here....
   public static Joystick rawDriverJoystick;
@@ -84,11 +84,13 @@ public class RobotContainer {
       logger.warn("this is a test chassis, will try to deal with missing hardware!");
     }
 
+    /*
     if (canDeviceFinder.isDevicePresent(CANDeviceType.REV_PH, 1, "REV PH") || iAmACompetitionRobot) {
       pneumaticModuleType = PneumaticsModuleType.REVPH;
     } else if (canDeviceFinder.isDevicePresent(CANDeviceType.CTRE_PCM, 0, "CTRE PCM")) {
       pneumaticModuleType = PneumaticsModuleType.CTREPCM;
     }
+    */
    
     makeSubsystems();
 
@@ -97,9 +99,11 @@ public class RobotContainer {
     if (missingDevices.size() > 0) {
       SmartDashboard.putBoolean("can.ok", false);
       SmartDashboard.putString("can.missing", missingDevices.toString());
+      flareSubsystem.setColor(Color.kRed);
     } else {
       SmartDashboard.putBoolean("can.ok", true);
       SmartDashboard.putString("can.missing", "");
+      flareSubsystem.setColor(Color.kLightGreen);
     }
 
     // Configure the button bindings
@@ -116,9 +120,7 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
     cannonSubsystem = new CannonSubsystem();
-    balanceLights = new FlareSubsystem("balanceLights", 8);
-    balanceLights.setWatchTheClock(false);
-    //flareSubsystem = new FlareSubsystem();
+    flareSubsystem = new FlareSubsystem();
   }
 
   public String getDriverControllerName() {
@@ -293,8 +295,9 @@ public class RobotContainer {
     chooser.setDefaultOption("Do nothing", () -> new LogCommand("no autonomous specified, did nothing"));
     chooser.addOption("April Tag Auto Test", () -> new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
     chooser.addOption("Mid1BalanceAuto", () -> new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Human1BalanceAuto", () -> new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Wall1BalanceAuto", () -> new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human1PickupBalanceAuto", () -> new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human1BalanceAuto", () -> new Human1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall1PickupBalanceAuto", () -> new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
   }
 
   interface CommandFactory extends Supplier<Command> { }

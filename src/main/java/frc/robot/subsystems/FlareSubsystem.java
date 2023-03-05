@@ -44,7 +44,7 @@ public class FlareSubsystem extends SubsystemBase {
     flareColors = new FlareColor[numberOfPixels];
 
     setInterval(1, 0);
-    setColor(new FlareColor(new Color(64, 64, 64)));
+    setColor(new FlareColor(new Color(0,0, 0)));
 
     leds.start();
     timer.start();
@@ -60,6 +60,10 @@ public class FlareSubsystem extends SubsystemBase {
     //SmartDashboard.putNumber("offseconds", offSeconds);
     //SmartDashboard.putNumber("onseconds", onSeconds);
     if (offSeconds == 0) colorsNeedUpdating = true;
+  }
+
+  public void setColor(Color color) {
+    setColor(new FlareColor(color));
   }
 
   public void setColor(FlareColor flareColor){
@@ -93,6 +97,7 @@ public class FlareSubsystem extends SubsystemBase {
 
   public void ProcessRobotModeChange(RobotMode robotMode) {
     this.robotMode = robotMode;
+    /*
     if (robotMode == RobotMode.TELEOP ) {
 
       if (DriverStation.getAlliance()==Alliance.Blue) {
@@ -115,6 +120,7 @@ public class FlareSubsystem extends SubsystemBase {
       }
 
     }
+    */
 
 
   }

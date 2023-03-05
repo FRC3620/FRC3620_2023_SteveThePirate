@@ -24,10 +24,10 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Human1PickupBalanceAuto extends SequentialCommandGroup {
+public class Human1BalanceAuto extends SequentialCommandGroup {
   final DriveSubsystem driveSubsystem;
   /** Creates a new Mid1BalanceAuto. */
-  public Human1PickupBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
+  public Human1BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
     this.driveSubsystem = driveSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -36,8 +36,7 @@ public class Human1PickupBalanceAuto extends SequentialCommandGroup {
       ,
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.humanStart)
-      ,
-      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.CUBES))
+      /*
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
@@ -55,20 +54,15 @@ public class Human1PickupBalanceAuto extends SequentialCommandGroup {
       new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.7, 0.3, 178, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.lowLocation)
+      */
       ,
-      // TODO need to change heading if blue
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.7, 0.3, 0, driveSubsystem) //speed was 0.5
-      ,
-      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
-      ,
-      new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.6, 0.3, 180, driveSubsystem) //speed was 0.5
       ,
       // should we do this or go to the position for leveling?
-      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      //new SetCannonLocationCommand(CannonLocation.parkLocation)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.3, 180, driveSubsystem)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.6, 0.3, 0, driveSubsystem)
-      ,
-      new BackwardsAutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
+      new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
       //,
       //new XModeCommand(driveSubsystem)
     );

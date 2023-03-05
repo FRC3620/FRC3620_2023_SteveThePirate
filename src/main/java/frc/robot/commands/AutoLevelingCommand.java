@@ -49,8 +49,8 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   }
 
   void setColor(Color color){
-    if(RobotContainer.balanceLights != null){
-      RobotContainer.balanceLights.setColor(new FlareColor(color));
+    if(RobotContainer.flareSubsystem != null){
+      RobotContainer.flareSubsystem.setColor(new FlareColor(color));
     }
   }
 

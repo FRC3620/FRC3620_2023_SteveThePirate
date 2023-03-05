@@ -14,6 +14,7 @@ import org.usfirst.frc3620.misc.SwerveCalculator;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
@@ -65,6 +66,7 @@ public class DriveToGamePieceCommand extends CommandBase {
     currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
     logger.info("Searching for {}", pipeline);
     cannonSubsystem.setLocation(CannonLocation.coneFloorPickLocation);
+    RobotContainer.flareSubsystem.setColor(Color.kDarkMagenta);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -94,11 +96,15 @@ public class DriveToGamePieceCommand extends CommandBase {
 
       Double currentTargetYaw = null;
       Double currentTargetPitch = null;
+      
       if (target != null) {
         currentTargetYaw = target.getYaw();
         currentTargetPitch = target.getPitch();
         SmartDashboard.putNumber("gamepiece.yaw", currentTargetYaw);
         SmartDashboard.putNumber("gamepiece.pitch", currentTargetPitch);
+        if (currentTargetPitch < 14) {
+          target = null;
+        }
       }
 
       if (myState == MyState.SEARCHING) {
@@ -145,6 +151,7 @@ public class DriveToGamePieceCommand extends CommandBase {
           }
         }
       } else if (myState == MyState.DRIVING) {
+        cannonSubsystem.setClawPower(0.6);
         double spinPower = driveSubsystem.getSpinPower();
         driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
         cannonSubsystem.setLocation(CannonLocation.sidewaysConeLocation);
@@ -160,6 +167,7 @@ public class DriveToGamePieceCommand extends CommandBase {
       }
 
       if(myState == MyState.TURNING){
+        cannonSubsystem.setClawPower(0.6);
         driveSubsystem.autoDrive(startHeading, 0, -0.2);
         if(SwerveCalculator.normalizeAngle(currentHeading - startHeading) < -5){ // we want to be 15 degrees to the left of where we start
           myState = MyState.PICKUP;
@@ -171,11 +179,7 @@ public class DriveToGamePieceCommand extends CommandBase {
           timer = new Timer();
           timer.start();
         } else {
-          cannonSubsystem.setClawPower(0.6);
           driveSubsystem.autoDrive(0, 0.1, 0);
-          cannonSubsystem.setClawPower(0.6);
-          
-
           if (timer.advanceIfElapsed(1.5)) {
             timer = null;
             cannonSubsystem.setClawPower(0.1);
@@ -191,6 +195,7 @@ public class DriveToGamePieceCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     visionSubsystem.setFrontCameraMode(currentCameraMode);
+    RobotContainer.flareSubsystem.setColor(Color.kBlack);
   }
 
   // Returns true when the command should end.

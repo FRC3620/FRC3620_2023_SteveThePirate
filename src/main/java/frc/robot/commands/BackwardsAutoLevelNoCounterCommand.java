@@ -51,8 +51,8 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
   }
 
   void setColor(Color color){
-    if(RobotContainer.balanceLights != null){
-      RobotContainer.balanceLights.setColor(new FlareColor(color));
+    if(RobotContainer.flareSubsystem != null){
+      RobotContainer.flareSubsystem.setColor(new FlareColor(color));
     }
   }
 
