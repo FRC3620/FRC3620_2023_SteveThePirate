@@ -12,6 +12,7 @@ import frc.robot.subsystems.FlareSubsystem.FlareColor;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -268,14 +269,28 @@ public class RobotContainer {
 
   }
 
-  SendableChooser<Command> chooser = new SendableChooser<>();
+  SendableChooser<CommandFactory> chooser = new SendableChooser<>();
   public void setupAutonomousCommands() {
     SmartDashboard.putData("Auto mode", chooser);
-    chooser.setDefaultOption("Do nothing", new LogCommand("no autonomous specified, did nothing"));
-    chooser.addOption("April Tag Auto Test", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-    chooser.addOption("Mid1BalanceAuto", new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Human1BalanceAuto", new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Wall1BalanceAuto", new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.setDefaultOption("Do nothing", () -> new LogCommand("no autonomous specified, did nothing"));
+    chooser.addOption("April Tag Auto Test", () -> new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+    chooser.addOption("Mid1BalanceAuto", () -> new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human1BalanceAuto", () -> new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall1BalanceAuto", () -> new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+  }
+
+  interface CommandFactory extends Supplier<Command> { }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    CommandFactory factory = chooser.getSelected();
+    Command command = factory.get();
+    logger.info ("Command Factory gave us a {}", command);
+    return command;
   }
 
   static double driverStrafeDeadzone = 0.1;
@@ -331,17 +346,6 @@ public class RobotContainer {
     }
     return axisValue*axisValue;
   }*/
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    //return new GoldenAutoCommand(driveSubsystem, shooterSubsystem, VisionSubsystem, intakeSubsystem);
-    return chooser.getSelected();
-  }
 
   /**
    * Determine if this robot is a competition robot.
