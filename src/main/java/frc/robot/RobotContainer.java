@@ -192,17 +192,21 @@ public class RobotContainer {
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y)
             .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
              
+    // positive y-axis is when you pull it down
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
-            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 8));
-
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)
             .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -8));
 
-    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.2)
-            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, 4));
+    // negative y-axis is when you pull it up
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 8));
 
+    // positive y-axis is when you pull it down
+    new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.2)
+            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, -4));
+
+    // negative y-axis is when you pull it up
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.2)
-            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, -4));   
+            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, 4));   
              
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
     operatorDPad.left().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, 5));

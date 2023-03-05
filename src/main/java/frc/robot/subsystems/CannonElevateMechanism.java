@@ -92,7 +92,6 @@ public class CannonElevateMechanism  {
     if (elevation < -90){
       elevation = elevation + 360;
     }
-
 		return elevation;
 	}
 }
