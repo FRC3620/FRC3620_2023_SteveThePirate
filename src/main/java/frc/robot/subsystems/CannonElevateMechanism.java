@@ -4,35 +4,24 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
-
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
+import org.usfirst.frc3620.misc.SwerveCalculator;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class CannonElevateMechanism  {
-  /** Creates a new ExtendSubSubsystem. */
-  boolean encoderIsValid = false;
   CANSparkMaxSendable motor;
-  Encoder elevateEncoder;
-  DigitalInput homeSwitch;
-  DigitalInput notHomeSwitch;
-  private static final double kP = 0.01;
+  AnalogInput elevateEncoder;
+
+  int elevateEncoderValueAt90Degrees;
+
+  private static final double kP = 0.02;
   private static final double kI = 0;
   private static final double kD = 0;
 
@@ -40,67 +29,33 @@ public class CannonElevateMechanism  {
 
   double elevationOffset;
   
-  Double requestedPositionWhileCalibrating = null;
-  double requestedPosition = 0;
+  double requestedPosition = 90;
 
   final String name = "Elevate";
 
-  public CannonElevateMechanism(CANSparkMaxSendable motor, Encoder elevateEncoder, DigitalInput homeSwitch, DigitalInput notHomeSwitch) {
+  public CannonElevateMechanism(CANSparkMaxSendable motor, AnalogInput elevateEncoder) {
     this.motor = motor;
     this.elevateEncoder = elevateEncoder;
-    this.homeSwitch = homeSwitch;
-    this.notHomeSwitch = notHomeSwitch;
-    elevateEncoder.setDistancePerPulse(-360/256.0);
+    this.elevateEncoderValueAt90Degrees = RobotContainer.robotParameters.getElevationEncoderValueAt90Degrees();
 
+    setElevation(90);   // start straight up!
   }
 
   public void periodic() {
-    SmartDashboard.putNumber("elevate encoder rate", elevateEncoder.getRate());
-    SmartDashboard.putBoolean(name + ".calibrated", encoderIsValid);
     // This method will be called once per scheduler run
     if (motor != null) {
-      SmartDashboard.putNumber(name + ".current", motor.getOutputCurrent());
+      if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
+        double motorPower = m_pidController.calculate(getCurrentElevation());
+        motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
+        elevateCannon(motorPower);
+      }
+      
+      SmartDashboard.putNumber(name + ".motor_current", motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
       SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
 
-      double elevateSpeed = elevateEncoder.getRate();
-      double elevatePosition = elevateEncoder.getDistance();
-      SmartDashboard.putNumber(name + ".speed", elevateSpeed);
-      SmartDashboard.putNumber(name + ".rawPosition", elevatePosition);
-      SmartDashboard.putNumber(name + ".offsetPosition", getCurrentElevation());
-      SmartDashboard.putBoolean(name + "Am I home?", amIHome());
-      SmartDashboard.putBoolean(name + "Am I in front?", amIInFront());
-      // SmartDashboard.putNumber(name + ".velocityConversionFactor",
-      // encoder.getVelocityConversionFactor());
-
-      if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
-        if (!encoderIsValid) {
-
-          if (amIHome()) {
-            encoderIsValid = true;
-            elevateCannon(0.0);
-            elevationOffset = -elevateEncoder.getDistance() + 90;
-            setElevation(90);
-            if (requestedPositionWhileCalibrating != null) {
-              setElevation(requestedPositionWhileCalibrating);
-              requestedPositionWhileCalibrating = null;
-            }
-          } else {
-            if (amIInFront()) {
-              elevateCannon(0.05);
-            } else {
-              elevateCannon(-0.05);
-            }
-
-          }
-        } else {
-          // encoder is valid
-          double motorPower = m_pidController.calculate(getCurrentElevation());
-          motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
-          elevateCannon(motorPower);
-        }
-
-      }
+      SmartDashboard.putNumber(name + ".currentEncoderValue", elevateEncoder.getValue());
+      SmartDashboard.putNumber(name + ".currentPosition", getCurrentElevation());
     }
   }
 
@@ -110,14 +65,12 @@ public class CannonElevateMechanism  {
    * @param elevation
    */
   public void setElevation(double elevation) {
-    elevation = MathUtil.clamp(elevation, -15, 125);
+    elevation = MathUtil.clamp(elevation, -45, 125
+    );
     SmartDashboard.putNumber(name + ".requestedElevation", elevation);
     requestedPosition = elevation;
-    if (encoderIsValid) {
-      m_pidController.setSetpoint(elevation);
-    } else {
-      requestedPositionWhileCalibrating = elevation;
-    }
+
+    m_pidController.setSetpoint(elevation);
   }
 
   public double getRequestedElevation() {
@@ -125,48 +78,23 @@ public class CannonElevateMechanism  {
   }
 
   public void elevateCannon(double power) {
-      motor.set(power);
+    motor.set(power);
   }
 
   public double getCurrentElevation(){
-    return elevateEncoder.getDistance() + elevationOffset;
-  }
+    if (elevateEncoder == null) return 0;
+		int elevationEncoderValue = elevateEncoder.getValue();
+    // converting heading from tics (ranging from 0 to 4095) to degrees
+		double elevation = (elevationEncoderValue - elevateEncoderValueAt90Degrees)*(360.0/4096.0) + 90;
+    // get it into the -180..180 range
+    elevation = SwerveCalculator.normalizeAngle(elevation);
+    // get it into the -90..270 range
+    if (elevation < -90){
+      elevation = elevation + 360;
+    }
 
-  public boolean amIHome(){
-    return !homeSwitch.get();
-  }
-
-  public boolean amIInFront(){
-    return !notHomeSwitch.get();
-  }
+		return elevation;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //:D

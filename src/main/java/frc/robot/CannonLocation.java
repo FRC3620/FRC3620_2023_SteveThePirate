@@ -7,14 +7,16 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CannonLocation {
-    public static CannonLocation coneHighLocation = new CannonLocation(40.1, 24, -40.1);
-    public static CannonLocation coneMidLocation = new CannonLocation(20.4, 12, -20.4);
-    public static CannonLocation cubeHighLocation = new CannonLocation(40.1, 24, -40.1);
-    public static CannonLocation cubeMidLocation = new CannonLocation(20.4, 12, -20.4);
-    public static CannonLocation lowLocation = new CannonLocation(-10, 0, 10);
-    public static CannonLocation floorPickLocation = new CannonLocation(-10, 0, -10);
-    public static CannonLocation humanLocation = new CannonLocation(10, 8, -20.4);
-    public static CannonLocation parkLocation = new CannonLocation(90, 3, 0);
+    public static CannonLocation coneHighLocation = new CannonLocation(41.85, 35.5, -61);
+    public static CannonLocation cubeHighLocation = new CannonLocation(41, 29, -59.5);
+    public static CannonLocation coneMidLocation = new CannonLocation(47, 17.8, -70);
+    public static CannonLocation cubeMidLocation = new CannonLocation(42.2, 7.8, -67.1);
+    public static CannonLocation lowLocation = new CannonLocation(3.5, 0, -67);
+    public static CannonLocation coneFloorPickLocation = new CannonLocation(0, 0, -20);
+    public static CannonLocation chuteLocation = new CannonLocation(38.7, 0.82, -20);
+    public static CannonLocation stationLocation = new CannonLocation(69.3, 13.9, -103);
+    public static CannonLocation parkLocation = new CannonLocation(90, 1, -90);
+    public static CannonLocation sidewaysConeLocation = new CannonLocation(-27, 2.27, 7.33);
     double elevation;
     double extension;
     double wristPitch;

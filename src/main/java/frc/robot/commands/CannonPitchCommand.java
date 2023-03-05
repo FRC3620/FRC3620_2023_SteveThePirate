@@ -16,7 +16,7 @@ public class CannonPitchCommand extends CommandBase {
 
   public CannonPitchCommand(CannonSubsystem _subsystem, double _desiredPitch) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_subsystem);
+    //addRequirements(_subsystem);
     cannonSubsystem = _subsystem;
     desiredPitch = _desiredPitch;
   } 

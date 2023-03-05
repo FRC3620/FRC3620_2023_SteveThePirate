@@ -19,9 +19,9 @@ abstract public class DataLoggerBase implements IDataLogger {
 
 	Map<String, Object> metadata = new TreeMap<>();
 
-	double intervalInSeconds = 0.100;
+	private double intervalInSeconds = 0.100;
 
-	File outputFile;
+	private File outputFile;
 	Timer timer;
 
 	@Override
@@ -100,7 +100,7 @@ abstract public class DataLoggerBase implements IDataLogger {
 		}
 	}
 
-	void setupOutputFile() {
+	File setupOutputFile() {
 		if (outputFile == null) {
 			synchronized (DataLoggerBase.this) {
 				if (outputFile == null) {
@@ -122,6 +122,11 @@ abstract public class DataLoggerBase implements IDataLogger {
 				}
 			}
 		}
+		return outputFile;
+	}
+
+	public File getOutputFile() {
+		return outputFile;
 	}
 
 	static void writeHeader(PrintWriter w, Iterable<NamedDataProvider> namedDataProviders,

@@ -9,7 +9,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CannonLocation;
@@ -22,11 +22,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonClawMechanism cannonClawMechanism;
   
   public CANSparkMaxSendable elevation;
-  public RelativeEncoder elevationEncoder;
-  public Encoder elevateEncoder;
-  public DigitalInput homeSwitch;
-  public DigitalInput notHomeSwitch;
-
+  public AnalogInput elevationEncoder;
+  
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
 
@@ -34,7 +31,7 @@ public class CannonSubsystem extends SubsystemBase {
   public RelativeEncoder rollEncoder;
 
   public CANSparkMaxSendable pitch;
-  public RelativeEncoder pitchEncoder;
+  public Encoder pitchEncoder;
 
   public CANSparkMaxSendable claw;
   public RelativeEncoder clawEncoder;
@@ -43,8 +40,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
-    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevateEncoder, homeSwitch, notHomeSwitch);
-    cannonPitchMechanism = new CannonPitchMechanism(pitch);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder);
+    cannonPitchMechanism = new CannonPitchMechanism(pitch, pitchEncoder);
     cannonClawMechanism = new CannonClawMechanism(claw);
   }
 
@@ -61,28 +58,40 @@ public class CannonSubsystem extends SubsystemBase {
     cannonExtendMechanism.setExtension(length);
   }
 
-  public void setElevation(double height) {
-    cannonElevateMechanism.setElevation(height);
+  public void extendCannon(double power) {
+    cannonExtendMechanism.extendCannon(power);
   }
 
   public void disableExtension() {
     cannonExtendMechanism.disable();
   }
 
+  public void setElevation(double height) {
+    cannonElevateMechanism.setElevation(height);
+  }
+
+  public void elevateCannon(double power) {
+    cannonElevateMechanism.elevateCannon(power);
+  }
+
   public void setPitch(double pitch) {
     cannonPitchMechanism.setPitch(pitch);
   }
 
-  public void setClawSpeed(double clawSpeed) {
-    cannonClawMechanism.setClawSpeed(clawSpeed);
+  public void pitchCannon(double power) {
+    cannonPitchMechanism.pitchCannon(power);
   }
 
-  public double getClawSpeed(){
-    return cannonClawMechanism.getClawSpeed();
+  public void setClawPower(double clawSpeed) {
+    cannonClawMechanism.setClawPower(clawSpeed);
   }
 
-  public double getElevation() {
-    return cannonElevateMechanism.getCurrentElevation();
+  public double getClawPower(){
+    return cannonClawMechanism.getClawPower();
+  }
+
+  public double getRequestedPitch() {
+    return cannonPitchMechanism.getRequestedPitch();
   }
 
   public double getCurrentPitch() {
@@ -93,17 +102,20 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonElevateMechanism.getRequestedElevation();
   }
   
+  public double getCurrentElevation() {
+    return cannonElevateMechanism.getCurrentElevation();
+  }
+
   public double getRequestedExtension() {
     return cannonExtendMechanism.getRequestedExtension();
   }
-  
-  public double getRequestedPitch() {
-    return cannonPitchMechanism.getRequestedPitch();
+
+  public double getCurrentExtension() {
+    return cannonExtendMechanism.getCurrentExtension();
   }
 
-  //Sets length of arm for movement. (Endgame?)
-  public void setTravel() {
-    
+  public double getAdjustedRequestedExtension() {
+    return cannonExtendMechanism.getAdjustedRequestedExtension();
   }
 
   void setupMotors() {
@@ -129,7 +141,7 @@ public class CannonSubsystem extends SubsystemBase {
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
       pitch = new CANSparkMaxSendable(11, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(pitch, false);
-      pitch.setSmartCurrentLimit(20);
+      pitch.setSmartCurrentLimit(40);
       pitch.setIdleMode(IdleMode.kBrake);
       addChild("pitch", pitch);
     }
@@ -137,20 +149,17 @@ public class CannonSubsystem extends SubsystemBase {
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Claw") || shouldMakeAllCANDevices) {
       claw = new CANSparkMaxSendable(12, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(claw, false);
-      claw.setSmartCurrentLimit(5);
+      claw.setSmartCurrentLimit(20);
       claw.setIdleMode(IdleMode.kBrake);
 
       addChild("claw", claw);
     }
-    elevateEncoder = new Encoder(1, 2);
-    addChild("elevateEncoder", elevateEncoder);
 
-    homeSwitch = new DigitalInput(3);
-    addChild("homeSwitch", homeSwitch);
+    elevationEncoder = new AnalogInput(4);
+    addChild("elevationEncoder", elevationEncoder);
 
-    notHomeSwitch = new DigitalInput(4);
-    addChild("not home switch", notHomeSwitch);
-
+    pitchEncoder = new Encoder(5,6);
+    addChild("pitchEncoder", pitchEncoder);
   }
 
   public void setLocation(CannonLocation cannonLocation) {
@@ -159,69 +168,5 @@ public class CannonSubsystem extends SubsystemBase {
     cannonPitchMechanism.setPitch(cannonLocation.getWristPitch());
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //:D

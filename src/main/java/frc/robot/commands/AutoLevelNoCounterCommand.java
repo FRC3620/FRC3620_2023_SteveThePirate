@@ -11,6 +11,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ILevelingDataSource;
@@ -20,18 +21,19 @@ import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem.FlareColor;
 
-public class AutoLevelingCommand extends CommandBase implements ILevelingDataSource {
+public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingDataSource {
   AHRS ahrs; 
   private DriveSubsystem driveSubsystem;
   private CannonSubsystem cannonSubsystem;
 
   double power;
   double pitch;
+  Timer timer;
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   enum LevelingState {
-    LEVEL, TILTED, COUNTER, DONE
+    LEVEL, TIMED, PRETILTED, TILTED, ARMADJUST, DONE
   }
 
   LevelingState myState;
@@ -40,7 +42,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   IFastDataLogger levelingDataLogger = null;
   
   /** Creates a new AutoLevelingCommand. */
-  public AutoLevelingCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
+  public AutoLevelNoCounterCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.cannonSubsystem = cannonSubsystem;
@@ -70,6 +72,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
       levelingDataLogger.start();
     }
 
+    timer = null;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -83,23 +86,59 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
       power = 0.3;
       if(pitch < -13) {
         // we are going uphill, slow down
-        logger.info("switching to tilted, pitch = {}", pitch);
-        myState = LevelingState.TILTED;
+        myState = LevelingState.TIMED;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kBlue);
+      }
+    }
+
+    if(myState == LevelingState.TIMED){
+      if(timer == null){
+        timer = new Timer();
+      }
+      timer.start();
+      power = 0.3;
+      if(timer.advanceIfElapsed(1)){
+        myState = LevelingState.PRETILTED;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
+        setColor(Color.kYellow);
+        timer = null;
+      }
+    }
+
+    if(myState == LevelingState.PRETILTED){
+      power = .1;
+      if(timer == null){
+        timer = new Timer();
+        timer.start();
+      }
+      if(timer.advanceIfElapsed(.5)){
+        myState = LevelingState.TILTED;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
+        setColor(Color.kPurple);
+        timer = null;
       }
     }
     
     if(myState == LevelingState.TILTED){
       power = 0.1;
-      if(pitch > -8){ //was -10
+      if(pitch > -12.5){ //was -10
         // we are still going up hill, but not as much. it must be swinging?
-        logger.info("switching to counter, pitch = {}", pitch);
-        myState = LevelingState.COUNTER;
-        setColor(Color.kYellow);
+        myState = LevelingState.DONE;
+        logger.info("switching to {}, pitch = {}", myState, pitch);
+        power = 0;
+        setColor(Color.kGreen);
       }
     }
 
-    if(myState == LevelingState.COUNTER){
+    if(myState == LevelingState.ARMADJUST){
+      if(pitch < -10){
+        cannonSubsystem.setElevation(30);
+      }
+      myState = LevelingState.DONE;
+    }
+
+    /*if(myState == LevelingState.COUNTER){
       power = -.2;
       if(pitch > 3){ //was 10
         power = 0;
@@ -107,7 +146,7 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
         myState = LevelingState.DONE;
         setColor(Color.kGreen);
       }
-    }
+    }*/
 
     if (power == 0) {
       driveSubsystem.stopDrive();
@@ -137,7 +176,14 @@ public class AutoLevelingCommand extends CommandBase implements ILevelingDataSou
   public boolean isFinished() {
     if(myState == LevelingState.DONE) {
       driveSubsystem.xMode();
-      return true;
+      if(timer == null){
+        timer = new Timer();
+        timer.start();
+      }
+      if(timer.advanceIfElapsed(2)){
+        timer = null;
+        return true;
+      }
     }
     return false;
   }

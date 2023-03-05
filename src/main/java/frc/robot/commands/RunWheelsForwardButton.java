@@ -5,6 +5,8 @@
 package frc.robot.commands;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlareSubsystem;
+import frc.robot.subsystems.FlareSubsystem.FlareColor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class RunWheelsForwardButton extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem driveSubsystem;
+  private final FlareSubsystem flareSubsystem;
 
   /**
    * Creates a new ExampleCommand.
@@ -20,6 +23,8 @@ public class RunWheelsForwardButton extends CommandBase {
    */
   public  RunWheelsForwardButton() {
     driveSubsystem = RobotContainer.driveSubsystem;
+    flareSubsystem = RobotContainer.flareSubsystem;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
   }
@@ -36,7 +41,16 @@ public class RunWheelsForwardButton extends CommandBase {
   public void execute() {
     driveSubsystem.testDrive(0, .25);
     SmartDashboard.putBoolean("DiagnosticsDriveMotorTest", areAllwheelsok());
-   // SmartDashboard.putBoolean("Wheel Current", testWheelCurrent());
+    // SmartDashboard.putBoolean("Wheel Current", testWheelCurrent());
+
+    if (flareSubsystem != null) {
+      if(this.areAllwheelsok()){
+        flareSubsystem.setColor(FlareColor.GREEN, 2, 3);
+      
+      } else {
+        flareSubsystem.setColor(FlareColor.RED, 2, 3);
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.

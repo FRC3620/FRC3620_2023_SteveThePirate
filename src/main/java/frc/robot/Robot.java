@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.Date;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.FileSaver;
 import org.usfirst.frc3620.misc.GitNess;
 import org.usfirst.frc3620.misc.RobotMode;
+import org.usfirst.frc3620.misc.ChameleonController.ControllerType;
 
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,7 +32,11 @@ public class Robot extends TimedRobot {
 
   private Logger logger;
 
+  private DataLogger robotDataLogger;
+
   static private RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
+
+  Date dateAtInitialization = new Date();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -71,12 +77,12 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     // get data logging going
-    DataLogger robotDataLogger = new DataLogger();
+    robotDataLogger = new DataLogger();
     new RobotDataLogger(robotDataLogger, RobotContainer.canDeviceFinder);
-    robotDataLogger.setInterval(0.25);
+    robotDataLogger.setInterval(1);
     robotDataLogger.start();
 
-    FileSaver.add("networktables.ini");
+    FileSaver.add("/home/lvuser/networktables.json");
   }
 
   /**
@@ -99,6 +105,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     processRobotModeChange(RobotMode.DISABLED);
+    robotDataLogger.setInterval(1);
   }
 
   @Override
@@ -110,6 +117,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     logCANBusIfNecessary();
+
+    robotDataLogger.setInterval(0.25);
 
     processRobotModeChange(RobotMode.AUTONOMOUS);
 
@@ -129,6 +138,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     logCANBusIfNecessary();
 
+    robotDataLogger.setInterval(0.25);
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -139,6 +150,13 @@ public class Robot extends TimedRobot {
 
     processRobotModeChange(RobotMode.TELEOP);
     logMatchInfo();
+    String driveControllerName = m_robotContainer.getDriverControllerName();
+    logger.info("Drive Controller Name: {}", driveControllerName);
+    if (driveControllerName.startsWith("FlySky")) {
+      m_robotContainer.setDriverControllerName(ControllerType.B);
+    } else {
+      m_robotContainer.setDriverControllerName(ControllerType.A);
+    }
   }
 
   /** This function is called periodically during operator control. */
@@ -148,6 +166,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     logCANBusIfNecessary();
+
+    robotDataLogger.setInterval(0.25);
 
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
@@ -171,7 +191,9 @@ public class Robot extends TimedRobot {
     // if any subsystems need to know about mode changes, let
     // them know here.
     // exampleSubsystem.processRobotModeChange(newMode);
-    
+    if(RobotContainer.flareSubsystem != null){
+      RobotContainer.flareSubsystem.ProcessRobotModeChange(newMode);
+    }
   }
 
   public static RobotMode getCurrentRobotMode(){
@@ -205,6 +227,8 @@ public class Robot extends TimedRobot {
         if (missingDevices.size() > 0) {
           logger.warn ("Missing devices: " + missingDevices);
         }
+
+        logger.info ("Initialization date was {}", dateAtInitialization);
         hasCANBusBeenLogged = true;
       }
     }

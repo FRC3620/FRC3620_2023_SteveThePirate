@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CannonSubsystem;
 
-public class SetCannonClawSpeedCommand extends CommandBase {
+public class CannonClawInCommand extends CommandBase {
     /** Creates a new CannonExtendCommand. */
     CannonSubsystem cannonSubsystem;
     double desiredSpeed;
@@ -17,9 +17,9 @@ public class SetCannonClawSpeedCommand extends CommandBase {
      * 
      * Creates a new MoveTurretCommand.
      */
-    public SetCannonClawSpeedCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
+    public CannonClawInCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
       // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(_subsystem);
+      //addRequirements(_subsystem);
       cannonSubsystem = _subsystem;
       desiredSpeed = _desiredSpeed;
     } 
@@ -27,7 +27,7 @@ public class SetCannonClawSpeedCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called every time the scheduler runs while the command is scheduled.
@@ -35,13 +35,13 @@ public class SetCannonClawSpeedCommand extends CommandBase {
     @Override
     public void execute() 
     {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      cannonSubsystem.setClawSpeed(0);
+      cannonSubsystem.setClawPower(.1);
     }
   
     // Returns true when the command should end.
@@ -53,7 +53,7 @@ public class SetCannonClawSpeedCommand extends CommandBase {
         getStartedTimer.start();
       } else {
         if (getStartedTimer.get() > 0.5) {
-          if (Math.abs(cannonSubsystem.getClawSpeed()) < 500) {
+          if (Math.abs(cannonSubsystem.getClawPower()) < 500) {
             getStartedTimer = null;
             return true;
             } else {

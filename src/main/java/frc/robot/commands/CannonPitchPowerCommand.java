@@ -4,47 +4,44 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.CannonExtendMechanism;
 import frc.robot.subsystems.CannonSubsystem;
 
-public class CannonExtendCommand extends CommandBase {
+public class CannonPitchPowerCommand extends CommandBase {
   /** Creates a new CannonExtendCommand. */
   CannonSubsystem cannonSubsystem;
-  double desiredLength;
-  /**
-   * 
-   * Creates a new MoveTurretCommand.
-   */
-  public CannonExtendCommand(CannonSubsystem _subsystem, double _desiredLength) {
+  double desiredSpeed;
+  double setPoint;
+  double startTime;
+
+  public CannonPitchPowerCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     //addRequirements(_subsystem);
     cannonSubsystem = _subsystem;
-    desiredLength = _desiredLength;
+    desiredSpeed = _desiredSpeed;
   } 
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cannonSubsystem.setExtension(desiredLength);
+    setPoint = cannonSubsystem.getRequestedPitch();
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
 
   @Override
   public void execute() {
-   
+    cannonSubsystem.setPitch(setPoint+desiredSpeed*(Timer.getFPGATimestamp()-startTime));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

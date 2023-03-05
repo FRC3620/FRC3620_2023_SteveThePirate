@@ -16,6 +16,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.AsyncDataLogger;
 import org.usfirst.frc3620.logger.AsyncDataLoggerDatum;
+import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.LoggingMaster;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -54,9 +55,11 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-  PhotonCamera frontCamera;
+  public PhotonCamera frontCamera;
   PhotonPoseEstimator frontCameraPoseEstimator;
-  FrontCameraMode frontCameraMode;
+  public FrontCameraMode frontCameraMode;
+
+  Translation2d whereIsTheCamera;
 
   static AprilTagFieldLayout fieldLayout;
 
@@ -68,16 +71,27 @@ public class VisionSubsystem extends SubsystemBase {
       System.out.println("unable to load file");
     }
 
+    frontPipelineCheckTimer = new Timer();
+    frontPipelineCheckTimer.start();
+
     frontCamera = new PhotonCamera("FrontCamera");
     setFrontCameraMode(FrontCameraMode.APRILTAGS);
     Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
     frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);
+  }
 
-    frontPipelineCheckTimer = new Timer();
+  public void disableCheckTimer() {
+    frontPipelineCheckTimer.stop();
+    frontPipelineCheckTimer.reset();
+  }
+
+  public void enableCheckTimer() {
+    frontPipelineCheckTimer.reset();
     frontPipelineCheckTimer.start();
   }
 
   public FrontCameraMode setFrontCameraMode(FrontCameraMode mode) {
+    frontPipelineCheckTimer.reset();
     FrontCameraMode oldMode = this.frontCameraMode;
     frontCamera.setPipelineIndex(mode.getPipelineIndex());
     this.frontCameraMode = mode;
@@ -87,6 +101,10 @@ public class VisionSubsystem extends SubsystemBase {
 
   public FrontCameraMode getFrontCameraMode() {
     return this.frontCameraMode;
+  }
+
+  public int getFrontCameraPipelineIndex() {
+    return frontCamera.getPipelineIndex();
   }
 
   public static PhotonTrackedTarget getTargetById(PhotonPipelineResult result, int requestedId) {
@@ -122,11 +140,11 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    int frontCameraPipelineIndex = frontCamera.getPipelineIndex();
+    int shouldBe = frontCameraMode.getPipelineIndex();
     if (frontPipelineCheckTimer.advanceIfElapsed(1.0)) {
-      int frontCameraPipelineIndex = frontCamera.getPipelineIndex();
-      int shouldBe = frontCameraMode.getPipelineIndex();
       if (frontCameraPipelineIndex != shouldBe) {
-        logger.warn ("Had to force front camera pipeline from {} to {}", frontCameraPipelineIndex, shouldBe);
+        logger.warn ("Front pipeline is incorrect: currently {}, should be {}, trying to force it.", frontCameraPipelineIndex, shouldBe);
         frontCamera.setPipelineIndex(shouldBe);
       }
     }
@@ -192,9 +210,11 @@ public class VisionSubsystem extends SubsystemBase {
           }
 
           if (vectorFromOriginToTag != null) {
-            Translation2d whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+            whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
             if (targetId == bestTargetId) {
-              RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+              if(vectorFromCameraToTag.getX() < 4.2){
+                RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+              }
 
               SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
               SmartDashboard.putNumber("whereami.TagPosey", vectorFromOriginToTag.getY());
@@ -224,6 +244,20 @@ public class VisionSubsystem extends SubsystemBase {
     }      
   }
 
+  public String whereIsTheCameraX() {
+    if (whereIsTheCamera == null) return "";
+    return DataLogger.f2(whereIsTheCamera.getX());
+  }
+
+  public String whereIsTheCameraY() {
+    if (whereIsTheCamera == null) return "";
+    return DataLogger.f2(whereIsTheCamera.getY());
+  }
+
+  public double getLastAprilTagTimestamp() {
+    return lastAprilTagTimestamp;
+  }
+
   PhotonPipelineResult lastFrontCameraGamePieceResult;
 
   public PhotonPipelineResult getLastFrontCameraGamePieceResult() {
@@ -233,7 +267,7 @@ public class VisionSubsystem extends SubsystemBase {
   public PhotonPipelineResult getLastFrontCameraGamePieceResult(double timestampSeconds) {
     if (lastFrontCameraGamePieceResult != null && lastFrontCameraGamePieceResult.getTimestampSeconds() != timestampSeconds) {
       return lastFrontCameraGamePieceResult;
-  }
+    }
     return null;
   }
 

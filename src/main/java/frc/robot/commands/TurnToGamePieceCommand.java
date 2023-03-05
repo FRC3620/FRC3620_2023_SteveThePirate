@@ -72,6 +72,7 @@ public class TurnToGamePieceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // TODO need to use normalizeAngle() here
     if(currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance){
       return true;
     }
