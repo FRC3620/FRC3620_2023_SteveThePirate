@@ -12,6 +12,7 @@ Auto is named with a combination of start position (Wall, Mid, Human), number of
 * ~~DIO 1, 2: Arm Elevation Encoder~~
 * ~~DIO 3: Elevation homeSwitch~~
 * ~~DIO 4: Elevation "infront" switch~~
+* ~~DIO 5, 6: Pitch Encoder :D
 
 
 ## Analog IO

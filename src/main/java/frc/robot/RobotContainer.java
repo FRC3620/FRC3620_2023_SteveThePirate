@@ -31,10 +31,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import org.usfirst.frc3620.misc.CANDeviceType;
+import org.usfirst.frc3620.misc.ChameleonController;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.JoystickAnalogButton;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
+import org.usfirst.frc3620.misc.ChameleonController.ControllerType;
+import org.usfirst.frc3620.misc.FlySkyConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,7 +66,8 @@ public class RobotContainer {
   public static FlareSubsystem flareSubsystem, balanceLights;
 
   // joysticks here....
-  public static Joystick driverJoystick;
+  public static Joystick rawDriverJoystick;
+  public static ChameleonController driverJoystick;
   public static Joystick operatorJoystick;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -117,6 +121,14 @@ public class RobotContainer {
     //flareSubsystem = new FlareSubsystem();
   }
 
+  public String getDriverControllerName() {
+    return rawDriverJoystick.getName();
+  }
+
+  public void setDriverControllerName(ControllerType driveControllerType) {
+    driverJoystick.setCurrentControllerType(driveControllerType);
+  }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -124,26 +136,26 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driverJoystick = new Joystick(0);
+    rawDriverJoystick = new Joystick(0);
+    driverJoystick = new ChameleonController(rawDriverJoystick);
     operatorJoystick = new Joystick(1);
 
-    DPad driverDPad = new DPad(driverJoystick, 0);
     DPad operatorDPad = new DPad(operatorJoystick, 0);
 
     //Driver
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A)
+    driverJoystick.button(XBoxConstants.BUTTON_A, FlySkyConstants.BUTTON_SWD)
             .whileTrue(new XModeCommand(driveSubsystem));
 
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X)
+    driverJoystick.button(XBoxConstants.BUTTON_X, FlySkyConstants.BUTTON_SWC)
             .onTrue(new ResetNavXCommand());
     
-    new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y)
+    driverJoystick.button(XBoxConstants.BUTTON_Y, FlySkyConstants.BUTTON_SWA)
             .onTrue(new SetNavX180Command());
             
-    new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_LEFT_TRIGGER)
+    driverJoystick.analogButton(XBoxConstants.AXIS_LEFT_TRIGGER, FlySkyConstants.AXIS_SWE)
             .onTrue(new CannonClawInCommand(cannonSubsystem, 0.6));
 
-    new JoystickAnalogButton(driverJoystick, XBoxConstants.AXIS_RIGHT_TRIGGER)
+    driverJoystick.analogButton(XBoxConstants.AXIS_RIGHT_TRIGGER, FlySkyConstants.AXIS_SWH)
             .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));
 
     // operator colors
@@ -181,20 +193,20 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
              
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setElevation(cannonSubsystem.getRequestedElevation() + 5)));
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 8));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setElevation(cannonSubsystem.getRequestedElevation() - 5)));
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -8));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.2)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() + 1)));
+            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, 4));
 
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, -0.2)
-            .onTrue(new InstantCommand(() -> cannonSubsystem.setExtension(cannonSubsystem.getRequestedExtension() - 1)));
-    
+            .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, -4));   
+             
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
-    operatorDPad.left().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() + 5)));
-    operatorDPad.right().onTrue(new InstantCommand(() -> cannonSubsystem.setPitch(cannonSubsystem.getRequestedPitch() - 5)));
+    operatorDPad.left().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, 5));
+    operatorDPad.right().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, -5));
   }
 
   /*public static double getOperatorJoystickRightY() {
@@ -252,6 +264,8 @@ public class RobotContainer {
     SmartDashboard.putData("ElevateHome", new CannonElevateCommand(cannonSubsystem, 90));
     SmartDashboard.putData("PitchCommand-10", new CannonPitchCommand(cannonSubsystem, -10));
     SmartDashboard.putData("PitchCommand-70", new CannonPitchCommand(cannonSubsystem, -70));
+    SmartDashboard.putData("PitchCommand-90", new CannonPitchCommand(cannonSubsystem, -90));
+
     SmartDashboard.putData("ClawIn", new CannonClawInCommand(cannonSubsystem, 0.2));
     SmartDashboard.putData("ClawOut", new CannonClawInCommand(cannonSubsystem, -0.2));
     SmartDashboard.putData("ClawStop", new CannonClawInCommand(cannonSubsystem, 0));
@@ -296,7 +310,7 @@ public class RobotContainer {
   static double driverStrafeDeadzone = 0.1;
 
   public static double getDriveVerticalJoystick() {
-    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y);
+    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y, FlySkyConstants.AXIS_LEFT_Y);
     SmartDashboard.putNumber("driver.y.raw", axisValue);
     if (Math.abs(axisValue) < driverStrafeDeadzone) {
       return 0;
@@ -308,7 +322,7 @@ public class RobotContainer {
   }
 
   public static double getDriveHorizontalJoystick() {
-    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X);
+    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X, FlySkyConstants.AXIS_LEFT_X);
     SmartDashboard.putNumber("driver.x.raw", axisValue);
     if (Math.abs(axisValue) < driverStrafeDeadzone) {
       return 0;
@@ -321,7 +335,7 @@ public class RobotContainer {
 
   static double driverSpinDeadzone = 0.1;
   public static double getDriveSpinJoystick() {
-    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X);
+    double axisValue = driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X, FlySkyConstants.AXIS_RIGHT_X);
     SmartDashboard.putNumber("driver.spin.raw", axisValue);
     double rv = 0;
     if (Math.abs(axisValue) >= driverSpinDeadzone) {
@@ -333,19 +347,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("driver.spin.processed", rv);
     return rv;
   }
-
-  /*static double operatorDeadzone = 0.2;
-
-  public static double getOperatorLeftY() {
-    double axisValue = operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y);
-    if (Math.abs(axisValue) < operatorDeadzone) {
-      return 0;
-    }
-    if (axisValue < 0){
-      return -(axisValue*axisValue);
-    }
-    return axisValue*axisValue;
-  }*/
 
   /**
    * Determine if this robot is a competition robot.

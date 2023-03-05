@@ -46,7 +46,7 @@ public class CannonElevateMechanism  {
     if (motor != null) {
       if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
         double motorPower = m_pidController.calculate(getCurrentElevation());
-        motorPower = MathUtil.clamp(motorPower, -0.4, 0.75);
+        motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
         elevateCannon(motorPower);
       }
       
@@ -65,7 +65,8 @@ public class CannonElevateMechanism  {
    * @param elevation
    */
   public void setElevation(double elevation) {
-    elevation = MathUtil.clamp(elevation, -45, 125);
+    elevation = MathUtil.clamp(elevation, -45, 125
+    );
     SmartDashboard.putNumber(name + ".requestedElevation", elevation);
     requestedPosition = elevation;
 
