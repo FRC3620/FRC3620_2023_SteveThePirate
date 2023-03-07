@@ -33,6 +33,7 @@ public class TeleOpDriveCommand extends CommandBase {
     // logger.info("Init tod");
     desiredHeading = RobotContainer.navigationSubsystem.getCorrectedHeading();
     driveSubsystem.setTargetHeading(desiredHeading);
+    driveSubsystem.setDriveToCoast();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

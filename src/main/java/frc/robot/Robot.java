@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.Date;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ public class Robot extends TimedRobot {
   private DataLogger robotDataLogger;
 
   static private RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
+
+  Date dateAtInitialization = new Date();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -79,7 +82,7 @@ public class Robot extends TimedRobot {
     robotDataLogger.setInterval(1);
     robotDataLogger.start();
 
-    FileSaver.add("networktables.ini");
+    FileSaver.add("/home/lvuser/networktables.json");
   }
 
   /**
@@ -188,7 +191,9 @@ public class Robot extends TimedRobot {
     // if any subsystems need to know about mode changes, let
     // them know here.
     // exampleSubsystem.processRobotModeChange(newMode);
-    RobotContainer.flareSubsystem.ProcessRobotModeChange(newMode);
+    if(RobotContainer.flareSubsystem != null){
+      RobotContainer.flareSubsystem.ProcessRobotModeChange(newMode);
+    }
   }
 
   public static RobotMode getCurrentRobotMode(){
@@ -222,6 +227,8 @@ public class Robot extends TimedRobot {
         if (missingDevices.size() > 0) {
           logger.warn ("Missing devices: " + missingDevices);
         }
+
+        logger.info ("Initialization date was {}", dateAtInitialization);
         hasCANBusBeenLogged = true;
       }
     }

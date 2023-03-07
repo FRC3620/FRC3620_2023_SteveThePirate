@@ -4,19 +4,21 @@
 
 package frc.robot.commands;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CannonSubsystem;
 
 public class CannonClawOutCommand extends CommandBase {
-    /** Creates a new CannonExtendCommand. */
-    CannonSubsystem cannonSubsystem;
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    
+  CannonSubsystem cannonSubsystem;
     double desiredSpeed;
     Timer getStartedTimer;
-    /**
-     * 
-     * Creates a new MoveTurretCommand.
-     */
+
     public CannonClawOutCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
       // Use addRequirements() here to declare subsystem dependencies.
       //addRequirements(_subsystem);
@@ -27,7 +29,8 @@ public class CannonClawOutCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      logger.info("started");
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called every time the scheduler runs while the command is scheduled.
@@ -35,13 +38,14 @@ public class CannonClawOutCommand extends CommandBase {
     @Override
     public void execute() 
     {
-      cannonSubsystem.setClawSpeed(desiredSpeed);
+      cannonSubsystem.setClawPower(desiredSpeed);
     }
   
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      cannonSubsystem.setClawSpeed(0);
+      logger.info("ended, interrupted = {}", interrupted);
+      cannonSubsystem.setClawPower(0);
     }
   
     // Returns true when the command should end.
