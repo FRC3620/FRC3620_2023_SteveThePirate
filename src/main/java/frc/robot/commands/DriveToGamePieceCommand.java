@@ -124,8 +124,7 @@ public class DriveToGamePieceCommand extends CommandBase {
           SmartDashboard.putNumber("gamepiece.targetHeading", targetHeading);
 
           driveSubsystem.autoDrive(currentTargetYaw, 0, spinPower);
-          // TODO need to use normalizeAngle() here
-          if (currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance) {
+          if (Math.abs(SwerveCalculator.calculateAngleDifference(currentHeading, targetHeading)) < tolerance) {
             logger.info ("done searching; targetYaw = {}, currentHeading = {}, targetHeading = {}", currentTargetYaw, currentHeading, targetHeading);
             driveSubsystem.setTargetHeading(targetHeading);
             myState = MyState.WAITING1;

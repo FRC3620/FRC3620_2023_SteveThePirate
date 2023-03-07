@@ -299,7 +299,7 @@ public class RobotContainer {
     chooser.addOption("April Tag Auto Test", () -> new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
     chooser.addOption("Mid1BalanceAuto", () -> new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Human1PickupBalanceAuto", () -> new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Human1BalanceAuto", () -> new Human1BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human1NoPickupBalanceAuto", () -> new Human1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Wall1PickupBalanceAuto", () -> new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
   }
 

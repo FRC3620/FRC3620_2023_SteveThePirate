@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import org.usfirst.frc3620.misc.SwerveCalculator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -73,7 +74,7 @@ public class TurnToGamePieceCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // TODO need to use normalizeAngle() here
-    if(currentHeading > targetHeading - tolerance && currentHeading < targetHeading + tolerance){
+    if(Math.abs(SwerveCalculator.calculateAngleDifference(currentHeading, targetHeading)) < tolerance){
       return true;
     }
     else{

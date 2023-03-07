@@ -24,10 +24,10 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Human1BalanceAuto extends SequentialCommandGroup {
+public class Human1NoPickupBalanceAuto extends SequentialCommandGroup {
   final DriveSubsystem driveSubsystem;
   /** Creates a new Mid1BalanceAuto. */
-  public Human1BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
+  public Human1NoPickupBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
     this.driveSubsystem = driveSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
