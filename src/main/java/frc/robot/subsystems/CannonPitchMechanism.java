@@ -100,7 +100,7 @@ public class CannonPitchMechanism  {
 
 
             double motorPower = m_pidController.calculate(getCurrentPitch());
-            motorPower = MathUtil.clamp(motorPower, -0.4, 0.4);
+            motorPower = MathUtil.clamp(motorPower, -0.5, 0.5);
             motor.set(motorPower);
           }
         } else {
@@ -137,5 +137,15 @@ public class CannonPitchMechanism  {
 
   public double getRequestedPitch() {
     return requestedPosition;
+  }
+
+  public void recalibrataePitch(boolean forward) {
+    if (forward) {
+      pitchOffset = pitchEncoder.getDistance() + 130;
+      setPitch(-130);
+    } else {
+      pitchOffset = pitchEncoder.getDistance() - 20;
+      setPitch(20);
+    }
   }
 }
