@@ -5,7 +5,7 @@
    height="8.5in"
    id="svg3023"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   sodipodi:docname="2023_Xbox_Controllers_duplicate.svg"
+   sodipodi:docname="2023_Xbox_Controllers.svg"
    inkscape:export-filename="C:\Users\dwegs\Documents\FRC3620.2022\FRC3620_2022_CuriousGeorge\Driver_Xbox_Controller.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
@@ -27,17 +27,17 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="971"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
      id="namedview105"
      showgrid="true"
-     inkscape:zoom="0.67620012"
-     inkscape:cx="801.53786"
-     inkscape:cy="397.0718"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:zoom="1.3524002"
+     inkscape:cx="865.49822"
+     inkscape:cy="338.65714"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1255"
+     inkscape:current-layer="g1327"
      inkscape:document-rotation="0"
      units="in"
      inkscape:snap-global="true"
@@ -509,6 +509,27 @@
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path1894-7" />
     </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1320-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path1318-2" />
+    </marker>
+    <rect
+       x="910.9729"
+       y="267.67224"
+       width="220.34897"
+       height="151.58235"
+       id="rect10275-1" />
   </defs>
   <metadata
      id="metadata3028">
@@ -1140,7 +1161,7 @@
      id="g1255"
      inkscape:groupmode="layer"
      inkscape:label="Operator Legend"
-     style="display:inline">
+     style="display:none">
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1231,19 +1252,21 @@
        transform="translate(-177.46226,-2.9577039)"><tspan
          x="301.37476"
          y="680"
-         id="tspan4306">Manual Adjust </tspan><tspan
+         id="tspan3545">Manual Adjust </tspan><tspan
          x="301.37476"
          y="713.33338"
-         id="tspan4308">Wrist
+         id="tspan3547">Wrist
 </tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
        x="275.22046"
        y="100.49694"
        id="text1223"><tspan
          sodipodi:role="line"
-         id="tspan4007">Place Cube Mid</tspan></text>
+         id="tspan4007"
+         x="275.22046"
+         y="100.49694">Place Cube Mid</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:145.955;display:inline"
@@ -1253,13 +1276,13 @@
        transform="translate(2.9577043,127.18128)"><tspan
          x="920"
          y="500"
-         id="tspan4310">Pick Cube/</tspan><tspan
+         id="tspan3549">Pick Cube/</tspan><tspan
          x="920"
          y="533.33338"
-         id="tspan4312">Sideways </tspan><tspan
+         id="tspan3551">Sideways </tspan><tspan
          x="920"
          y="566.66675"
-         id="tspan4314">Cone</tspan></text>
+         id="tspan3553">Cone</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:154.777;display:inline"
@@ -1269,13 +1292,13 @@
        transform="matrix(1.1204421,0,0,1,-112.44936,66.548347)"><tspan
          x="920"
          y="440"
-         id="tspan4316">Pick </tspan><tspan
+         id="tspan3555">Pick </tspan><tspan
          x="920"
          y="473.33338"
-         id="tspan4318">Standing </tspan><tspan
+         id="tspan3557">Standing </tspan><tspan
          x="920"
          y="506.66675"
-         id="tspan4320">Cone</tspan></text>
+         id="tspan3559">Cone</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';white-space:pre;inline-size:152.738;display:inline"
@@ -1285,13 +1308,13 @@
        transform="translate(0,-44.365564)"><tspan
          x="920"
          y="320"
-         id="tspan4322">Pick From </tspan><tspan
+         id="tspan3561">Pick From </tspan><tspan
          x="920"
          y="353.33338"
-         id="tspan4324">Human </tspan><tspan
+         id="tspan3563">Human </tspan><tspan
          x="920"
          y="386.66675"
-         id="tspan4326">Station</tspan></text>
+         id="tspan3565">Station</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:145.283;display:inline"
@@ -1301,18 +1324,18 @@
        transform="translate(48.802121,-42.886712)"><tspan
          x="39.958714"
          y="340"
-         id="tspan4330"><tspan
+         id="tspan3569"><tspan
            style="display:inline"
-           id="tspan4328">Manual </tspan></tspan><tspan
+           id="tspan3567">Manual </tspan></tspan><tspan
          x="39.958714"
          y="373.33338"
-         id="tspan4334"><tspan
+         id="tspan3573"><tspan
            style="display:inline"
-           id="tspan4332">Adjust Arm
+           id="tspan3571">Adjust Arm
 </tspan></tspan><tspan
          x="39.958714"
          y="406.66675"
-         id="tspan4336">In/Out</tspan></text>
+         id="tspan3575">In/Out</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
@@ -1343,10 +1366,10 @@
        inkscape:export-ydpi="96"><tspan
          x="880"
          y="180"
-         id="tspan4338">Place Cone </tspan><tspan
+         id="tspan3577">Place Cone </tspan><tspan
          x="880"
          y="213.33338"
-         id="tspan4340">High</tspan></text>
+         id="tspan3579">High</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal'"
@@ -1404,34 +1427,34 @@
        transform="translate(-150.84292,511.68285)"><tspan
          x="529.42969"
          y="189.89423"
-         id="tspan4344"><tspan
+         id="tspan3583"><tspan
            style="font-size:26.6667px"
-           id="tspan4342">Home </tspan></tspan><tspan
+           id="tspan3581">Home </tspan></tspan><tspan
          x="529.42969"
          y="223.2276"
-         id="tspan4348"><tspan
+         id="tspan3587"><tspan
            style="font-size:26.6667px"
-           id="tspan4346">Position </tspan></tspan><tspan
+           id="tspan3585">Position </tspan></tspan><tspan
          x="529.42969"
          y="256.56098"
-         id="tspan4352"><tspan
+         id="tspan3591"><tspan
            style="font-size:26.6667px"
-           id="tspan4350">(Field </tspan></tspan><tspan
+           id="tspan3589">(Field </tspan></tspan><tspan
          x="529.42969"
          y="289.89435"
-         id="tspan4356"><tspan
+         id="tspan3595"><tspan
            style="font-size:26.6667px"
-           id="tspan4354">Transition)</tspan></tspan></text>
+           id="tspan3593">Transition)</tspan></tspan></text>
     <text
        xml:space="preserve"
        id="text6588"
        style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect6590);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
          x="675.83594"
          y="70.107119"
-         id="tspan4358">Yellow </tspan><tspan
+         id="tspan3597">Yellow </tspan><tspan
          x="675.83594"
          y="103.44049"
-         id="tspan4360">Light</tspan></text>
+         id="tspan3599">Light</tspan></text>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 477.97887,407.84144 492.11479,51.126887 h 20"
@@ -1467,10 +1490,10 @@
        transform="translate(0.09112278,92.928021)"><tspan
          x="920"
          y="320"
-         id="tspan4362">Pick From </tspan><tspan
+         id="tspan3601">Pick From </tspan><tspan
          x="920"
          y="353.33338"
-         id="tspan4364">Chute</tspan></text>
+         id="tspan3603">Chute</tspan></text>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1896-9)"
        d="M 446.10219,508.32909 417.72915,679.95633"
@@ -1489,12 +1512,22 @@
        id="path1193-43"
        inkscape:label="L_STICK"
        sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline"
+       x="37.801582"
+       y="770.27618"
+       id="text276-5"><tspan
+         sodipodi:role="line"
+         id="tspan915"
+         x="37.801582"
+         y="770.27618">2023.03.02</tspan></text>
   </g>
   <g
      id="g1327"
      inkscape:groupmode="layer"
      inkscape:label="Driver Legend"
-     style="display:none">
+     style="display:inline">
     <path
        style="mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1475)"
        d="M 356.18827,237.66939 286.61934,135.63444"
@@ -1675,12 +1708,12 @@
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:42.6667px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline"
        x="40"
-       y="80"
+       y="69.542938"
        id="text280"><tspan
          sodipodi:role="line"
          id="tspan278"
          x="40"
-         y="80">Driver Controller</tspan></text>
+         y="69.542938">Driver Controller</tspan></text>
     <text
        xml:space="preserve"
        id="text6157"
@@ -1692,10 +1725,18 @@
        transform="translate(-14.788521)"><tspan
          x="910.97266"
          y="291.93524"
-         id="tspan4366">Reset NAVX </tspan><tspan
+         id="tspan3605">Reset NAVX </tspan><tspan
          x="910.97266"
          y="325.26862"
-         id="tspan4368">to 180</tspan></text>
+         id="tspan3607">to 180</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text10273-7"
+       style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect10275-1);display:inline;fill:#000000;stroke-width:2.016;stroke-dasharray:none"
+       transform="translate(-7.4466832,202.15563)"><tspan
+         x="910.97266"
+         y="291.93524"
+         id="tspan3609">X Mode</tspan></text>
     <path
        style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1.4727px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1987)"
        d="M 703.25858,415.80661 800.5709,228.85502 h 63.15002"
@@ -1705,9 +1746,25 @@
     <text
        xml:space="preserve"
        id="text10659"
-       style="font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect10661);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
+       style="display:inline;font-size:26.6667px;writing-mode:lr-tb;white-space:pre;shape-inside:url(#rect10661);fill:#000000;stroke-width:2.016;stroke-dasharray:none"><tspan
          x="874.00195"
          y="234.25946"
-         id="tspan4370">Reset  NAVX</tspan></text>
+         id="tspan3611">Reset  NAVX</tspan></text>
+    <text
+       xml:space="preserve"
+       style="display:inline;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+       x="37.801582"
+       y="770.27618"
+       id="text1021"><tspan
+         sodipodi:role="line"
+         id="tspan1019"
+         x="37.801582"
+         y="770.27618">2023.03.02</tspan></text>
+    <path
+       style="display:inline;mix-blend-mode:normal;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1320-8)"
+       d="m 756.32062,464.20743 142.23602,21.63698"
+       id="path3009-2"
+       sodipodi:nodetypes="cc"
+       inkscape:label="A" />
   </g>
 </svg>
