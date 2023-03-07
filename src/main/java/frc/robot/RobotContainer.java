@@ -281,12 +281,17 @@ public class RobotContainer {
     SmartDashboard.putData("MidLocation", new SetCannonLocationCommand(CannonLocation.coneMidLocation));
     SmartDashboard.putData("HighLocation", new SetCannonLocationCommand(CannonLocation.coneHighLocation));
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
+    SmartDashboard.putData("RecalibratePitchForward", new CannonUnjamPitchCommand(cannonSubsystem, true));
+    SmartDashboard.putData("RecalibratePitchBack", new CannonUnjamPitchCommand(cannonSubsystem, false));
 
     // Odometry and Vision Tests
     SmartDashboard.putData(new InstrumentOdometryAndVisionCommand());
     SmartDashboard.putData(new SeeConeCommand());
     SmartDashboard.putData(new SeeCubeCommand());
     SmartDashboard.putData(new TestPhotonVisionPipelineSwitchCommand());
+
+    // Lights
+    SmartDashboard.putData("testWarningLights", new testWarningLightCommand());
 
     // Autonomous
 
