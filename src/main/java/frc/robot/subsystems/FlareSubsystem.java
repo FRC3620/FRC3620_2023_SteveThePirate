@@ -24,6 +24,7 @@ public class FlareSubsystem extends SubsystemBase {
   double offSeconds = 0;
   boolean lightsAreOn = true;
   boolean watchTheClock = true;
+  boolean warningLights = false;
 
   Timer timer = new Timer();
   
@@ -45,7 +46,7 @@ public class FlareSubsystem extends SubsystemBase {
 
     setInterval(1, 0);
     setColor(new FlareColor(new Color(64, 64, 64)));
-
+   
     leds.start();
     timer.start();
   }
@@ -65,9 +66,11 @@ public class FlareSubsystem extends SubsystemBase {
   public void setColor(FlareColor flareColor){
     logger.info ("Set color to {}", flareColor);
 
+
     for (var i = 0; i < ledBuffer.getLength(); i++) {
       flareColors[i] = flareColor;
-   }
+    }
+
     colorsNeedUpdating = true;
   }
 
@@ -88,6 +91,8 @@ public class FlareSubsystem extends SubsystemBase {
     
     colorsNeedUpdating = true;
   }
+
+ 
 
   RobotMode robotMode = RobotMode.INIT;  
 
@@ -208,8 +213,13 @@ public class FlareSubsystem extends SubsystemBase {
   } else if ((offSeconds > 0 && timer.get() > offSeconds) || colorsNeedUpdating) {
       // turn lights on
       for (var i = 0; i < ledBuffer.getLength(); i++) {
-        FlareColor flareColor = flareColors[i];
-        ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
+        if(i<2 && warningLights) {
+          FlareColor flareColor = FlareColor.RED;
+          ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
+        } else {
+          FlareColor flareColor = flareColors[i];
+          ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
+        }
       }
       leds.setData(ledBuffer);
       colorsNeedUpdating = false;
@@ -217,4 +227,9 @@ public class FlareSubsystem extends SubsystemBase {
       lightsAreOn = true;
     }
   }
+public void setWarningLights(String warningMessage) {
+  warningLights = true;
+  SmartDashboard.putString("flare.warning", warningMessage);
+}
+
 }
