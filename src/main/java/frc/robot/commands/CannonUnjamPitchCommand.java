@@ -4,44 +4,42 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystems.CannonSubsystem;
 
-public class CannonPitchPowerCommand extends CommandBase {
-  /** Creates a new CannonExtendCommand. */
-  CannonSubsystem cannonSubsystem;
-  double desiredSpeed;
-  double setPoint;
-  double startTime;
+public class CannonUnjamPitchCommand extends CommandBase {
+  /** Creates a new CannonElevateCommand. */
 
-  public CannonPitchPowerCommand(CannonSubsystem _subsystem, double _desiredSpeed) {
+  CannonSubsystem cannonSubsystem;
+  boolean forward;
+
+  public CannonUnjamPitchCommand(CannonSubsystem _subsystem, boolean _forward) {
     // Use addRequirements() here to declare subsystem dependencies.
-    //addRequirements(_subsystem);
+    // addRequirements(_subsystem);
     cannonSubsystem = _subsystem;
-    desiredSpeed = _desiredSpeed;
-  } 
+    forward = _forward;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    setPoint = cannonSubsystem.getClampedPitch();
-    startTime = Timer.getFPGATimestamp();
+    cannonSubsystem.recalibrataePitch(forward);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-
   @Override
   public void execute() {
-    cannonSubsystem.setPitch(setPoint+desiredSpeed*(Timer.getFPGATimestamp()-startTime));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

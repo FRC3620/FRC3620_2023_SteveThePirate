@@ -33,7 +33,7 @@ public class CannonExtendMechanism  {
 
   final String name = "Extension";
 
-  public GenericEntry adjustemEntry = Shuffleboard.getTab("numberSlider")
+  public GenericEntry adjustemEntry = Shuffleboard.getTab("Match")
     .add(name + ".adjustmentSlider", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", -5, "max", 5))
@@ -122,7 +122,7 @@ public class CannonExtendMechanism  {
   public void setExtension(double length) {
     adjustmentAddition = adjustemEntry.getDouble(0);
     adjustedLength = length + adjustmentAddition;
-    adjustedLength = MathUtil.clamp(adjustedLength, 0, 45);
+    adjustedLength = MathUtil.clamp(adjustedLength, 0, 36);
     SmartDashboard.putNumber(name + ".rawRequestedLength", length);
     SmartDashboard.putNumber(name + ".requestedLength", adjustedLength);
     

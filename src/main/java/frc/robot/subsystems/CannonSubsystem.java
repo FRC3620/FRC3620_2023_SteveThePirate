@@ -94,6 +94,10 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonPitchMechanism.getRequestedPitch();
   }
 
+  public double getClampedPitch() {
+    return cannonPitchMechanism.getClampedPitch();
+  }
+
   public double getCurrentPitch() {
     return cannonPitchMechanism.getCurrentPitch();
   }
@@ -116,6 +120,10 @@ public class CannonSubsystem extends SubsystemBase {
 
   public double getAdjustedRequestedExtension() {
     return cannonExtendMechanism.getAdjustedRequestedExtension();
+  }
+
+  public void recalibrataePitch(boolean forward) {
+    recalibrataePitch(forward);
   }
 
   void setupMotors() {
