@@ -7,7 +7,7 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CannonLocation {
-    public static CannonLocation coneHighLocation = new CannonLocation(41.85, 35.5, -61);
+    public static CannonLocation coneHighLocation = new CannonLocation(44, 35.5, -75);
     public static CannonLocation cubeHighLocation = new CannonLocation(41, 29, -59.5);
     public static CannonLocation coneMidLocation = new CannonLocation(47, 17.8, -70);
     public static CannonLocation cubeMidLocation = new CannonLocation(42.2, 7.8, -67.1);

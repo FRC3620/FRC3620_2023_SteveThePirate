@@ -27,11 +27,13 @@ public class CannonPitchMechanism  {
   CANSparkMaxSendable motor;
   //RelativeEncoder encoder;
   Encoder pitchEncoder;
+
+  double clampPitchforCommand = 0;
   
   Double requestedPositionWhileCalibrating = null;
   Double requestedPosition = null;
 
-  private static final double kP = 0.0025;
+  private static final double kP = 0.0025; //0.0025
   private static final double kI = 0;
   private static final double kD = 0;
 
@@ -94,9 +96,11 @@ public class CannonPitchMechanism  {
             }
           } else {
             double minPitch = (cannonSubsystem.getCurrentElevation() < 0) ? -10 : -130;
-            double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -10 : 10;
+            double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 10;
             double clampPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
+            SmartDashboard.putNumber(name + ".clampPitch", clampPitch);
             m_pidController.setSetpoint(clampPitch);
+            clampPitchforCommand = clampPitch;
 
 
             double motorPower = m_pidController.calculate(getCurrentPitch());
@@ -116,7 +120,7 @@ public class CannonPitchMechanism  {
    * @param pitch
    */
   public void setPitch(double pitch) {
-    SmartDashboard.putNumber(name + ".requestedHeight", pitch);
+    SmartDashboard.putNumber(name + ".requestedPitch", pitch);
     if (encoderIsValid) {
       requestedPosition = pitch;
     } else {
@@ -137,6 +141,10 @@ public class CannonPitchMechanism  {
 
   public double getRequestedPitch() {
     return requestedPosition;
+  }
+
+  public double getClampedPitch() {
+    return clampPitchforCommand;
   }
 
   public void recalibrataePitch(boolean forward) {

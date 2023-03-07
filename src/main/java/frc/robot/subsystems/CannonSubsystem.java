@@ -94,6 +94,10 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonPitchMechanism.getRequestedPitch();
   }
 
+  public double getClampedPitch() {
+    return cannonPitchMechanism.getClampedPitch();
+  }
+
   public double getCurrentPitch() {
     return cannonPitchMechanism.getCurrentPitch();
   }
