@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 
 
+import java.lang.annotation.Target;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -32,6 +34,7 @@ public class FlareSubsystem extends SubsystemBase {
   
   
   
+  
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   public FlareSubsystem() {
@@ -55,6 +58,7 @@ public class FlareSubsystem extends SubsystemBase {
 
     for (var i = 0; i < ledBuffer.getLength(); i++) {
       flareColors[i] = flareColor;
+      
    }
     colorsNeedUpdated = true;
   }
@@ -180,33 +184,62 @@ public class FlareSubsystem extends SubsystemBase {
     setInterval(1, 0);
   }
 
-    if (lightsAreOn) {
-      if (timer.get() > onSeconds) {
-        // turn lights off
-        for (var i = 0; i < ledBuffer.getLength(); i++) {
+  if (lightsAreOn) {
+    if (timer.get() > onSeconds) {
+      // turn lights off
+      for (var i = 0; i < ledBuffer.getLength() - 12; i++) {
+        FlareColor flareColor = flareColors[i];
+        ledBuffer.setRGB(i, 0, 0, 0);
+      }
+      leds.setData(ledBuffer);
+      timer.reset();
+      lightsAreOn = false;
+    }
+  } else {
+      if (timer.get() > offSeconds) {
+        // turn lights on
+        for (var i = 0; i < ledBuffer.getLength() - 12; i++) {
           FlareColor flareColor = flareColors[i];
-          ledBuffer.setRGB(i, 0, 0, 0);
+          ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
         }
         leds.setData(ledBuffer);
         timer.reset();
+        lightsAreOn = true;
+      }
+
+      if(offSeconds == 0) {
         lightsAreOn = false;
       }
-    } else {
-        if (timer.get() > offSeconds) {
-          // turn lights on
-          for (var i = 0; i < ledBuffer.getLength(); i++) {
-            FlareColor flareColor = flareColors[i];
-            ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
-          }
-          leds.setData(ledBuffer);
-          timer.reset();
-          lightsAreOn = true;
+   }
+   if (lightsAreOn) {
+    if (timer.get() > onSeconds) {
+      // turn lights off
+      for (var i = 10; i < ledBuffer.getLength(); i++) {
+        FlareColor flareColor = flareColors[i];
+        ledBuffer.setRGB(i, 0, 0, 0);
+      }
+      leds.setData(ledBuffer);
+      timer.reset();
+      lightsAreOn = false;
+    }
+  } else {
+      if (timer.get() > offSeconds) {
+        // turn lights on
+        for (var i = 10; i < ledBuffer.getLength(); i++) {
+          FlareColor flareColor = flareColors[i];
+          ledBuffer.setRGB(i, flareColor.getRed(), flareColor.getGreen(), flareColor.getBlue());
         }
+        leds.setData(ledBuffer);
+        timer.reset();
+        lightsAreOn = true;
+      }
 
-        if(offSeconds == 0) {
-          lightsAreOn = false;
-        }
-     }
+      if(offSeconds == 0) {
+        lightsAreOn = false;
+      }
+   }
+
+    
 
     }
 
