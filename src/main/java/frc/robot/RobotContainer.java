@@ -116,9 +116,9 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
     odometrySubsystem = new OdometrySubsystem(navigationSubsystem, DriverStation.getAlliance(), robotParameters.swerveParameters, driveSubsystem);
     cannonSubsystem = new CannonSubsystem();
-    balanceLights = new FlareSubsystem("balanceLights", 8);
-    balanceLights.setWatchTheClock(false);
-    //flareSubsystem = new FlareSubsystem();
+    //balanceLights = new FlareSubsystem("balanceLights", 8);
+    //balanceLights.setWatchTheClock(false);
+    flareSubsystem = new FlareSubsystem();
   }
 
   public String getDriverControllerName() {
@@ -280,6 +280,9 @@ public class RobotContainer {
     SmartDashboard.putData(new SeeConeCommand());
     SmartDashboard.putData(new SeeCubeCommand());
     SmartDashboard.putData(new TestPhotonVisionPipelineSwitchCommand());
+
+    // Lights
+    SmartDashboard.putData("testWarningLights", new testWarningLightCommand());
 
     // Autonomous
 
