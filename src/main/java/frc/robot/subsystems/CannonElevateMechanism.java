@@ -88,6 +88,11 @@ public class CannonElevateMechanism  {
 		double elevation = (elevationEncoderValue - elevateEncoderValueAt90Degrees)*(360.0/4096.0) + 90;
     // get it into the -180..180 range
     elevation = SwerveCalculator.normalizeAngle(elevation);
+    // get it into the -90..270 range
+    if (elevation < -90){
+      elevation = elevation + 360;
+    }
+
 		return elevation;
 	}
 }
