@@ -33,7 +33,7 @@ public class CannonPitchMechanism  {
   Double requestedPositionWhileCalibrating = null;
   Double requestedPosition = null;
 
-  private static final double kP = 0.0025; //0.0025
+  private static final double kP = 0.004; //0.0025
   private static final double kI = 0;
   private static final double kD = 0;
 
@@ -95,7 +95,7 @@ public class CannonPitchMechanism  {
               }
             }
           } else {
-            double minPitch = (cannonSubsystem.getCurrentElevation() < 0) ? -10 : -130;
+            double minPitch = (cannonSubsystem.getCurrentElevation() < -5) ? -10 : -130;
             double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 10;
             double clampPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
             SmartDashboard.putNumber(name + ".clampPitch", clampPitch);
