@@ -62,6 +62,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     myState = LevelingState.LEVEL;
     setColor(Color.kRed);
     driveSubsystem.setDriveToBrake();
+    driveSubsystem.setTargetHeading(180);
 
     //cannonSubsystem.setPitch(-117);
     //cannonSubsystem.setElevation(30);
@@ -80,8 +81,10 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   public void execute() {
     power = 0;
     pitch = RobotContainer.navigationSubsystem.getPitch();
+    double spin = 0;
 
     if(myState == LevelingState.LEVEL){
+      spin = driveSubsystem.getSpinPower();
       //drive
       power = 0.3;
       if(pitch < -13) {
@@ -151,7 +154,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     if (power == 0) {
       driveSubsystem.stopDrive();
     } else {
-      driveSubsystem.autoDrive(0, power, 0);
+      driveSubsystem.autoDrive(0, power, spin);
     }
   
 

@@ -60,7 +60,7 @@ public class VisionSubsystem extends SubsystemBase {
   PhotonPoseEstimator frontCameraPoseEstimator;
   public FrontCameraMode frontCameraMode;
 
-  Translation2d whereIsTheCamera;
+  Translation2d whereIsTheCenterOfTheRobot;
 
   static AprilTagFieldLayout fieldLayout;
 
@@ -196,26 +196,28 @@ public class VisionSubsystem extends SubsystemBase {
 
         for (var target : targetsToProcess) {
           int targetId = target.getFiducialId();
-          Transform3d vectorFromCameraToTag = target.getBestCameraToTarget();
+          Transform3d transformFromCameraToTag = target.getBestCameraToTarget();
           //Translation2d vectorToTarget = new Translation2d(vectorFromCameraToTag.getZ(), -vectorFromCameraToTag.getX());
-          Translation2d vectorToTarget = vectorFromCameraToTag.getTranslation().toTranslation2d();
+          Translation2d vectorFromCameraToTag = transformFromCameraToTag.getTranslation().toTranslation2d();
           Translation3d vectorFromOriginToTag = VisionSubsystem.getTranslation3dForTag(targetId);
 
           if (targetId == bestTargetId) {
             SmartDashboard.putNumber("whereami.closest tag id", targetId);
-            SmartDashboard.putNumber("whereami.closest tag distance x", vectorFromCameraToTag.getX());
-            SmartDashboard.putNumber("whereami.closest tag distance y", vectorFromCameraToTag.getY());
-            SmartDashboard.putNumber("whereami.closest tag distance z", vectorFromCameraToTag.getZ());
+            SmartDashboard.putNumber("whereami.closest tag distance x", transformFromCameraToTag.getX());
+            SmartDashboard.putNumber("whereami.closest tag distance y", transformFromCameraToTag.getY());
+            SmartDashboard.putNumber("whereami.closest tag distance z", transformFromCameraToTag.getZ());
       
-            SmartDashboard.putNumber("Translated X", vectorToTarget.getX());
-            SmartDashboard.putNumber("Translated Y", vectorToTarget.getY());
+            SmartDashboard.putNumber("Translated X", vectorFromCameraToTag.getX());
+            SmartDashboard.putNumber("Translated Y", vectorFromCameraToTag.getY());
           }
 
           if (vectorFromOriginToTag != null) {
-            whereIsTheCamera = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorToTarget, whichWayAreWeFacing.getRadians());
+            // camera is 0.166 m to left of center of the robotr
+            Translation2d vectorFromCenterOfRobotToTag = vectorFromCameraToTag.plus(new Translation2d(0, 0.166));
+            whereIsTheCenterOfTheRobot = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorFromCenterOfRobotToTag, whichWayAreWeFacing.getRadians());
             if (targetId == bestTargetId) {
-              if(vectorFromCameraToTag.getX() < 4.2){
-                RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCamera);
+              if(transformFromCameraToTag.getX() < 4.2){
+                RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCenterOfTheRobot);
               }
 
               SmartDashboard.putNumber("whereami.TagPosex", vectorFromOriginToTag.getX());
@@ -224,11 +226,11 @@ public class VisionSubsystem extends SubsystemBase {
       
               SmartDashboard.putNumber("whereami.facing", whichWayAreWeFacing.getDegrees());
       
-              SmartDashboard.putNumber("camera X", whereIsTheCamera.getX());
-              SmartDashboard.putNumber("camera Y", whereIsTheCamera.getY());
+              SmartDashboard.putNumber("camera X", whereIsTheCenterOfTheRobot.getX());
+              SmartDashboard.putNumber("camera Y", whereIsTheCenterOfTheRobot.getY());
             }
             if (visionData != null) {
-              visionData.addCameraPosition(targetId, whereIsTheCamera);
+              visionData.addCameraPosition(targetId, whereIsTheCenterOfTheRobot);
             }
           }
         }
@@ -246,14 +248,14 @@ public class VisionSubsystem extends SubsystemBase {
     }      
   }
 
-  public String whereIsTheCameraX() {
-    if (whereIsTheCamera == null) return "";
-    return DataLogger.f2(whereIsTheCamera.getX());
+  public String whereIsTheCenterOfTheRobotX() {
+    if (whereIsTheCenterOfTheRobot == null) return "";
+    return DataLogger.f2(whereIsTheCenterOfTheRobot.getX());
   }
 
-  public String whereIsTheCameraY() {
-    if (whereIsTheCamera == null) return "";
-    return DataLogger.f2(whereIsTheCamera.getY());
+  public String whereIsTheCenterOfTheRobotY() {
+    if (whereIsTheCenterOfTheRobot == null) return "";
+    return DataLogger.f2(whereIsTheCenterOfTheRobot.getY());
   }
 
   public double getLastAprilTagTimestamp() {

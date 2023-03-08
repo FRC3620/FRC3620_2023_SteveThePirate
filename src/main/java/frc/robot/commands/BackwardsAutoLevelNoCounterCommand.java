@@ -62,6 +62,8 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
     myState = LevelingState.LEVEL;
     setColor(Color.kRed);
     driveSubsystem.setDriveToBrake();
+    driveSubsystem.setTargetHeading(0);
+
 
     //cannonSubsystem.setPitch(-117);
     //cannonSubsystem.setElevation(30);
@@ -80,8 +82,10 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
   public void execute() {
     power = 0;
     pitch = RobotContainer.navigationSubsystem.getPitch();
+    double spin = 0;
 
     if(myState == LevelingState.LEVEL){
+      spin = driveSubsystem.getSpinPower();
       //drive
       power = -0.4;
       if(pitch > 13) {
@@ -151,7 +155,7 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
     if (power == 0) {
       driveSubsystem.stopDrive();
     } else {
-      driveSubsystem.autoDrive(0, power, 0);
+      driveSubsystem.autoDrive(0, power, spin);
     }
   
 
