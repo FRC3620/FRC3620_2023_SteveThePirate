@@ -205,8 +205,8 @@ public class RobotContainer {
             .whileTrue(new CannonExtendPowerCommand(cannonSubsystem, -4));   
              
     operatorDPad.up().onTrue(new SetCannonLocationCommand(CannonLocation.parkLocation));
-    operatorDPad.left().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, 5));
-    operatorDPad.right().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, -5));
+    operatorDPad.left().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, 10));
+    operatorDPad.right().whileTrue(new CannonPitchPowerCommand(cannonSubsystem, -10));
   }
 
   /*public static double getOperatorJoystickRightY() {
