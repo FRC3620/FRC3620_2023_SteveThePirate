@@ -60,7 +60,7 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
   @Override
   public void initialize() {
     myState = LevelingState.LEVEL;
-    setColor(Color.kRed);
+    setColor(Color.kPink);
     driveSubsystem.setDriveToBrake();
     driveSubsystem.setTargetHeading(0);
 
@@ -87,7 +87,7 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
     if(myState == LevelingState.LEVEL){
       spin = driveSubsystem.getSpinPower();
       //drive
-      power = -0.4;
+      power = -0.3;
       if(pitch > 13) {
         // we are going uphill, slow down
         myState = LevelingState.TIMED;

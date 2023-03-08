@@ -60,7 +60,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   @Override
   public void initialize() {
     myState = LevelingState.LEVEL;
-    setColor(Color.kRed);
+    setColor(Color.kPink);
     driveSubsystem.setDriveToBrake();
     driveSubsystem.setTargetHeading(180);
 

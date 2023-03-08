@@ -28,5 +28,8 @@ public class FieldLocation {
 
     public static PoseOnField humanBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(10.789, 4.65 + yOffset); //4.138
     public static PoseOnField humanMiddleBlind = PoseOnField.fromRedAlliancePositionInMeters(12.1, 4.990 + yOffset);
+    public static PoseOnField wallBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(11.024, 1.403 + yOffset);
+    public static PoseOnField wallMiddleBlind = PoseOnField.fromRedAlliancePositionInMeters(12.1, 0.963 + yOffset);
+
 }
 
