@@ -262,6 +262,7 @@ public class RobotContainer {
     SmartDashboard.putData("Human1BlindPickupBalanceAuto", new Human1BlindPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Wall1NoPickupBalanceAuto", new Wall1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Wall1BlindPickupBalanceAuto", new Wall1BlindPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Wall1BlindPickupBalanceAutoButWeStop", new Wall1BlindPickupBalanceAutoButWeStop(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
 
     // Cannon
     SmartDashboard.putData("ExtendCommand0" , new CannonExtendCommand(cannonSubsystem, 0));

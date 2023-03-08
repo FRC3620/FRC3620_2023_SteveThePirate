@@ -23,12 +23,12 @@ public class FieldLocation {
     public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 3.402 + yOffset); //TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22));
     public static PoseOnField wallStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 0.651 + yOffset); //TargetPoseOnField.wallTarget(-0.5, Units.inchesToMeters(22));
 
-    public static PoseOnField humanHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876,4.99 + yOffset); //4.800
-    public static PoseOnField wallHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876, 0.963 + yOffset);
+    public static PoseOnField humanHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876, 4.99 + yOffset); //4.800
+    public static PoseOnField wallHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.576, 0.963 + yOffset);
 
     public static PoseOnField humanBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(10.789, 4.65 + yOffset); //4.138
     public static PoseOnField humanMiddleBlind = PoseOnField.fromRedAlliancePositionInMeters(12.1, 4.990 + yOffset);
-    public static PoseOnField wallBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(11.024, 1.403 + yOffset);
+    public static PoseOnField wallBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(10.024, 1.053 + yOffset);
     public static PoseOnField wallMiddleBlind = PoseOnField.fromRedAlliancePositionInMeters(12.1, 0.963 + yOffset);
 
 }
