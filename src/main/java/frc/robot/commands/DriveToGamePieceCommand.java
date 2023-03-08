@@ -102,7 +102,7 @@ public class DriveToGamePieceCommand extends CommandBase {
         currentTargetPitch = target.getPitch();
         SmartDashboard.putNumber("gamepiece.yaw", currentTargetYaw);
         SmartDashboard.putNumber("gamepiece.pitch", currentTargetPitch);
-        if (currentTargetPitch < 14) {
+        if (currentTargetPitch > 14) {
           target = null;
         }
       }

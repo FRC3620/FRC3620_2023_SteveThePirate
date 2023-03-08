@@ -68,7 +68,7 @@ public class Wall1BlindPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.25, 0, driveSubsystem)
       ,
-      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new BackwardsAutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

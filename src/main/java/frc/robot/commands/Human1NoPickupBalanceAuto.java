@@ -36,7 +36,6 @@ public class Human1NoPickupBalanceAuto extends SequentialCommandGroup {
       ,
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.humanStart)
-      /*
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
@@ -50,21 +49,18 @@ public class Human1NoPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(1.5)
       ,
-      // TODO need to change heading if blue 
-      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.7, 0.3, 178, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.3, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.lowLocation)
-      */
-      ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.6, 0.3, 180, driveSubsystem) //speed was 0.5
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.2, 0.3, 180, driveSubsystem) //speed was 0.5
       ,
       // should we do this or go to the position for leveling?
-      //new SetCannonLocationCommand(CannonLocation.parkLocation)
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.3, 180, driveSubsystem)
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.3, 180, driveSubsystem)
       ,
       new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
-      //,
-      //new XModeCommand(driveSubsystem)
+      ,
+      new XModeCommand(driveSubsystem)
     );
   }
 }

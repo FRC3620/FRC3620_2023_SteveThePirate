@@ -8,6 +8,7 @@ import org.usfirst.frc3620.misc.PoseOnField;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -49,26 +50,28 @@ public class Human1BlindPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(.5)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.5, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.2, 0.2, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.5, 0.2, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanMiddleBlind, 0.2, 0.2, -30, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
       ,
-      new CannonClawInCommand(cannonSubsystem, 0.6)
-      ,
-      new AutoDriveCommand(4.6*12, -20, 0.2, -20, driveSubsystem)
+      new ParallelDeadlineGroup(
+        new DriveToCoordinateCommand(FieldLocation.humanBlindPosition, .2, 0.1, 0, driveSubsystem)
+        ,
+        new CannonClawInCommand(cannonSubsystem, 0.6)
+      )
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
       ,
       // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.25, 0, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.2, 0.25, 0, driveSubsystem)
       ,
-      new BackwardsAutoLevelingCommand(driveSubsystem, cannonSubsystem)
+      new BackwardsAutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

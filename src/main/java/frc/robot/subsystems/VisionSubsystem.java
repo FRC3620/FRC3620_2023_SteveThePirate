@@ -32,6 +32,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -76,7 +77,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     frontCamera = new PhotonCamera("FrontCamera");
     setFrontCameraMode(FrontCameraMode.APRILTAGS);
-    Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0));
+  
+    Transform3d frontCameraMounting = new Transform3d(new Translation3d(0, Units.inchesToMeters(0), 0), new Rotation3d(0,0,0));
     frontCameraPoseEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, frontCamera, frontCameraMounting);
   }
 

@@ -47,6 +47,13 @@ abstract public class PoseOnField {
             }
         }
 
+        double getFixedY(Alliance alliance){
+            if (alliance == Alliance.Blue){
+                return translationInMeters.getY() - 0;
+            }
+            return translationInMeters.getY();
+        }
+
     }
 
     static class PoseOnFieldSetFromCenterLine extends PoseOnFieldBase {
@@ -68,7 +75,7 @@ abstract public class PoseOnField {
                 default:
                     throw new IllegalArgumentException("Unsupported enum value");
             }
-            return new Translation2d(x, translationInMeters.getY());
+            return new Translation2d(x, getFixedY(alliance));
         }
     }
 
@@ -99,7 +106,7 @@ abstract public class PoseOnField {
                 default:
                     throw new IllegalArgumentException("Unsupported enum value");
             }
-            return new Translation2d(x, translationInMeters.getY());
+            return new Translation2d(x, getFixedY(alliance));
         }
     }
 
@@ -129,7 +136,7 @@ abstract public class PoseOnField {
                 default:
                     throw new IllegalArgumentException("Unsupported enum value");
             }
-            return new Translation2d(x, translationInMeters.getY());
+            return new Translation2d(x, getFixedY(alliance));
         }
     }
 

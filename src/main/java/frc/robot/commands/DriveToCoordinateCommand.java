@@ -124,6 +124,10 @@ public class DriveToCoordinateCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Translation2d whereIAm = RobotContainer.odometrySubsystem.getPoseMeters().getTranslation();
+    double heading = RobotContainer.navigationSubsystem.getCorrectedHeading();
+    logger.info ("done @ {}, {};  robot heading = {}, interrupted = {}",
+      f2(whereIAm.getX()), f2(whereIAm.getY()), heading, interrupted); 
     if (dataLogger != null) {
       dataLogger.done();
     }
