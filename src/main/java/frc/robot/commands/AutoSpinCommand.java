@@ -40,7 +40,6 @@ public class AutoSpinCommand extends CommandBase {
     logger.info ("starting at @ {}, {};  robot heading = {}",
       f2(whereIAm.getX()), f2(whereIAm.getY()), heading);
     driveSubsystem.setForcedManualModeTrue();
-    EventLogging.commandMessage(logger);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,7 +59,6 @@ public class AutoSpinCommand extends CommandBase {
       f2(whereIAm.getX()), f2(whereIAm.getY()), heading, interrupted);
     driveSubsystem.teleOpDrive(0,0,0);
     driveSubsystem.setForcedManualModeFalse();
-    //EventLogging.commandMessage(logger, interrupted);
   }
 
   // Returns true when the command should end.

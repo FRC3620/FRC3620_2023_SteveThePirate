@@ -130,7 +130,7 @@ public class DriveToAprilTagCommand extends CommandBase {
         double targetYaw = 10.0;
         double targetPitch = 9.7;
 
-        double targetYawTolerance = 0.7;
+        double targetYawTolerance = 10;
         double targetPitchTolerance = 0.9;
 
         double speed = 0.0;

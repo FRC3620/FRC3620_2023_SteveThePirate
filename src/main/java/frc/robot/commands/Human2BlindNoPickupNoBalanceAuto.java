@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -20,9 +21,9 @@ import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Human2NoPickupNoBalanceAuto extends SequentialCommandGroup {
+public class Human2BlindNoPickupNoBalanceAuto extends SequentialCommandGroup {
   /** Creates a new Human2NoBalanceAuto. */
-  public Human2NoPickupNoBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
+  public Human2BlindNoPickupNoBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -44,21 +45,29 @@ public class Human2NoPickupNoBalanceAuto extends SequentialCommandGroup {
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       new WaitCommand(.5)
-      , //change 178 if were blue
+      ,
       new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.6, 0.21, 180, driveSubsystem) // speed = 0.2
       ,
       new SetCannonLocationCommand(CannonLocation.lowLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.45, 0.21, 0, driveSubsystem) // 0.2
+      new DriveToCoordinateCommand(FieldLocation.humanMiddleBlind, 0.2, 0.2, -30, driveSubsystem)
       ,
-      // set cannon down to gamepiece somewhere
-      new DriveToGamePieceCommand(FrontCameraMode.CUBES, driveSubsystem, visionSubsystem, cannonSubsystem)
+      new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      ,
+      new ParallelDeadlineGroup(
+        new DriveToCoordinateCommand(FieldLocation.humanBlindPosition, .2, 0.1, 0, driveSubsystem)
+        ,
+        new CannonClawInCommand(cannonSubsystem, 0.6)
+      )
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
       ,
+      // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddleBlind, 0.4, 0.21, 180, driveSubsystem)
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.humanMiddle, 0.4, 0.21, 180, driveSubsystem)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.4, 0.22, 180, driveSubsystem)
       ,

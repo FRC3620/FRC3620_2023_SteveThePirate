@@ -11,7 +11,7 @@ import edu.wpi.first.math.util.Units;
 /** Add your docs here. */
 public class FieldLocation {
     static double yOffset = 0;
-    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422,4.990 + yOffset); //4.800
+    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422,4.60 + yOffset); //4.800
     public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.458 + yOffset);
     public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963 + yOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
@@ -23,7 +23,7 @@ public class FieldLocation {
     public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 3.402 + yOffset); //TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22));
     public static PoseOnField wallStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 0.651 + yOffset); //TargetPoseOnField.wallTarget(-0.5, Units.inchesToMeters(22));
 
-    public static PoseOnField humanHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876, 4.99 + yOffset); //4.800
+    public static PoseOnField humanHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876, 4.7 + yOffset); //4.800
     public static PoseOnField wallHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.576, 0.963 + yOffset);
 
     public static PoseOnField humanBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(10.789, 4.65 + yOffset); //4.138
