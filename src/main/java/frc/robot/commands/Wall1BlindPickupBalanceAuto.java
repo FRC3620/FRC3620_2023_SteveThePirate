@@ -50,16 +50,16 @@ public class Wall1BlindPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(.5)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.2, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.4, 0.2, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.lowLocation)
-      ,
-      new DriveToCoordinateCommand(FieldLocation.wallMiddleBlind, 0.2, 0.2, 30, driveSubsystem)
+      new AutoSpinCommand(.4, 0, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
       ,
+      new WaitCommand(2)
+      ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.wallBlindPosition, .2, 0.1, 0, driveSubsystem)
+        new DriveToCoordinateCommand(FieldLocation.wallBlindPosition, .4, 0.1, 0, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.6)
       )

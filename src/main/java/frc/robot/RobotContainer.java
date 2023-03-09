@@ -261,6 +261,7 @@ public class RobotContainer {
     SmartDashboard.putData("Wall1BlindPickupBalanceAuto", new Wall1BlindPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Wall1BlindPickupBalanceAutoButWeStop", new Wall1BlindPickupBalanceAutoButWeStop(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Human2BlindNoPickupNoBalanceAuto", new Human2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Wall2BlindNoPickupNoBalanceAuto", new Wall2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
 
     // Cannon
     SmartDashboard.putData("ExtendCommand0" , new CannonExtendCommand(cannonSubsystem, 0));
@@ -307,11 +308,13 @@ public class RobotContainer {
     chooser.addOption("Human1PickupBalanceAuto", () -> new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Human1BlindPickupBalanceAuto", () -> new Human1BlindPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Human1NoPickupBalanceAuto", () -> new Human1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Wall1PickupBalanceAuto", () -> new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Human2NoPickupNoBalanceAuto", () -> new Human2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Human2BlindNoPickupNoBalanceAuto", () -> new Human2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Wall2NoPickupNoBalanceAuto", () -> new Wall2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Wall1BlindPickupBalanceAuto", () -> new Wall1BlindPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall1PickupBalanceAuto", () -> new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall2BlindNoPickupNoBalanceAuto", () -> new Wall2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall2NoPickupNoBalanceAuto", () -> new Wall2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+
     //TODO put autos in order
   }
 
