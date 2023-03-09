@@ -47,8 +47,8 @@ public class Robot extends TimedRobot {
     logger = EventLogging.getLogger(Robot.class, Level.INFO);
     logger.info ("I'm alive! {}", GitNess.gitDescription());
 
-    PortForwarder.add (10080, "wpilibpi.local", 80);
-    PortForwarder.add (10022, "wpilibpi.local", 22);
+    PortForwarder.add (15800, "photonvision.local", 5800);
+    PortForwarder.add (10022, "photonvision.local", 22);
 
     CommandScheduler commandScheduler = CommandScheduler.getInstance();
 
