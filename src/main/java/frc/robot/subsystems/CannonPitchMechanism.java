@@ -25,7 +25,7 @@ public class CannonPitchMechanism  {
   boolean encoderIsValid = false;
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
-  //RelativeEncoder encoder;
+  RelativeEncoder motorEncoder;
   Encoder pitchEncoder;
 
   double clampPitchforCommand = 0;
@@ -45,13 +45,11 @@ public class CannonPitchMechanism  {
 
   final String name = "Pitch";
 
-  public CannonPitchMechanism(CANSparkMaxSendable motor, Encoder pitchEncoder) {
+  public CannonPitchMechanism(CANSparkMaxSendable motor, Encoder pitchEncoder, RelativeEncoder motorEncoder) {
     this.motor = motor;
-    if (motor != null) {
-      this.pitchEncoder = pitchEncoder;
-      pitchEncoder.setDistancePerPulse(-360/256.0);
-
-    }
+    this.pitchEncoder = pitchEncoder;
+    if (pitchEncoder != null) pitchEncoder.setDistancePerPulse(-360/256.0);
+    this.motorEncoder = motorEncoder;
   }
 
   public void periodic() {
@@ -68,6 +66,7 @@ public class CannonPitchMechanism  {
         SmartDashboard.putNumber(name + ".speed", pitchEncoder.getRate());
         SmartDashboard.putNumber(name + ".position", getCurrentPitch());
         // SmartDashboard.putNumber(name + ".velocityConversionFactor", encoder.getVelocityConversionFactor());
+        SmartDashboard.putNumber(name + ".motor_position", motorEncoder.getPosition());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
@@ -83,13 +82,14 @@ public class CannonPitchMechanism  {
                   encoderIsValid = true;
                   pitchCannon(0.0);
                   pitchOffset = pitchEncoder.getDistance() + 130;
-                  setPitch(-130);
+                  setPitch(-130); // WHY? we setPitch down below?
+                  motorEncoder.setPosition(-130);
                   
                   if (requestedPositionWhileCalibrating != null) {
                     setPitch(requestedPositionWhileCalibrating);
                     requestedPositionWhileCalibrating = null;
                   } else {
-                    setPitch(pitchEncoder.getDistance() - pitchOffset);
+                    setPitch(pitchEncoder.getDistance() - pitchOffset); // is this right?
                   }
                 }
               }

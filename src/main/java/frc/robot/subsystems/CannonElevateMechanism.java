@@ -8,6 +8,8 @@ import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.misc.SwerveCalculator;
 
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -18,6 +20,7 @@ import frc.robot.RobotContainer;
 public class CannonElevateMechanism  {
   CANSparkMaxSendable motor;
   AnalogInput elevateEncoder;
+  RelativeEncoder motorEncoder;
 
   int elevateEncoderValueAt90Degrees;
 
@@ -33,12 +36,18 @@ public class CannonElevateMechanism  {
 
   final String name = "Elevate";
 
-  public CannonElevateMechanism(CANSparkMaxSendable motor, AnalogInput elevateEncoder) {
+  public CannonElevateMechanism(CANSparkMaxSendable motor, AnalogInput elevateEncoder, RelativeEncoder motorEncoder) {
     this.motor = motor;
     this.elevateEncoder = elevateEncoder;
+    this.motorEncoder = motorEncoder;
     this.elevateEncoderValueAt90Degrees = RobotContainer.robotParameters.getElevationEncoderValueAt90Degrees();
 
     setElevation(90);   // start straight up!
+
+    if (motorEncoder != null) {
+      double e = getCurrentElevation();
+      motorEncoder.setPosition(e); // syncronize once
+    }
   }
 
   public void periodic() {
@@ -56,6 +65,7 @@ public class CannonElevateMechanism  {
 
       SmartDashboard.putNumber(name + ".currentEncoderValue", elevateEncoder.getValue());
       SmartDashboard.putNumber(name + ".currentPosition", getCurrentElevation());
+      SmartDashboard.putNumber(name + ".currentMotorPosition", motorEncoder.getPosition());
     }
   }
 

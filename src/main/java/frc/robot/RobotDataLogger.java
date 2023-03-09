@@ -77,6 +77,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.pitch.temperature", () -> DataLogger.f2(cannonSubsystem.pitch.getMotorTemperature()));
 			dataLogger.addDataProvider("cannon.pitch.requested_position", () -> DataLogger.f2(cannonSubsystem.getRequestedPitch()));
 			dataLogger.addDataProvider("cannon.pitch.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentPitch()));
+			dataLogger.addDataProvider("cannon.pitch.current_motor_position", () -> DataLogger.f2(cannonSubsystem.pitchMotorEncoder.getPosition()));
 		}
 
 		if (cannonSubsystem.claw != null) {

@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 import org.usfirst.frc3620.misc.CANDeviceType;
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
@@ -16,6 +19,7 @@ import frc.robot.CannonLocation;
 import frc.robot.RobotContainer;
 
 public class CannonSubsystem extends SubsystemBase {
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
   public CannonExtendMechanism cannonExtendMechanism;
   public CannonElevateMechanism cannonElevateMechanism;
   public CannonPitchMechanism cannonPitchMechanism;
@@ -32,6 +36,7 @@ public class CannonSubsystem extends SubsystemBase {
   public RelativeEncoder rollEncoder;
 
   public CANSparkMaxSendable pitch;
+  public RelativeEncoder pitchMotorEncoder;
   public Encoder pitchEncoder;
 
   public CANSparkMaxSendable claw;
@@ -41,8 +46,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonSubsystem() {
     setupMotors();
     cannonExtendMechanism = new CannonExtendMechanism(extend);
-    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder);
-    cannonPitchMechanism = new CannonPitchMechanism(pitch, pitchEncoder);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder, elevationMotorEncoder);
+    cannonPitchMechanism = new CannonPitchMechanism(pitch, pitchEncoder, pitchMotorEncoder);
     cannonClawMechanism = new CannonClawMechanism(claw);
   }
 
@@ -137,7 +142,12 @@ public class CannonSubsystem extends SubsystemBase {
       elevation.setSmartCurrentLimit(40);
       elevation.setIdleMode(IdleMode.kBrake);
       addChild("elevation", elevation);
+
       elevationMotorEncoder = elevation.getEncoder();
+      // by coincidence, it's seems that the motor encoder
+      // position scaling match the arm encoder, so we don't
+      // need to set the position scaling
+      logger.info ("Elevation motor position scale = {}", elevationMotorEncoder.getPositionConversionFactor());
     }
 
 		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {
@@ -154,6 +164,12 @@ public class CannonSubsystem extends SubsystemBase {
       pitch.setSmartCurrentLimit(40);
       pitch.setIdleMode(IdleMode.kBrake);
       addChild("pitch", pitch);
+
+      pitchMotorEncoder = pitch.getEncoder();
+      // 360 to convert from rotations to degrees
+      // 10 is a 5:1 gearbox and a 2:1 pulley reduction
+      pitchMotorEncoder.setPositionConversionFactor(360.0 / 10.0);
+      logger.info("Pitch motor position scale = {}", pitchMotorEncoder.getPositionConversionFactor());
     }
 
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 12, "Claw") || shouldMakeAllCANDevices) {
