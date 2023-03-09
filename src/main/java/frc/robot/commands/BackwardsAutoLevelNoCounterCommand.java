@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.IFastDataLogger;
@@ -11,7 +13,10 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ILevelingDataSource;
@@ -28,9 +33,18 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
 
   double power;
   double pitch;
+  double balanceAngle;
   Timer timer;
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
+  final String name = "balanceSlider";
+
+  public GenericEntry adjustemEntry = Shuffleboard.getTab("Match")
+    .add(name + ".adjustmentSlider", 12.5)
+    .withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", 10, "max", 15))
+    .getEntry();
 
   enum LevelingState {
     LEVEL, TIMED, PRETILTED, TILTED, ARMADJUST, DONE
@@ -125,8 +139,9 @@ public class BackwardsAutoLevelNoCounterCommand extends CommandBase implements I
     }
     
     if(myState == LevelingState.TILTED){
+      balanceAngle = adjustemEntry.getDouble(12.5);
       power = -0.1;
-      if(pitch < 12.5){ //was -10
+      if(pitch < balanceAngle){ //was -10
         // we are still going up hill, but not as much. it must be swinging?
         myState = LevelingState.DONE;
         logger.info("switching to {}, pitch = {}", myState, pitch);
