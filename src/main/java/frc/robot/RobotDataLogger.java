@@ -54,6 +54,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.elevate.temperature", () -> DataLogger.f2(cannonSubsystem.elevation.getMotorTemperature()));
 			dataLogger.addDataProvider("cannon.elevate.requested_position", () -> DataLogger.f2(cannonSubsystem.getRequestedElevation()));
 			dataLogger.addDataProvider("cannon.elevate.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentElevation()));
+			dataLogger.addDataProvider("cannon.elevate.current_motor_position", () -> DataLogger.f2(cannonSubsystem.elevationMotorEncoder.getPosition()));
 		}
 
 		if (cannonSubsystem.extend != null) {
