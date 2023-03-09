@@ -3,6 +3,7 @@ package frc.robot;
 import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
@@ -17,6 +18,7 @@ public class RobotDataLogger {
 	CannonSubsystem cannonSubsystem = RobotContainer.cannonSubsystem;
 
 	public RobotDataLogger (DataLogger dataLogger, CANDeviceFinder canDeviceFinder) {
+		BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
 		dataLogger.addDataProvider("matchTime", () -> DataLogger.f2(DriverStation.getMatchTime()));
 		dataLogger.addDataProvider("robotMode", () -> Robot.getCurrentRobotMode().toString());
@@ -40,6 +42,10 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("nav.heading_raw", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getRawHeading()));
 		dataLogger.addDataProvider("nav.heading", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getCorrectedHeading()));
 		dataLogger.addDataProvider("nav.heading_offset", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getHeadingOffset()));
+
+		dataLogger.addDataProvider("accel.x", () -> accelerometer.getX());
+		dataLogger.addDataProvider("accel.y", () -> accelerometer.getY());
+		dataLogger.addDataProvider("accel.z", () -> accelerometer.getZ());
 
 		if (canDeviceFinder.isPowerDistributionPresent()) {
 			powerDistribution = new PowerDistribution();
