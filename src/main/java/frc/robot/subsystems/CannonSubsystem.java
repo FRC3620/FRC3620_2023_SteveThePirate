@@ -22,6 +22,7 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonClawMechanism cannonClawMechanism;
   
   public CANSparkMaxSendable elevation;
+  public RelativeEncoder elevationMotorEncoder;
   public AnalogInput elevationEncoder;
   
   public CANSparkMaxSendable extend;
@@ -136,6 +137,7 @@ public class CannonSubsystem extends SubsystemBase {
       elevation.setSmartCurrentLimit(40);
       elevation.setIdleMode(IdleMode.kBrake);
       addChild("elevation", elevation);
+      elevationMotorEncoder = elevation.getEncoder();
     }
 
 		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {

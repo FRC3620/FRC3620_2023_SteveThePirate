@@ -3,6 +3,7 @@ package frc.robot;
 import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
@@ -17,6 +18,7 @@ public class RobotDataLogger {
 	CannonSubsystem cannonSubsystem = RobotContainer.cannonSubsystem;
 
 	public RobotDataLogger (DataLogger dataLogger, CANDeviceFinder canDeviceFinder) {
+		BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
 		dataLogger.addDataProvider("matchTime", () -> DataLogger.f2(DriverStation.getMatchTime()));
 		dataLogger.addDataProvider("robotMode", () -> Robot.getCurrentRobotMode().toString());
@@ -41,6 +43,10 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("nav.heading", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getCorrectedHeading()));
 		dataLogger.addDataProvider("nav.heading_offset", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getHeadingOffset()));
 
+		dataLogger.addDataProvider("accel.x", () -> accelerometer.getX());
+		dataLogger.addDataProvider("accel.y", () -> accelerometer.getY());
+		dataLogger.addDataProvider("accel.z", () -> accelerometer.getZ());
+
 		if (canDeviceFinder.isPowerDistributionPresent()) {
 			powerDistribution = new PowerDistribution();
 			dataLogger.addDataProvider("pdp.totalCurrent", () -> DataLogger.f2(powerDistribution.getTotalCurrent()));
@@ -54,6 +60,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.elevate.temperature", () -> DataLogger.f2(cannonSubsystem.elevation.getMotorTemperature()));
 			dataLogger.addDataProvider("cannon.elevate.requested_position", () -> DataLogger.f2(cannonSubsystem.getRequestedElevation()));
 			dataLogger.addDataProvider("cannon.elevate.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentElevation()));
+			dataLogger.addDataProvider("cannon.elevate.current_motor_position", () -> DataLogger.f2(cannonSubsystem.elevationMotorEncoder.getPosition()));
 		}
 
 		if (cannonSubsystem.extend != null) {
