@@ -120,5 +120,10 @@ public class RobotDataLogger {
 			}
 		}
 
+		dataLogger.addDataProvider("driver.joy.x", () -> RobotContainer.getDriveHorizontalJoystick());
+		dataLogger.addDataProvider("driver.joy.y", () -> RobotContainer.getDriveVerticalJoystick());
+		dataLogger.addDataProvider("driver.joy.spin", () -> RobotContainer.getDriveSpinJoystick());
+		dataLogger.addDataProvider("driver.joy.mode", () -> RobotContainer.driverJoystick.getCurrentControllerType().toString());
+
 	}
 }

@@ -20,6 +20,10 @@ public class ChameleonController {
         this.currentControllerType = controllerType;
     }
 
+    public ControllerType getCurrentControllerType() {
+        return currentControllerType;
+    }
+
     public double getRawAxis(int a_axis_number, int b_axis_number) {
         if (currentControllerType == ControllerType.A) {
             return joystick.getRawAxis(a_axis_number);
