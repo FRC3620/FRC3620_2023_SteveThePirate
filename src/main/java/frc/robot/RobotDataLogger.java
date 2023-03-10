@@ -43,6 +43,10 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("nav.heading", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getCorrectedHeading()));
 		dataLogger.addDataProvider("nav.heading_offset", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getHeadingOffset()));
 
+		dataLogger.addDataProvider("drive.requested_heading", () -> DataLogger.f2(RobotContainer.driveSubsystem.getTargetHeading()));
+		dataLogger.addDataProvider("drive.spin_power", () -> DataLogger.f2(RobotContainer.driveSubsystem.getSpinPower()));
+		dataLogger.addDataProvider("drive.manual_spin_mode", () -> RobotContainer.driveSubsystem.getForcedManualMode() ? 1 : 0);
+
 		dataLogger.addDataProvider("accel.x", () -> accelerometer.getX());
 		dataLogger.addDataProvider("accel.y", () -> accelerometer.getY());
 		dataLogger.addDataProvider("accel.z", () -> accelerometer.getZ());
