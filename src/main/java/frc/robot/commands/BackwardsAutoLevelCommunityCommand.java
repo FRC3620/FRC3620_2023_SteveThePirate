@@ -87,8 +87,7 @@ public class BackwardsAutoLevelCommunityCommand extends CommandBase implements I
     if(myState == LevelingState.LEVEL){
       spin = driveSubsystem.getSpinPower();
       //drive
-      power = -0.6
-      ;
+      power = -0.5;
       if(pitch > 13) {
         // we are going uphill, slow down
         myState = LevelingState.TIMED;
