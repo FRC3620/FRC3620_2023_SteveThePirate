@@ -47,7 +47,7 @@ public class Mid1NoPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new WaitCommand(4)
+      new WaitCommand(2)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
       ,
