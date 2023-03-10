@@ -195,8 +195,10 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
              
     // positive y-axis is when you pull it down
+    /*
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
             .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -8));
+    */
 
     // negative y-axis is when you pull it up
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)

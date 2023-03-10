@@ -97,7 +97,7 @@ public class SwerveCalculator {
 		if(angle > 180){
 			angle = -360 + angle;
 		}
-		if(angle < -180){
+		if(angle <= -180){
 			angle = 360 + angle;
 		}
 		

@@ -1184,24 +1184,28 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 			MotorSetup.resetMaxToKnownState(rightFrontDrive, true);
 			rightFrontDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+			rightFrontDrive.setSmartCurrentLimit(40);
 
 			MotorSetup.resetMaxToKnownState(rightFrontAzimuth, false);
 			rightFrontAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
 
 			MotorSetup.resetMaxToKnownState(leftFrontDrive, true);
 			leftFrontDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+			leftFrontDrive.setSmartCurrentLimit(40);
 
 			MotorSetup.resetMaxToKnownState(leftFrontAzimuth, false);
 			leftFrontAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
 
 			MotorSetup.resetMaxToKnownState(leftBackDrive, true);
 			leftBackDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+			leftBackDrive.setSmartCurrentLimit(40);
 
 			MotorSetup.resetMaxToKnownState(leftBackAzimuth, false);
 			leftBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
 
 			MotorSetup.resetMaxToKnownState(rightBackDrive, true);
 			rightBackDrive.setClosedLoopRampRate(DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT);
+			rightBackDrive.setSmartCurrentLimit(40);
 
 			MotorSetup.resetMaxToKnownState(rightBackAzimuth, false);
 			rightBackAzimuth.setClosedLoopRampRate(AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT);
