@@ -128,6 +128,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    String driveControllerName = m_robotContainer.getDriverControllerName();
+    logger.info("Drive Controller Name: {}", driveControllerName);
+    if (driveControllerName.startsWith("FlySky")) {
+      m_robotContainer.setDriverControllerName(ControllerType.B);
+    } else {
+      m_robotContainer.setDriverControllerName(ControllerType.A);
+    }
   }
 
   /** This function is called periodically during autonomous. */

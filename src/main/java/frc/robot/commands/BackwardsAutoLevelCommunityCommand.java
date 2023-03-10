@@ -21,7 +21,7 @@ import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem.FlareColor;
 
-public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingDataSource {
+public class BackwardsAutoLevelCommunityCommand extends CommandBase implements ILevelingDataSource {
   AHRS ahrs; 
   private DriveSubsystem driveSubsystem;
   private CannonSubsystem cannonSubsystem;
@@ -42,7 +42,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   IFastDataLogger levelingDataLogger = null;
   
   /** Creates a new AutoLevelingCommand. */
-  public AutoLevelNoCounterCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
+  public BackwardsAutoLevelCommunityCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.cannonSubsystem = cannonSubsystem;
@@ -63,6 +63,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     setColor(Color.kPink);
     driveSubsystem.setDriveToBrake();
     driveSubsystem.setTargetHeading(180);
+
 
     //cannonSubsystem.setPitch(-117);
     //cannonSubsystem.setElevation(30);
@@ -86,8 +87,9 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     if(myState == LevelingState.LEVEL){
       spin = driveSubsystem.getSpinPower();
       //drive
-      power = 0.6;
-      if(pitch < -13) {
+      power = -0.6
+      ;
+      if(pitch > 13) {
         // we are going uphill, slow down
         myState = LevelingState.TIMED;
         logger.info("switching to {}, pitch = {}", myState, pitch);
@@ -100,8 +102,8 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
         timer = new Timer();
       }
       timer.start();
-      power = 0.3;
-      if(timer.advanceIfElapsed(1)){
+      power = -0.4;
+      if(timer.advanceIfElapsed(.5)){
         myState = LevelingState.PRETILTED;
         logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kYellow);
@@ -110,7 +112,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     }
 
     if(myState == LevelingState.PRETILTED){
-      power = .1;
+      power = -0.1;
       if(timer == null){
         timer = new Timer();
         timer.start();
@@ -124,8 +126,8 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     }
     
     if(myState == LevelingState.TILTED){
-      power = 0.1;
-      if(pitch > -12.5){ //was -10
+      power = -0.1;
+      if(pitch < 12.5){ //was -10
         // we are still going up hill, but not as much. it must be swinging?
         myState = LevelingState.DONE;
         logger.info("switching to {}, pitch = {}", myState, pitch);
@@ -135,7 +137,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     }
 
     if(myState == LevelingState.ARMADJUST){
-      if(pitch < -10){
+      if(pitch > 10){
         cannonSubsystem.setElevation(30);
       }
       myState = LevelingState.DONE;

@@ -21,7 +21,7 @@ import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlareSubsystem.FlareColor;
 
-public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingDataSource {
+public class AutoLevelCommunityCommand extends CommandBase implements ILevelingDataSource {
   AHRS ahrs; 
   private DriveSubsystem driveSubsystem;
   private CannonSubsystem cannonSubsystem;
@@ -42,7 +42,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
   IFastDataLogger levelingDataLogger = null;
   
   /** Creates a new AutoLevelingCommand. */
-  public AutoLevelNoCounterCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
+  public AutoLevelCommunityCommand(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.cannonSubsystem = cannonSubsystem;
