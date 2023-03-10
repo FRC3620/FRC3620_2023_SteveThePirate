@@ -42,7 +42,7 @@ public class MidOnlyBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(2)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(1.5)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
