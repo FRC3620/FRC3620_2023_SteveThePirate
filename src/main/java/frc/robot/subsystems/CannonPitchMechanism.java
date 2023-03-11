@@ -33,7 +33,7 @@ public class CannonPitchMechanism  {
   Double requestedPositionWhileCalibrating = null;
   Double requestedPosition = null;
 
-  private static final double kP = 0.004; //0.0025
+  private static final double kP = 0.0035; //0.0025
   private static final double kI = 0;
   private static final double kD = 0;
 

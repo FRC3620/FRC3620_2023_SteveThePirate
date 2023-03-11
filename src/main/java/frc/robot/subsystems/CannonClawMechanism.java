@@ -85,7 +85,7 @@ public class CannonClawMechanism {
 
   public void setClawPower(double speed) {
     if (motor != null) {
-      motor.set(speed);
+      motor.set(speed * 0.6);
     }
   }
 
