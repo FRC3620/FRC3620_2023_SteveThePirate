@@ -19,6 +19,7 @@ import frc.robot.RobotContainer;
 
 public class CannonElevateMechanism  {
   CANSparkMaxSendable motor;
+  CANSparkMaxSendable motor2;
   AnalogInput elevateEncoder;
   RelativeEncoder motorEncoder;
 
@@ -36,8 +37,9 @@ public class CannonElevateMechanism  {
 
   final String name = "Elevate";
 
-  public CannonElevateMechanism(CANSparkMaxSendable motor, AnalogInput elevateEncoder, RelativeEncoder motorEncoder) {
+  public CannonElevateMechanism(CANSparkMaxSendable motor, AnalogInput elevateEncoder, RelativeEncoder motorEncoder, CANSparkMaxSendable motor2) {
     this.motor = motor;
+    this.motor2 = motor2;
     this.elevateEncoder = elevateEncoder;
     this.motorEncoder = motorEncoder;
     this.elevateEncoderValueAt90Degrees = RobotContainer.robotParameters.getElevationEncoderValueAt90Degrees();
@@ -47,6 +49,10 @@ public class CannonElevateMechanism  {
     if (motorEncoder != null) {
       double e = getCurrentElevation();
       motorEncoder.setPosition(e); // syncronize once
+    }
+
+    if (motor2 != null) {
+      motor2.follow(motor);
     }
   }
 

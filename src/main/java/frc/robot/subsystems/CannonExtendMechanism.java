@@ -5,9 +5,9 @@ import java.util.Map;
 import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
@@ -22,6 +22,7 @@ public class CannonExtendMechanism  {
   boolean encoderIsValid = false;
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
+  CANSparkMaxSendable motor2;
   RelativeEncoder encoder;
 
   SparkMaxPIDController PID = null;
@@ -39,7 +40,7 @@ public class CannonExtendMechanism  {
     .withProperties(Map.of("min", -5, "max", 5))
     .getEntry();
 
-  public CannonExtendMechanism(CANSparkMaxSendable motor) {
+  public CannonExtendMechanism(CANSparkMaxSendable motor, CANSparkMaxSendable motor2) {
     this.motor = motor;
     if (motor != null) {
       this.encoder = motor.getEncoder();
@@ -55,13 +56,14 @@ public class CannonExtendMechanism  {
       PID.setOutputRange(-0.4, 0.75);
     }
 
+    if (motor2 != null) {
+      motor2.follow(motor);
+    }
+
     if (encoder != null) {
       encoder.setPositionConversionFactor(15/30.4);
       //encoder.setVelocityConversionFactor(1);
     }
-
-        
-    
   }
   
 

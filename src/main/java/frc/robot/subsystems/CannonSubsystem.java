@@ -28,9 +28,15 @@ public class CannonSubsystem extends SubsystemBase {
   public CANSparkMaxSendable elevation;
   public RelativeEncoder elevationMotorEncoder;
   public AnalogInput elevationEncoder;
+
+  public CANSparkMaxSendable elevation2;
+  public RelativeEncoder elevationMotorEncoder2;
   
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
+
+  public CANSparkMaxSendable extend2;
+  public RelativeEncoder extendEncoder2;
 
   public CANSparkMaxSendable roll;
   public RelativeEncoder rollEncoder;
@@ -45,8 +51,8 @@ public class CannonSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   public CannonSubsystem() {
     setupMotors();
-    cannonExtendMechanism = new CannonExtendMechanism(extend);
-    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder, elevationMotorEncoder);
+    cannonExtendMechanism = new CannonExtendMechanism(extend, extend2);
+    cannonElevateMechanism = new CannonElevateMechanism(elevation, elevationEncoder, elevationMotorEncoder, elevation2);
     cannonPitchMechanism = new CannonPitchMechanism(pitch, pitchEncoder, pitchMotorEncoder);
     cannonClawMechanism = new CannonClawMechanism(claw);
   }
@@ -150,12 +156,29 @@ public class CannonSubsystem extends SubsystemBase {
       logger.info ("Elevation motor position scale = {}", elevationMotorEncoder.getPositionConversionFactor());
     }
 
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 14, "Elevate2") || shouldMakeAllCANDevices) {
+      elevation2 = new CANSparkMaxSendable(10, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(elevation2, true);
+      elevation2.setSmartCurrentLimit(40);
+      elevation2.setIdleMode(IdleMode.kBrake);
+      addChild("elevate2", elevation2);
+    }
+
 		if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 10, "Extend") || shouldMakeAllCANDevices) {
       extend = new CANSparkMaxSendable(10, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(extend, true);
       extend.setSmartCurrentLimit(40);
       extend.setIdleMode(IdleMode.kBrake);
       addChild("extend", extend);
+    }
+
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 14, "Extend2") || shouldMakeAllCANDevices) 
+    {
+      extend2 = new CANSparkMaxSendable(14, MotorType.kBrushless);
+      MotorSetup.resetMaxToKnownState(extend2, true);
+      extend2.setSmartCurrentLimit(40);
+      extend2.setIdleMode(IdleMode.kBrake);
+      addChild("extend2", extend2);
     }
 
     if(canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 11, "Pitch") || shouldMakeAllCANDevices) {
