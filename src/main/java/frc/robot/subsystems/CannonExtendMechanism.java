@@ -48,10 +48,10 @@ public class CannonExtendMechanism  {
       PID = motor.getPIDController();
 
       // set up PID for turretPID here
-      PID.setP(0.075);   //0.1
-      PID.setI(0.0);     //0.0
-      PID.setD(0);    //10
-      PID.setFF(0.0);      //0.0
+      PID.setP(0.05); //0.075
+      PID.setI(0.0);    
+      PID.setD(0);    
+      PID.setFF(0.0);    
 
       PID.setOutputRange(-0.4, 0.95);
     }

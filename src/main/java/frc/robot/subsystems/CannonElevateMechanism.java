@@ -25,9 +25,9 @@ public class CannonElevateMechanism  {
 
   int elevateEncoderValueAt90Degrees;
 
-  private static final double kP = 0.02;
+  private static final double kP = 0.0175;  //0.02
   private static final double kI = 0;
-  private static final double kD = 0;
+  private static final double kD = 0;   
 
   private final PIDController m_pidController = new PIDController(kP, kI, kD);
 
