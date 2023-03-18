@@ -96,7 +96,7 @@ public class CannonPitchMechanism  {
             }
           } else {
             double minPitch = (cannonSubsystem.getCurrentElevation() < -5) ? -10 : -130;
-            double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 10;
+            double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 17;
             double clampPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
             SmartDashboard.putNumber(name + ".clampPitch", clampPitch);
             m_pidController.setSetpoint(clampPitch);
