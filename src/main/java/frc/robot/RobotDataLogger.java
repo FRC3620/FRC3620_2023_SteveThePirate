@@ -67,12 +67,30 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.elevate.current_motor_position", () -> DataLogger.f2(cannonSubsystem.elevationMotorEncoder.getPosition()));
 		}
 
+		if (cannonSubsystem.elevation2 != null) {
+			dataLogger.addDataProvider("cannon.elevate2.motor_current",
+					() -> DataLogger.f2(cannonSubsystem.elevation.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.elevate2.power",
+					() -> DataLogger.f2(cannonSubsystem.elevation.getAppliedOutput()));
+			dataLogger.addDataProvider("cannon.elevate2.temperature",
+					() -> DataLogger.f2(cannonSubsystem.elevation.getMotorTemperature()));
+		}
+
 		if (cannonSubsystem.extend != null) {
 			dataLogger.addDataProvider("cannon.extension.motor_current", () -> DataLogger.f2(cannonSubsystem.extend.getOutputCurrent()));
 			dataLogger.addDataProvider("cannon.extension.power", () -> DataLogger.f2(cannonSubsystem.extend.getAppliedOutput()));
 			dataLogger.addDataProvider("cannon.extension.temperature", () -> DataLogger.f2(cannonSubsystem.extend.getMotorTemperature()));
 			dataLogger.addDataProvider("cannon.extension.requested_position", () -> DataLogger.f2(cannonSubsystem.getRequestedExtension()));
 			dataLogger.addDataProvider("cannon.extension.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentExtension()));
+		}
+
+		if (cannonSubsystem.extend2 != null) {
+			dataLogger.addDataProvider("cannon.extension2.motor_current",
+					() -> DataLogger.f2(cannonSubsystem.extend.getOutputCurrent()));
+			dataLogger.addDataProvider("cannon.extension2.power",
+					() -> DataLogger.f2(cannonSubsystem.extend.getAppliedOutput()));
+			dataLogger.addDataProvider("cannon.extension2.temperature",
+					() -> DataLogger.f2(cannonSubsystem.extend.getMotorTemperature()));
 		}
 
 		if (cannonSubsystem.pitch != null) {

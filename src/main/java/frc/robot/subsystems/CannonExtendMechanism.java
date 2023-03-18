@@ -53,24 +53,31 @@ public class CannonExtendMechanism  {
       PID.setD(0);    //10
       PID.setFF(0.0);      //0.0
 
-      PID.setOutputRange(-0.4, 0.75);
+      PID.setOutputRange(-0.4, 0.95);
     }
 
-    if (motor2 != null) {
+    if (motor != null && motor2 != null) {
       motor2.follow(motor);
     }
 
     if (encoder != null) {
-      encoder.setPositionConversionFactor(15/30.4);
+      encoder.setPositionConversionFactor(18.75/30.4);
       //encoder.setVelocityConversionFactor(1);
     }
   }
   
 
   public void periodic() {
-
-    SmartDashboard.putBoolean(name + ".calibrated",  encoderIsValid);
     // This method will be called once per scheduler run
+
+    SmartDashboard.putBoolean(name + ".calibrated", encoderIsValid);
+
+    if (motor2 != null) {
+      SmartDashboard.putNumber(name + "2.motor_current", motor2.getOutputCurrent());
+      SmartDashboard.putNumber(name + "2.power", motor2.getAppliedOutput());
+      SmartDashboard.putNumber(name + "2.temperature", motor2.getMotorTemperature());
+    }
+
     if (motor != null) {
       SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());

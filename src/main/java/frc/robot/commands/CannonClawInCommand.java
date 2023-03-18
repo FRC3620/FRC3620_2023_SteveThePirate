@@ -9,7 +9,9 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.CannonSubsystem;
 
 public class CannonClawInCommand extends CommandBase {
@@ -48,6 +50,7 @@ public class CannonClawInCommand extends CommandBase {
     public void end(boolean interrupted) {
       logger.info ("done, interrupted = {}", interrupted);
       cannonSubsystem.setClawPower(.1);
+      RobotContainer.flareSubsystem.setColor(Color.kGreen);
     }
   
     // Returns true when the command should end.

@@ -30,13 +30,11 @@ public class CannonSubsystem extends SubsystemBase {
   public AnalogInput elevationEncoder;
 
   public CANSparkMaxSendable elevation2;
-  public RelativeEncoder elevationMotorEncoder2;
   
   public CANSparkMaxSendable extend;
   public RelativeEncoder extendEncoder;
 
   public CANSparkMaxSendable extend2;
-  public RelativeEncoder extendEncoder2;
 
   public CANSparkMaxSendable roll;
   public RelativeEncoder rollEncoder;
@@ -157,7 +155,8 @@ public class CannonSubsystem extends SubsystemBase {
     }
 
     if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 14, "Elevate2") || shouldMakeAllCANDevices) {
-      elevation2 = new CANSparkMaxSendable(10, MotorType.kBrushless);
+      elevation2 = new CANSparkMaxSendable(14, MotorType.kBrushless);
+      // the inverted is ignored if this is a follower
       MotorSetup.resetMaxToKnownState(elevation2, true);
       elevation2.setSmartCurrentLimit(40);
       elevation2.setIdleMode(IdleMode.kBrake);
@@ -172,9 +171,9 @@ public class CannonSubsystem extends SubsystemBase {
       addChild("extend", extend);
     }
 
-    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 14, "Extend2") || shouldMakeAllCANDevices) 
-    {
-      extend2 = new CANSparkMaxSendable(14, MotorType.kBrushless);
+    if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 13, "Extend2") || shouldMakeAllCANDevices) {
+      extend2 = new CANSparkMaxSendable(13, MotorType.kBrushless);
+      // the inverted is ignored if this is a follower
       MotorSetup.resetMaxToKnownState(extend2, true);
       extend2.setSmartCurrentLimit(40);
       extend2.setIdleMode(IdleMode.kBrake);
@@ -190,8 +189,8 @@ public class CannonSubsystem extends SubsystemBase {
 
       pitchMotorEncoder = pitch.getEncoder();
       // 360 to convert from rotations to degrees
-      // 10 is a 5:1 gearbox and a 2:1 pulley reduction
-      pitchMotorEncoder.setPositionConversionFactor(360.0 / 10.0);
+      // denominator is a 4:1 gearbox and a 1/18:42 pulley reduction
+      pitchMotorEncoder.setPositionConversionFactor(360.0 / (4.0 * (42.0 / 18.0)));
       logger.info("Pitch motor position scale = {}", pitchMotorEncoder.getPositionConversionFactor());
     }
 
