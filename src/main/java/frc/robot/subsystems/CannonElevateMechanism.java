@@ -51,7 +51,7 @@ public class CannonElevateMechanism  {
       motorEncoder.setPosition(e); // syncronize once
     }
 
-    if (motor2 != null) {
+    if (motor != null && motor2 != null) {
       motor2.follow(motor);
     }
   }
@@ -61,10 +61,12 @@ public class CannonElevateMechanism  {
     if (motor != null) {
       if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
         double motorPower = m_pidController.calculate(getCurrentElevation());
-        motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
+        // TODO put this back
+        // motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
+        motorPower = MathUtil.clamp(motorPower, -0.7, 0.95);
         elevateCannon(motorPower);
       }
-      
+
       SmartDashboard.putNumber(name + ".motor_current", motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
       SmartDashboard.putNumber(name + ".temperature", motor.getMotorTemperature());
@@ -72,6 +74,12 @@ public class CannonElevateMechanism  {
       SmartDashboard.putNumber(name + ".currentEncoderValue", elevateEncoder.getValue());
       SmartDashboard.putNumber(name + ".currentPosition", getCurrentElevation());
       SmartDashboard.putNumber(name + ".currentMotorPosition", motorEncoder.getPosition());
+    }
+    
+    if (motor2 != null) {
+      SmartDashboard.putNumber(name + "2.motor_current", motor2.getOutputCurrent());
+      SmartDashboard.putNumber(name + "2.power", motor2.getAppliedOutput());
+      SmartDashboard.putNumber(name + "2.temperature", motor2.getMotorTemperature());
     }
   }
 
