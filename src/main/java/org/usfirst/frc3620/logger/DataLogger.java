@@ -98,7 +98,7 @@ public class DataLogger extends DataLoggerBase {
                     try {
                         data[i] = namedDataProvider.iDataLoggerDataProvider.get();
                     } catch (Exception e) {
-                        data[i] = "ERROR";
+                        data[i] = e.toString(); // "ERROR";
                     }
                 }
 

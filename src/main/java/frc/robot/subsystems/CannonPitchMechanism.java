@@ -7,8 +7,6 @@ import org.usfirst.frc3620.misc.CANSparkMaxSendable;
 import org.usfirst.frc3620.misc.RobotMode;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -17,7 +15,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.CannonSubsystem;
 
 public class CannonPitchMechanism  {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -28,10 +25,10 @@ public class CannonPitchMechanism  {
   RelativeEncoder motorEncoder;
   Encoder pitchEncoder;
 
-  double clampPitchforCommand = 0;
+  double clampedPitch = 0;
   
   Double requestedPositionWhileCalibrating = null;
-  Double requestedPosition = null;
+  double requestedPosition = 0;
 
   private static final double kP = 0.004; //0.0025
   private static final double kI = 0;
@@ -79,7 +76,9 @@ public class CannonPitchMechanism  {
             } else {
               if (calibrationTimer.get() > 0.75){
                 if (Math.abs(pitchEncoder.getRate()) < 15) {
+                  logger.info("calibration completed");
                   encoderIsValid = true;
+                  calibrationTimer = null;
                   pitchCannon(0.0);
                   pitchOffset = pitchEncoder.getDistance() + 130;
                   setPitch(-130); // WHY? we setPitch down below?
@@ -89,21 +88,39 @@ public class CannonPitchMechanism  {
                     setPitch(requestedPositionWhileCalibrating);
                     requestedPositionWhileCalibrating = null;
                   } else {
-                    setPitch(pitchEncoder.getDistance() - pitchOffset); // is this right?
+                    setPitch(-130); // is this right?
                   }
                 }
               }
             }
           } else {
-            double minPitch = (cannonSubsystem.getCurrentElevation() < -5) ? -10 : -130;
-            double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 20; //TODO 17
-            double clampPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
-            SmartDashboard.putNumber(name + ".clampPitch", clampPitch);
-            m_pidController.setSetpoint(clampPitch);
-            clampPitchforCommand = clampPitch;
+            double maxPitch;
+            double minPitch;
+            double currentElevation = cannonSubsystem.getCurrentElevation();
+            //double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 20; //TODO 17
+            if (currentElevation < 75) {
+              maxPitch = 20;
+            }
+            else if (currentElevation < 135) {
+              maxPitch = -30;
+            }
+            else {
+              maxPitch = 48;
+            }
 
+            // double minPitch = (cannonSubsystem.getCurrentElevation() < -5) ? -10 : -130;
+            if (currentElevation < -5) {
+              minPitch = -10;
+            }
+            else {
+              minPitch = -130;
+            }
 
-            double motorPower = m_pidController.calculate(getCurrentPitch());
+            clampedPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
+            SmartDashboard.putNumber(name + ".clampPitch", clampedPitch);
+            m_pidController.setSetpoint(clampedPitch);
+
+            double motorPower = m_pidController.calculate(motorEncoder.getPosition());
             motorPower = MathUtil.clamp(motorPower, -0.5, 0.5);
             motor.set(motorPower);
           }
@@ -144,16 +161,11 @@ public class CannonPitchMechanism  {
   }
 
   public double getClampedPitch() {
-    return clampPitchforCommand;
+    return clampedPitch;
   }
 
-  public void recalibrataePitch(boolean forward) {
-    if (forward) {
-      pitchOffset = pitchEncoder.getDistance() + 130;
-      setPitch(-130);
-    } else {
-      pitchOffset = pitchEncoder.getDistance() - 20;
-      setPitch(20);
-    }
+  public void recalibrataePitch() {
+    logger.info("recalibratae started");
+    encoderIsValid = false;
   }
 }

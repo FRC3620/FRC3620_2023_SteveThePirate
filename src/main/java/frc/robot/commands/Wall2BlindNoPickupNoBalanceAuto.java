@@ -53,29 +53,43 @@ public class Wall2BlindNoPickupNoBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(.5)
       ,
       new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.4, 0.2, 180, driveSubsystem)
+      //,
+      //new AutoSpinCommand(.4, 0, driveSubsystem)
       ,
-      new AutoSpinCommand(.4, 0, driveSubsystem)
-      ,
-      new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      //new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
       new WaitCommand(2)
       ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.wallBlindPosition, .4, 0.1, 0, driveSubsystem)
+        //new DriveToCoordinateCommand(FieldLocation.wallBlindPosition, .4, 0.1, 0, driveSubsystem)
+        new DriveToCoordinateCommand(FieldLocation.wallBlindPosition, .4, 0.1, 180, driveSubsystem)
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.6)
+        new CannonClawInCommand(cannonSubsystem, 0.5)
       )
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))
       ,
       // should we do this or go to the position for leveling?
       new SetCannonLocationCommand(CannonLocation.parkLocation)
+      //,
+      //new AutoSpinCommand(0.4, 180, driveSubsystem)
+      /*
       ,
-      new AutoSpinCommand(0.4, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallMiddle, 0.4, 0.21, 180, driveSubsystem)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.4, 0.22, 180, driveSubsystem)
+      */ // do we need this?
       ,
       new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.3, 0.2, 180, driveSubsystem)
       ,
       new DriveToAprilTagCommand(1, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      ,
+      new WaitCommand(1.5)
+      ,
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
     );
   }
 }

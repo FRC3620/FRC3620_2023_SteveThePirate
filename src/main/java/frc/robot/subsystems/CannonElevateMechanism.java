@@ -60,11 +60,33 @@ public class CannonElevateMechanism  {
     // This method will be called once per scheduler run
     if (motor != null) {
       if (Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
-        double motorPower = m_pidController.calculate(getCurrentElevation());
+        double currentElevation = getCurrentElevation();
+        double motorPower = m_pidController.calculate(currentElevation); // negative power if cannon is moving towards front
+        double minPower = -0.75;
+        double maxPower = 0.95;
         // TODO put this back
         // motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
-        motorPower = MathUtil.clamp(motorPower, -0.7, 0.95);
-        elevateCannon(motorPower);
+        if (currentElevation < 0) {
+          // limit power to -0.25 instead of -0.75 if the cannon is past 0 so we don't ram it into the ground
+          motorPower = MathUtil.clamp(motorPower, -0.25, 0.95);
+        }
+        else if (currentElevation < 60) {
+          // limit power in between -0.75 and 0.95 if the cannon is 0-60 (front)
+          motorPower = MathUtil.clamp(motorPower, -0.75, 0.95);
+        }
+        else if (currentElevation < 120) {
+          // we want to limit power in between -0.75 and 0.75 if the cannon is in between 60 and 120
+          motorPower = MathUtil.clamp(motorPower, -0.75, 0.75);
+        }
+        else if (currentElevation < 180) {
+          // limit power in between -0.95 and 0.75 if the cannon is past 120 (back)
+          motorPower = MathUtil.clamp(motorPower, -0.95, 0.75);
+        }
+        else {
+          // limit power to 0.25 at the max if the cannon is past 180 so we don't ram it into the ground
+          motorPower = MathUtil.clamp(motorPower, -0.95, 0.25);
+        }
+          elevateCannon(motorPower);
       }
 
       SmartDashboard.putNumber(name + ".motor_current", motor.getOutputCurrent());
@@ -89,8 +111,7 @@ public class CannonElevateMechanism  {
    * @param elevation
    */
   public void setElevation(double elevation) {
-    elevation = MathUtil.clamp(elevation, -45, 125
-    );
+    elevation = MathUtil.clamp(elevation, -45, 225);
     SmartDashboard.putNumber(name + ".requestedElevation", elevation);
     requestedPosition = elevation;
 

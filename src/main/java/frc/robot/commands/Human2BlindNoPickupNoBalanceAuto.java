@@ -48,16 +48,19 @@ public class Human2BlindNoPickupNoBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.humanHalfway, 0.6, 0.21, 180, driveSubsystem) // speed = 0.2
       ,
-      new SetCannonLocationCommand(CannonLocation.lowLocation)
+      //new SetCannonLocationCommand(CannonLocation.lowLocation)
+      new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanMiddleBlind, 0.4, 0.2, 180, driveSubsystem) //angle was -30
+      new DriveToCoordinateCommand(FieldLocation.humanMiddleBlind, 0.4, 0.2, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      //new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.humanBlindPosition, .2, 0.1, 0, driveSubsystem)
+        //new DriveToCoordinateCommand(FieldLocation.humanBlindPosition, .2, 0.1, 0, driveSubsystem)
+        new DriveToCoordinateCommand(FieldLocation.humanBlindPosition, .2, 0.1, 180, driveSubsystem)
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.6)
+        new CannonClawInCommand(cannonSubsystem, 0.5)
       )
       ,
       new InstantCommand(() -> visionSubsystem.setFrontCameraMode(FrontCameraMode.APRILTAGS))

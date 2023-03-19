@@ -132,8 +132,8 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonExtendMechanism.getAdjustedRequestedExtension();
   }
 
-  public void recalibrataePitch(boolean forward) {
-    recalibrataePitch(forward);
+  public void recalibrataePitch() {
+    cannonPitchMechanism.recalibrataePitch();
   }
 
   void setupMotors() {

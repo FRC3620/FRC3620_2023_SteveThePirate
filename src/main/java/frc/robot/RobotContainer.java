@@ -155,7 +155,7 @@ public class RobotContainer {
             .onTrue(new SetNavX180Command());
             
     driverJoystick.analogButton(XBoxConstants.AXIS_LEFT_TRIGGER, FlySkyConstants.AXIS_SWE)
-            .onTrue(new CannonClawInCommand(cannonSubsystem, 0.6));
+            .onTrue(new CannonClawInCommand(cannonSubsystem, 0.5)); // was 0.6
 
     driverJoystick.analogButton(XBoxConstants.AXIS_RIGHT_TRIGGER, FlySkyConstants.AXIS_SWH)
             .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));
@@ -285,8 +285,7 @@ public class RobotContainer {
     SmartDashboard.putData("MidLocation", new SetCannonLocationCommand(CannonLocation.coneMidLocation));
     SmartDashboard.putData("HighLocation", new SetCannonLocationCommand(CannonLocation.coneHighLocation));
     SmartDashboard.putData("ParkLocation", new SetCannonLocationCommand(CannonLocation.parkLocation));
-    SmartDashboard.putData("RecalibratePitchForward", new CannonUnjamPitchCommand(cannonSubsystem, true));
-    SmartDashboard.putData("RecalibratePitchBack", new CannonUnjamPitchCommand(cannonSubsystem, false));
+    SmartDashboard.putData("RecalibratePitch", new InstantCommand(() -> cannonSubsystem.recalibrataePitch()));
 
     // Odometry and Vision Tests
     SmartDashboard.putData(new InstrumentOdometryAndVisionCommand());

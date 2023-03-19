@@ -9,7 +9,9 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.CannonSubsystem;
 
 public class CannonClawOutCommand extends CommandBase {
@@ -31,6 +33,7 @@ public class CannonClawOutCommand extends CommandBase {
     public void initialize() {
       logger.info("started");
       cannonSubsystem.setClawPower(desiredSpeed);
+      RobotContainer.flareSubsystem.setColor(Color.kPaleGreen);
     }
   
     // Called every time the scheduler runs while the command is scheduled.

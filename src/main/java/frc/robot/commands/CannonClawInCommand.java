@@ -50,7 +50,6 @@ public class CannonClawInCommand extends CommandBase {
     public void end(boolean interrupted) {
       logger.info ("done, interrupted = {}", interrupted);
       cannonSubsystem.setClawPower(.1);
-      RobotContainer.flareSubsystem.setColor(Color.kGreen);
     }
   
     // Returns true when the command should end.
@@ -64,6 +63,7 @@ public class CannonClawInCommand extends CommandBase {
         if (getStartedTimer.get() > 0.5) {
           if (Math.abs(cannonSubsystem.getClawPower()) < 500) {
             getStartedTimer = null;
+            RobotContainer.flareSubsystem.setColor(Color.kGreen);
             return true;
             } else {
               return false;
