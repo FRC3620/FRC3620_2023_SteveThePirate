@@ -143,7 +143,7 @@ public class CannonSubsystem extends SubsystemBase {
     if (canDeviceFinder.isDevicePresent(CANDeviceType.SPARK_MAX, 9, "Elevation") || shouldMakeAllCANDevices) {
       elevation = new CANSparkMaxSendable(9, MotorType.kBrushless);
       MotorSetup.resetMaxToKnownState(elevation, true);
-      elevation.setSmartCurrentLimit(40);
+      elevation.setSmartCurrentLimit(20);
       elevation.setIdleMode(IdleMode.kBrake);
       addChild("elevation", elevation);
 
@@ -158,7 +158,7 @@ public class CannonSubsystem extends SubsystemBase {
       elevation2 = new CANSparkMaxSendable(14, MotorType.kBrushless);
       // the inverted is ignored if this is a follower
       MotorSetup.resetMaxToKnownState(elevation2, true);
-      elevation2.setSmartCurrentLimit(40);
+      elevation2.setSmartCurrentLimit(20);
       elevation2.setIdleMode(IdleMode.kBrake);
       addChild("elevate2", elevation2);
     }

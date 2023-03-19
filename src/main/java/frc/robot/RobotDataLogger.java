@@ -86,11 +86,11 @@ public class RobotDataLogger {
 
 		if (cannonSubsystem.extend2 != null) {
 			dataLogger.addDataProvider("cannon.extension2.motor_current",
-					() -> DataLogger.f2(cannonSubsystem.extend.getOutputCurrent()));
+					() -> DataLogger.f2(cannonSubsystem.extend2.getOutputCurrent()));
 			dataLogger.addDataProvider("cannon.extension2.power",
-					() -> DataLogger.f2(cannonSubsystem.extend.getAppliedOutput()));
+					() -> DataLogger.f2(cannonSubsystem.extend2.getAppliedOutput()));
 			dataLogger.addDataProvider("cannon.extension2.temperature",
-					() -> DataLogger.f2(cannonSubsystem.extend.getMotorTemperature()));
+					() -> DataLogger.f2(cannonSubsystem.extend2.getMotorTemperature()));
 		}
 
 		if (cannonSubsystem.pitch != null) {
