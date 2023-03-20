@@ -5,7 +5,7 @@
     "makeAllCANDevices": true,
     "swerveParameters": {
       "he.rf": 157.14, // right front
-      "he.lf": 86.22,   // left front
+      "he.lf": 76.04,   // left front
       "he.lb": 22.68,  // left back
       "he.rb": -127.08,   // right back
       // 

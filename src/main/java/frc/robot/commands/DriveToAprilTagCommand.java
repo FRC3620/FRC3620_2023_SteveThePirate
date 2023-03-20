@@ -127,10 +127,10 @@ public class DriveToAprilTagCommand extends CommandBase {
         dl_tagYaw = tagYaw;
         dl_tagPitch = tagPitch;
         dl_tagId = target.getFiducialId();
-        double targetYaw = 10.0;
+        double targetYaw = 8;
         double targetPitch = 9.7;
 
-        double targetYawTolerance = 10;
+        double targetYawTolerance = .5;
         double targetPitchTolerance = 0.9;
 
         double speed = 0.0;
@@ -164,13 +164,13 @@ public class DriveToAprilTagCommand extends CommandBase {
             timer.start();
           }
           driveSubsystem.setWheelsToStrafe(90);
-          if (timer.advanceIfElapsed(.25)) {
+          if (timer.advanceIfElapsed(.5)) {
             myState = MyState.FORWARD;
             timer = null;
           }
         }
         if (myState == MyState.FORWARD) {
-          double spinX = driveSubsystem.getSpinPower();
+          double spinX = 0; //driveSubsystem.getSpinPower();
           if (tagPitch < targetPitch) {
             // too close to tag
             speed = -0.1;
@@ -201,7 +201,13 @@ public class DriveToAprilTagCommand extends CommandBase {
 
           driveSubsystem.setWheelsToStrafe(0);
           if (position == Position.MIDDLE) {
-            end = true;
+            if (timer == null) {
+              timer = new Timer();
+              timer.start();
+            } else if (timer.advanceIfElapsed(2)) {
+              end = true;
+              timer = null;
+            }
           }
           if (DriverStation.getAlliance() == Alliance.Blue) {
             power = -0.1;
