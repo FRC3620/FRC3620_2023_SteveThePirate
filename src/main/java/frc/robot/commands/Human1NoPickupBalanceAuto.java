@@ -21,9 +21,9 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Start/place at human, go out of community, balance
+ */
 public class Human1NoPickupBalanceAuto extends SequentialCommandGroup {
   final DriveSubsystem driveSubsystem;
   /** Creates a new Mid1BalanceAuto. */

@@ -17,9 +17,9 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Start/place at wall, go out and grab piece via DriveToGamePiece, place piece
+ */
 public class Wall2NoPickupNoBalanceAuto extends SequentialCommandGroup {
   /** Creates a new Human2NoBalanceAuto. */
   public Wall2NoPickupNoBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {

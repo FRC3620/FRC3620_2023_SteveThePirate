@@ -19,9 +19,9 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Start/place at wall, go out and grab piece via DriveToGamePieceCommand, balance
+ */
 public class Wall1PickupBalanceAuto extends SequentialCommandGroup {
   PoseOnField otherSide = PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3);
   /** Creates a new Mid1BalanceAuto. */

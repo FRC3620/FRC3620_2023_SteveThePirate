@@ -22,9 +22,10 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.VisionSubsystem.FrontCameraMode;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Start/place at wall, go out but stop after speedbump, turn 180, go and grab piece via odometry, balance
+ * (odometry stays more consistent than the version where we don't stop)
+ */
 public class Wall1BlindPickupBalanceAutoButWeStop extends SequentialCommandGroup {
   final DriveSubsystem driveSubsystem;
   /** Creates a new Mid1BalanceAuto. */
