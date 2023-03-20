@@ -71,5 +71,7 @@ public interface INavigationSubsystem {
     }
 
     public double getPitch();
+
+    public double getRoll();
     
 }

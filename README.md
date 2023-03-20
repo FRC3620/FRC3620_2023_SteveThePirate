@@ -12,7 +12,7 @@ Auto is named with a combination of start position (Wall, Mid, Human), number of
 * ~~DIO 1, 2: Arm Elevation Encoder~~
 * ~~DIO 3: Elevation homeSwitch~~
 * ~~DIO 4: Elevation "infront" switch~~
-* ~~DIO 5, 6: Pitch Encoder :D
+* DIO 5, 6: Pitch Encoder :D
 
 
 ## Analog IO
@@ -33,9 +33,11 @@ Auto is named with a combination of start position (Wall, Mid, Human), number of
 * id 7 = rightBackDrive motor
 * id 8 = rightBackAzimuth motor
 * id 9 = cannon elevation
-* id 10 = cannon extention
+* id 10 = cannon extension
 * id 11 = cannon pitch
 * id 12 = cannon claw
+* id 13 = cannon extension 2
+* id 14 = cannon elevation 2
 
 # PDB assignments
 

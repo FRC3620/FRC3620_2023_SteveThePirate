@@ -42,6 +42,8 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("nav.heading_raw", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getRawHeading()));
 		dataLogger.addDataProvider("nav.heading", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getCorrectedHeading()));
 		dataLogger.addDataProvider("nav.heading_offset", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getHeadingOffset()));
+		dataLogger.addDataProvider("nav.pitch", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getPitch()));
+		dataLogger.addDataProvider("nav.roll", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getRoll()));
 
 		dataLogger.addDataProvider("drive.requested_heading", () -> DataLogger.f2(RobotContainer.driveSubsystem.getTargetHeading()));
 		dataLogger.addDataProvider("drive.spin_power", () -> DataLogger.f2(RobotContainer.driveSubsystem.getSpinPower()));
@@ -69,11 +71,11 @@ public class RobotDataLogger {
 
 		if (cannonSubsystem.elevation2 != null) {
 			dataLogger.addDataProvider("cannon.elevate2.motor_current",
-					() -> DataLogger.f2(cannonSubsystem.elevation.getOutputCurrent()));
+					() -> DataLogger.f2(cannonSubsystem.elevation2.getOutputCurrent()));
 			dataLogger.addDataProvider("cannon.elevate2.power",
-					() -> DataLogger.f2(cannonSubsystem.elevation.getAppliedOutput()));
+					() -> DataLogger.f2(cannonSubsystem.elevation2.getAppliedOutput()));
 			dataLogger.addDataProvider("cannon.elevate2.temperature",
-					() -> DataLogger.f2(cannonSubsystem.elevation.getMotorTemperature()));
+					() -> DataLogger.f2(cannonSubsystem.elevation2.getMotorTemperature()));
 		}
 
 		if (cannonSubsystem.extend != null) {

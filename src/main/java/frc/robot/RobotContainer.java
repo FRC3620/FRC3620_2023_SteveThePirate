@@ -34,6 +34,7 @@ import org.usfirst.frc3620.misc.CANDeviceType;
 import org.usfirst.frc3620.misc.ChameleonController;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.JoystickAnalogButton;
+import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.misc.RobotParametersContainer;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.misc.ChameleonController.ControllerType;
@@ -371,6 +372,15 @@ public class RobotContainer {
         rv = -rv;
       }
     }
+
+    /*
+     * this should not be necessary, but autonomous code is looking at
+     * the spin joystick, so here we are...
+     */
+    if (Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS) {
+      rv = 0;
+    }
+
     SmartDashboard.putNumber("driver.spin.processed", rv);
     return rv;
   }
