@@ -33,5 +33,7 @@ public class FieldLocation {
 
     public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 4.777 + yOffset);
     public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + yOffset);
+    
+    public static PoseOnField humanPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85, 4.44);
 }
 
