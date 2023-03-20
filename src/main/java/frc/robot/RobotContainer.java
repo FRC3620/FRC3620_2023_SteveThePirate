@@ -320,7 +320,7 @@ public class RobotContainer {
     chooser.addOption("Wall1NoPickupBalanceAuto", () -> new Wall1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Wall2BlindNoPickupNoBalanceAuto", () -> new Wall2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     //chooser.addOption("Wall2NoPickupNoBalanceAuto", () -> new Wall2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    //TODO put autos in order
+    chooser.addOption("Human2BackwardsGrabNoBalanceAuto", () -> new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
   }
 
   interface CommandFactory extends Supplier<Command> { }

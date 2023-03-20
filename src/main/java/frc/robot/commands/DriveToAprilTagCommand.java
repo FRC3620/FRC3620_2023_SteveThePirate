@@ -130,7 +130,7 @@ public class DriveToAprilTagCommand extends CommandBase {
         double targetYaw = 8;
         double targetPitch = 9.7;
 
-        double targetYawTolerance = .5;
+        double targetYawTolerance = .7;
         double targetPitchTolerance = 0.9;
 
         double speed = 0.0;
@@ -201,13 +201,7 @@ public class DriveToAprilTagCommand extends CommandBase {
 
           driveSubsystem.setWheelsToStrafe(0);
           if (position == Position.MIDDLE) {
-            if (timer == null) {
-              timer = new Timer();
-              timer.start();
-            } else if (timer.advanceIfElapsed(2)) {
-              end = true;
-              timer = null;
-            }
+            end = true;
           }
           if (DriverStation.getAlliance() == Alliance.Blue) {
             power = -0.1;
