@@ -51,4 +51,8 @@ public class NavXNavigationSubsystem extends SubsystemBase implements INavigatio
   public double getPitch() {
     return ahrs.getPitch();
   }
+
+  public double getRoll() {
+    return ahrs.getRoll();
+  }
 }

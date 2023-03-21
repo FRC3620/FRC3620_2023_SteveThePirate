@@ -148,9 +148,12 @@ public class CannonSubsystem extends SubsystemBase {
       addChild("elevation", elevation);
 
       elevationMotorEncoder = elevation.getEncoder();
-      // by coincidence, it's seems that the motor encoder
-      // position scaling match the arm encoder, so we don't
-      // need to set the position scaling
+
+      // motors are geared 5:1, 5:1, bull gear is 50/30, chain drive is 75:15.
+      double ratio = 360.0 / (5.0 * 5.0 * (50.0/30.0) * (75.0 / 15.0))
+      elevationMotorEncoder.setPositionConversionFactor(ratio);
+      elevationMotorEncoder.setVelocityConversionFactor(ratio);
+
       logger.info ("Elevation motor position scale = {}", elevationMotorEncoder.getPositionConversionFactor());
     }
 
@@ -190,7 +193,9 @@ public class CannonSubsystem extends SubsystemBase {
       pitchMotorEncoder = pitch.getEncoder();
       // 360 to convert from rotations to degrees
       // denominator is a 4:1 gearbox and a 1/18:42 pulley reduction
-      pitchMotorEncoder.setPositionConversionFactor(360.0 / (4.0 * (42.0 / 18.0)));
+      double ratio = 360.0 / (4.0 * (42.0 / 18.0));
+      pitchMotorEncoder.setPositionConversionFactor(ratio);
+      pitchMotorEncoder.setVelocityConversionFactor(ratio);
       logger.info("Pitch motor position scale = {}", pitchMotorEncoder.getPositionConversionFactor());
     }
 

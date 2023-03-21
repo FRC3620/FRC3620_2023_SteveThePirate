@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
     robotDataLogger.setInterval(1);
     robotDataLogger.start();
 
-    FileSaver.add("/home/lvuser/networktables.json");
+    // FileSaver.add("/home/lvuser/networktables.json");
   }
 
   /**
@@ -122,13 +122,17 @@ public class Robot extends TimedRobot {
 
     processRobotModeChange(RobotMode.AUTONOMOUS);
 
+    setupDriverController();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+  }
 
+  void setupDriverController() {
     String driveControllerName = m_robotContainer.getDriverControllerName();
     logger.info("Drive Controller Name: {}", driveControllerName);
     if (driveControllerName.startsWith("FlySky")) {
@@ -158,13 +162,8 @@ public class Robot extends TimedRobot {
 
     processRobotModeChange(RobotMode.TELEOP);
     logMatchInfo();
-    String driveControllerName = m_robotContainer.getDriverControllerName();
-    logger.info("Drive Controller Name: {}", driveControllerName);
-    if (driveControllerName.startsWith("FlySky")) {
-      m_robotContainer.setDriverControllerName(ControllerType.B);
-    } else {
-      m_robotContainer.setDriverControllerName(ControllerType.A);
-    }
+
+    setupDriverController();
   }
 
   /** This function is called periodically during operator control. */
