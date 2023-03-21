@@ -67,6 +67,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.elevate.requested_position", () -> DataLogger.f2(cannonSubsystem.getRequestedElevation()));
 			dataLogger.addDataProvider("cannon.elevate.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentElevation()));
 			dataLogger.addDataProvider("cannon.elevate.current_motor_position", () -> DataLogger.f2(cannonSubsystem.elevationMotorEncoder.getPosition()));
+			dataLogger.addDataProvider("cannon.elevate.current_motor_velocity", () -> DataLogger.f2(cannonSubsystem.elevationMotorEncoder.getVelocity()));
 		}
 
 		if (cannonSubsystem.elevation2 != null) {
@@ -103,6 +104,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.pitch.clamped_requested_position", () -> cannonSubsystem.getClampedPitch());
 			dataLogger.addDataProvider("cannon.pitch.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentPitch()));
 			dataLogger.addDataProvider("cannon.pitch.current_motor_position", () -> DataLogger.f2(cannonSubsystem.pitchMotorEncoder.getPosition()));
+			dataLogger.addDataProvider("cannon.pitch.current_motor_velocity", () -> DataLogger.f2(cannonSubsystem.pitchMotorEncoder.getVelocity()));
 		}
 
 		if (cannonSubsystem.claw != null) {
