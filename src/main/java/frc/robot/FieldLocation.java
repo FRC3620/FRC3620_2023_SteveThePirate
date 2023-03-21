@@ -12,15 +12,15 @@ import edu.wpi.first.math.util.Units;
 public class FieldLocation {
     static double yOffset = 0;
     public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422,4.60 + yOffset); //4.800
-    public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.458 + yOffset);
+    public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.722, 2.203 + yOffset);
     public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963 + yOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
     public static PoseOnField humanMiddlePlus = PoseOnField.fromRedAlliancePositionInMeters(10, 4.990 + yOffset); //4.800
-    public static PoseOnField midMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 3.058 + yOffset);
+    public static PoseOnField midMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.4, 2.203 + yOffset);
     public static PoseOnField wallMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 0.963 + yOffset);
 
     public static PoseOnField humanStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 4.986 + yOffset); //TargetPoseOnField.humanTarget(-0.5, Units.inchesToMeters(22));
-    public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 3.402 + yOffset); //TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22));
+    public static PoseOnField midStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 2.203 + yOffset); //TargetPoseOnField.midTarget(-0.5, Units.inchesToMeters(22)); ........y was 3.402
     public static PoseOnField wallStart = PoseOnField.fromRedAlliancePositionInMeters(14.829, 0.651 + yOffset); //TargetPoseOnField.wallTarget(-0.5, Units.inchesToMeters(22));
 
     public static PoseOnField humanHalfway = PoseOnField.fromRedAlliancePositionInMeters(12.876, 4.7 + yOffset); //4.800
@@ -35,8 +35,11 @@ public class FieldLocation {
     public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + yOffset);
     public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 0.95 + yOffset);
     public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 0.95 + yOffset);
+    public static PoseOnField midPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.668, 2.203);
+    public static PoseOnField midPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 2.203);
     
     public static PoseOnField humanPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85, 4.44);
-    public static PoseOnField wallPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.800, 1.047); //x = 14.847
+    public static PoseOnField wallPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85, 1.047);
+    //public static PoseOnField midPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85,2.869);
 }
 

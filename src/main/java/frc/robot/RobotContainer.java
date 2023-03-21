@@ -241,7 +241,7 @@ public class RobotContainer {
     SmartDashboard.putData("Drive to apirl tag", new DriveToAprilTagCommand(3, Position.MIDDLE, driveSubsystem, visionSubsystem, odometrySubsystem));
     SmartDashboard.putData("Updated Move to April Tag", new UpdatedLocateAprilTagCommand(driveSubsystem, visionSubsystem));
     SmartDashboard.putData("AprilTagAutoTestCommand", new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
-    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(FieldLocation.wallHalfway, 0.2, 0.1, 180, driveSubsystem));
+    SmartDashboard.putData("Drive to coordinate", new DriveToCoordinateCommand(FieldLocation.midCommunity, 0.3, 0.1, 180, driveSubsystem));
     SmartDashboard.putData("Test Coordinate Auto", new TestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("Longer Test Coordinate Auto", new LongerTestCoordinateAuto(driveSubsystem));
     SmartDashboard.putData("TurnToGamePieceCommand", new TurnToGamePieceCommand(driveSubsystem, visionSubsystem));
@@ -267,6 +267,7 @@ public class RobotContainer {
     SmartDashboard.putData("Wall2BlindNoPickupNoBalanceAuto", new Wall2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Human2BackwardsGrabNoBalanceAuto", new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     SmartDashboard.putData("Wall2BackwardsGrabNoBalanceAuto", new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Mid1GrabBalanceAuto", new Mid1GrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
 
     // Cannon
     SmartDashboard.putData("ExtendCommand0" , new CannonExtendCommand(cannonSubsystem, 0));
@@ -324,6 +325,7 @@ public class RobotContainer {
     //chooser.addOption("Wall2NoPickupNoBalanceAuto", () -> new Wall2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Human2BackwardsGrabNoBalanceAuto", () -> new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     chooser.addOption("Wall2BackwardsGrabNoBalanceAuto", () -> new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
+    chooser.addOption("Mid1GrabBalanceAuto", () -> new Mid1GrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
   }
 
   interface CommandFactory extends Supplier<Command> { }

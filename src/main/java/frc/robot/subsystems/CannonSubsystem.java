@@ -150,7 +150,7 @@ public class CannonSubsystem extends SubsystemBase {
       elevationMotorEncoder = elevation.getEncoder();
 
       // motors are geared 5:1, 5:1, bull gear is 50/30, chain drive is 75:15.
-      double ratio = 360.0 / (5.0 * 5.0 * (50.0/30.0) * (75.0 / 15.0))
+      double ratio = 360.0 / (5.0 * 5.0 * (50.0 / 30.0) * (75.0 / 15.0));
       elevationMotorEncoder.setPositionConversionFactor(ratio);
       elevationMotorEncoder.setVelocityConversionFactor(ratio);
 

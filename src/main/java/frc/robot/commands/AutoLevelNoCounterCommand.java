@@ -86,7 +86,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
     if(myState == LevelingState.LEVEL){
       spin = driveSubsystem.getSpinPower();
       //drive
-      power = 0.6;
+      power = 0.5;
       if(pitch < -13) {
         // we are going uphill, slow down
         myState = LevelingState.TIMED;
@@ -100,7 +100,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
         timer = new Timer();
       }
       timer.start();
-      power = 0.3;
+      power = 0.4;
       if(timer.advanceIfElapsed(1)){
         myState = LevelingState.PRETILTED;
         logger.info("switching to {}, pitch = {}", myState, pitch);

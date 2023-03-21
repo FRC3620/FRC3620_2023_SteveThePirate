@@ -23,7 +23,6 @@ import frc.robot.subsystems.VisionSubsystem;
  * Start/place piece at mid, go over charge station and grab piece, balance
  */
 public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
-  PoseOnField otherSide = PoseOnField.fromRedAlliancePositionInMeters(10.9, 3.3);
 
   /** Creates a new Mid1BalanceAuto. */
   public Mid1GrabBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem,
@@ -44,9 +43,33 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
+      new WaitCommand(.5)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midCommunity, 0.3, 0.1, 180, driveSubsystem)
+      ,
+      new WaitCommand(.5)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.1, 180, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
+      ,
       new WaitCommand(1)
       ,
-      new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midPickupBehindPre, 0.3, 0.1, 180, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
+      ,
+      new ParallelDeadlineGroup(
+        new DriveToCoordinateCommand(FieldLocation.midPickupBehindPost, 0.2, 0.1, 180, driveSubsystem)
+        ,
+        new CannonClawInCommand(cannonSubsystem, 0.5)
+      )
+      ,
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.3, 0.1, 180, driveSubsystem)
+      ,
+      new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }
