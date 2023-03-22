@@ -33,8 +33,8 @@ public class FieldLocation {
 
     public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 4.777 + yOffset);
     public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + yOffset);
-    public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 0.95 + yOffset);
-    public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 0.95 + yOffset);
+    public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.2 + yOffset);
+    public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.2 + yOffset);
     public static PoseOnField midPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.668, 2.203);
     public static PoseOnField midPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 2.203);
     
