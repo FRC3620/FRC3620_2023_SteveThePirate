@@ -65,8 +65,8 @@ public class CannonPitchMechanism  {
         SmartDashboard.putNumber(name + ".speed", grayhill.getRate());
         SmartDashboard.putNumber(name + ".position", getCurrentPitch());
         // SmartDashboard.putNumber(name + ".velocityConversionFactor", encoder.getVelocityConversionFactor());
-        SmartDashboard.putNumber(name + ".motor_position", motorEncoder.getPosition());
-        SmartDashboard.putNumber(name + ".grayhill_position", grayhill.getDistance());
+        SmartDashboard.putNumber(name + ".motor_position", getPitchMotorPitch());
+        SmartDashboard.putNumber(name + ".grayhill_position", getGrayhillPitch());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
@@ -147,26 +147,51 @@ public class CannonPitchMechanism  {
     return motorPower;
   }
 
-  static final double new_kP = 0.0005;
+  /*
+   * test history
+   * new_kP   ff_offset clamp
+   * 0.0005   0.005     0.2     too soft (can't push down to -90)
+   * 0.00075  0.005     0.2     "
+   * 0.00125  0.000     0.2     "
+   * 0.002    0.000     0.2     strongish overcenter
+   */
+
+  static final double new_kP = 0.002;
   static final double ff_amplitude = 0.075;
-  static final double ff_offset = 0.005;
+  static final double ff_offset = 0.000;
   static final double new_motor_power_clamp = 0.2;
 
   public PitchCalcResult newCalculateMotorPower(double currentElevation, double currentPitch, double requestedPitch) {
-    clampedPitch = requestedPosition;
+    double minPitch = -130;
+    double maxPitch = 48;
+
+    if (currentElevation < 0) {
+      // if we have arm low in front, don't let the pitch get too low
+      minPitch = -90;
+    }
+
+    if (currentElevation > 135) {
+      // if we have arm low in back, don't target a low pitch; it will overshoot
+      // and bump it's chin
+      minPitch = -75;
+    }
+
+    clampedPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
+
     PitchCalcResult rv = new PitchCalcResult();
     rv.pitchAngleRelativeToWorld = currentElevation + currentPitch;
     SmartDashboard.putNumber(name + ".pitch_relative_to_world", rv.pitchAngleRelativeToWorld);
 
     // calculate base power based on empirical research
-    rv.ff = (ff_amplitude * Math.sin(Units.degreesToRadians(rv.pitchAngleRelativeToWorld+125))) + ff_offset;
+    double raw_ff = Math.sin(Units.degreesToRadians(rv.pitchAngleRelativeToWorld+125));
+    rv.ff = (ff_amplitude * raw_ff) + ff_offset;
     SmartDashboard.putNumber(name + ".ff", rv.ff);
 
     // for logging
     rv.kP = new_kP;
 
     // do the 'P' part of PID
-    rv.error = requestedPitch - currentPitch;
+    rv.error = clampedPitch - currentPitch;
     SmartDashboard.putNumber(name + ".error", rv.error);
 
     rv.p = new_kP * rv.error;

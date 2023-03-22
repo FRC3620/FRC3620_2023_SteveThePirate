@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -95,38 +94,10 @@ public class FlareSubsystem extends SubsystemBase {
     colorsNeedUpdating = true;
   }
 
- 
-
   RobotMode robotMode = RobotMode.INIT;  
 
   public void ProcessRobotModeChange(RobotMode robotMode) {
     this.robotMode = robotMode;
-    /*
-    if (robotMode == RobotMode.TELEOP ) {
-
-      if (DriverStation.getAlliance()==Alliance.Blue) {
-        setColor(FlareColor.BLUE);
-      }
-
-      if (DriverStation.getAlliance() == Alliance.Red) {
-        setColor(FlareColor.RED);
-      }
-
-    }
-    if (robotMode == RobotMode.AUTONOMOUS ) {
-
-      if (DriverStation.getAlliance()==Alliance.Blue) {
-        setColor(FlareColor.BLUE);
-      }
-
-      if (DriverStation.getAlliance() == Alliance.Red) {
-        setColor(FlareColor.RED);
-      }
-
-    }
-    */
-
-
   }
 
   public static class FlareColor{
@@ -171,31 +142,21 @@ public class FlareSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    int matchTime = (int) DriverStation.getMatchTime();
+    SmartDashboard.putNumber("match time", matchTime);
     if (watchTheClock) {
-      double matchTime = DriverStation.getMatchTime();
-
-      //SmartDashboard.putNumber("match time", matchTime);
       if (robotMode == RobotMode.TELEOP) {
-        if (matchTime > 30) {
+        if (matchTime > 30 || matchTime < 0) {
           setInterval(1, 0);
-        }
-
-        if (matchTime <= 30) {
+        } else if (matchTime < 5) {
+          setInterval(.1, .1);
+        } else if (matchTime <= 10) {
+          setInterval(.2, .2);
+        } else if (matchTime <= 20) {
+          setInterval(.3, .3);
+        } else {
           setInterval(.75, .75);
         }
-
-        if (matchTime <= 20) {
-          setInterval(.3, .3);
-        }
-
-        if (matchTime <= 10) {
-          setInterval(.2, .2);
-        }
-
-        if (matchTime < 5) {
-          setInterval(.1, .1);
-        }
-
     }
   }
   
@@ -232,9 +193,10 @@ public class FlareSubsystem extends SubsystemBase {
       lightsAreOn = true;
     }
   }
-public void setWarningLights(String warningMessage) {
-  warningLights = true;
-  SmartDashboard.putString("flare.warning", warningMessage);
-}
+
+  public void setWarningLights(String warningMessage) {
+    warningLights = true;
+    SmartDashboard.putString("flare.warning", warningMessage);
+  }
 
 }
