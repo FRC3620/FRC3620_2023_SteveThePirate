@@ -78,6 +78,7 @@ public class CannonPitchMechanism  {
               calibrationTimer.start();
             } else {
               if (calibrationTimer.get() > 0.75){
+                // TODO we should use the motor's encoder here
                 if (Math.abs(grayhill.getRate()) < 15) {
                   logger.info("calibration completed");
                   encoderIsValid = true;

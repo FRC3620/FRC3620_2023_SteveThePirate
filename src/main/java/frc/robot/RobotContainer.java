@@ -199,11 +199,12 @@ public class RobotContainer {
     // positive y-axis is when you pull it down
     // DISABLE THIS FOR COMPETITION!
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, 0.2)
-            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -8));
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, -24));
 
     // negative y-axis is when you pull it up
+    // YOU CAN LEAVE THIS ENABLED FOR COMPETITION.
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_RIGHT_Y, -0.2)
-            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 8));
+            .whileTrue(new CannonElevatePowerCommand(cannonSubsystem, 24));
 
     // positive y-axis is when you pull it down
     new JoystickAnalogButton(operatorJoystick, XBoxConstants.AXIS_LEFT_Y, 0.2)
