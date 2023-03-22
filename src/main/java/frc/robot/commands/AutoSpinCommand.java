@@ -46,7 +46,8 @@ public class AutoSpinCommand extends CommandBase {
   @Override
   public void execute() {
     //double heading = driveSubsystem.getNavXFixedAngle(); 
-    double spinX = pathSpeed;
+    double spinX = -pathSpeed;
+    
     driveSubsystem.autoDrive(0, 0, spinX);
   }
 
