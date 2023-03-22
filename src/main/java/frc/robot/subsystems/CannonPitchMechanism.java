@@ -154,10 +154,12 @@ public class CannonPitchMechanism  {
    * 0.0005   0.005     0.2     too soft (can't push down to -90)
    * 0.00075  0.005     0.2     "
    * 0.00125  0.000     0.2     "
-   * 0.002    0.000     0.2     strongish overcenter
+   * 0.002    0.000     0.2     strongish overcenter, wussy on floor pickup
+   * 0.003    0.000     0.3     too floppy
+   * 0.0025   0.000     0.3
    */
 
-  static final double new_kP = 0.002;
+  static final double new_kP = 0.0025;
   static final double ff_amplitude = 0.075;
   static final double ff_offset = 0.000;
   static final double new_motor_power_clamp = 0.2;
