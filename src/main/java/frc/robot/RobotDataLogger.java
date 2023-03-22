@@ -102,7 +102,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("cannon.pitch.temperature", () -> DataLogger.f2(cannonSubsystem.pitch.getMotorTemperature()));
 			dataLogger.addDataProvider("cannon.pitch.requested_position", () -> cannonSubsystem.getRequestedPitch());
 			dataLogger.addDataProvider("cannon.pitch.clamped_requested_position", () -> cannonSubsystem.getClampedPitch());
-			dataLogger.addDataProvider("cannon.pitch.current_position", () -> DataLogger.f2(cannonSubsystem.getCurrentPitch()));
+			dataLogger.addDataProvider("cannon.pitch.current_grayhill_position", () -> DataLogger.f2(cannonSubsystem.getCurrentPitchFromGrayhill()));
 			dataLogger.addDataProvider("cannon.pitch.current_motor_position", () -> DataLogger.f2(cannonSubsystem.pitchMotorEncoder.getPosition()));
 			dataLogger.addDataProvider("cannon.pitch.current_motor_velocity", () -> DataLogger.f2(cannonSubsystem.pitchMotorEncoder.getVelocity()));
 		}

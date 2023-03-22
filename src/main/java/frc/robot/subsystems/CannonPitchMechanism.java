@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +24,7 @@ public class CannonPitchMechanism  {
   Timer calibrationTimer;
   CANSparkMaxSendable motor;
   RelativeEncoder motorEncoder;
-  Encoder pitchEncoder;
+  Encoder grayhill;
 
   double clampedPitch = 0;
   
@@ -39,12 +40,13 @@ public class CannonPitchMechanism  {
   double pitchOffset;
   CannonSubsystem cannonSubsystem;
 
+  boolean useOldPitchPid = false;
 
   final String name = "Pitch";
 
   public CannonPitchMechanism(CANSparkMaxSendable motor, Encoder pitchEncoder, RelativeEncoder motorEncoder) {
     this.motor = motor;
-    this.pitchEncoder = pitchEncoder;
+    this.grayhill = pitchEncoder;
     if (pitchEncoder != null) pitchEncoder.setDistancePerPulse(-360/256.0);
     this.motorEncoder = motorEncoder;
   }
@@ -59,11 +61,12 @@ public class CannonPitchMechanism  {
       SmartDashboard.putNumber(name + ".motor_current",  motor.getOutputCurrent());
       SmartDashboard.putNumber(name + ".power", motor.getAppliedOutput());
 
-      if (pitchEncoder != null) {
-        SmartDashboard.putNumber(name + ".speed", pitchEncoder.getRate());
+      if (grayhill != null) {
+        SmartDashboard.putNumber(name + ".speed", grayhill.getRate());
         SmartDashboard.putNumber(name + ".position", getCurrentPitch());
         // SmartDashboard.putNumber(name + ".velocityConversionFactor", encoder.getVelocityConversionFactor());
         SmartDashboard.putNumber(name + ".motor_position", motorEncoder.getPosition());
+        SmartDashboard.putNumber(name + ".grayhill_position", grayhill.getDistance());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
           if (!encoderIsValid) {
@@ -75,13 +78,12 @@ public class CannonPitchMechanism  {
               calibrationTimer.start();
             } else {
               if (calibrationTimer.get() > 0.75){
-                if (Math.abs(pitchEncoder.getRate()) < 15) {
+                if (Math.abs(grayhill.getRate()) < 15) {
                   logger.info("calibration completed");
                   encoderIsValid = true;
                   calibrationTimer = null;
                   pitchCannon(0.0);
-                  pitchOffset = pitchEncoder.getDistance() + 130;
-                  setPitch(-130); // WHY? we setPitch down below?
+                  pitchOffset = grayhill.getDistance() + 130;
                   motorEncoder.setPosition(-130);
                   
                   if (requestedPositionWhileCalibrating != null) {
@@ -94,42 +96,100 @@ public class CannonPitchMechanism  {
               }
             }
           } else {
-            double maxPitch;
-            double minPitch;
             double currentElevation = cannonSubsystem.getCurrentElevation();
-            //double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 20; //TODO 17
-            if (currentElevation < 75) {
-              maxPitch = 20;
+            double currentPitch = getCurrentPitch();
+            double motorPower = 0;
+            if (useOldPitchPid) {
+              motorPower = oldCalculateMotorPower(currentElevation, currentPitch);
+            } else {
+              lastPitchCalcResult = newCalculateMotorPower(currentElevation, currentPitch, requestedPosition);
+              motorPower = lastPitchCalcResult.motorPower;
             }
-            else if (currentElevation < 135) {
-              maxPitch = -30;
-            }
-            else {
-              maxPitch = 48;
-            }
-
-            // double minPitch = (cannonSubsystem.getCurrentElevation() < -5) ? -10 : -130;
-            if (currentElevation < -5) {
-              minPitch = -10;
-            }
-            else {
-              minPitch = -130;
-            }
-
-            clampedPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
-            SmartDashboard.putNumber(name + ".clampPitch", clampedPitch);
-            m_pidController.setSetpoint(clampedPitch);
-
-            double motorPower = m_pidController.calculate(motorEncoder.getPosition());
-            motorPower = MathUtil.clamp(motorPower, -0.5, 0.5);
             motor.set(motorPower);
+            SmartDashboard.putNumber(name + ".clampPitch", clampedPitch);
           }
         } else {
           calibrationTimer = null; // start over!
         }
+      }
     }
   }
-}
+
+  double oldCalculateMotorPower(double currentElevation, double currentPitch) {
+    double maxPitch;
+    double minPitch;
+
+    //double maxPitch = (cannonSubsystem.getCurrentElevation() > 75) ? -30 : 20; //TODO 17
+    if (currentElevation < 75) {
+      maxPitch = 20;
+    }
+    else if (currentElevation < 135) {
+      maxPitch = -30;
+    }
+    else {
+      maxPitch = 48;
+    }
+
+    // double minPitch = (cannonSubsystem.getCurrentElevation() < -5) ? -10 : -130;
+    if (currentElevation < -5) {
+      minPitch = -10;
+    }
+    else {
+      minPitch = -130;
+    }
+
+    clampedPitch = MathUtil.clamp(requestedPosition, minPitch, maxPitch);
+    m_pidController.setSetpoint(clampedPitch);
+
+    double motorPower = m_pidController.calculate(currentPitch);
+    motorPower = MathUtil.clamp(motorPower, -0.5, 0.5);
+
+    return motorPower;
+  }
+
+  static final double new_kP = 0.0005;
+  static final double ff_amplitude = 0.075;
+  static final double ff_offset = 0.005;
+  static final double new_motor_power_clamp = 0.2;
+
+  public PitchCalcResult newCalculateMotorPower(double currentElevation, double currentPitch, double requestedPitch) {
+    clampedPitch = requestedPosition;
+    PitchCalcResult rv = new PitchCalcResult();
+    rv.pitchAngleRelativeToWorld = currentElevation + currentPitch;
+    SmartDashboard.putNumber(name + ".pitch_relative_to_world", rv.pitchAngleRelativeToWorld);
+
+    // calculate base power based on empirical research
+    rv.ff = (ff_amplitude * Math.sin(Units.degreesToRadians(rv.pitchAngleRelativeToWorld+125))) + ff_offset;
+    SmartDashboard.putNumber(name + ".ff", rv.ff);
+
+    // for logging
+    rv.kP = new_kP;
+
+    // do the 'P' part of PID
+    rv.error = requestedPitch - currentPitch;
+    SmartDashboard.putNumber(name + ".error", rv.error);
+
+    rv.p = new_kP * rv.error;
+    SmartDashboard.putNumber(name + ".p", rv.p);
+
+    // roll it up
+    rv.motorPower = rv.ff + rv.p;
+
+    // and be paranoid
+    rv.motorPower = MathUtil.clamp(rv.motorPower, -new_motor_power_clamp, new_motor_power_clamp);
+
+    return rv;
+  }
+
+  PitchCalcResult lastPitchCalcResult = new PitchCalcResult();
+
+  public PitchCalcResult getLastPitchCalcResult() {
+    return lastPitchCalcResult;
+  }
+
+  public class PitchCalcResult {
+    public double pitchAngleRelativeToWorld, ff, error, kP, p, motorPower;
+  }
 
   /**
    * Sets the cannon to angle the wrist to 'pitch' degrees. 0 is perpendicular to
@@ -150,8 +210,19 @@ public class CannonPitchMechanism  {
   }
 
   public double getCurrentPitch() {
-    if (pitchEncoder != null) {
-      return pitchEncoder.getDistance() - pitchOffset;
+    return getPitchMotorPitch();
+  }
+
+  public double getPitchMotorPitch() {
+    if (motorEncoder != null) {
+      return motorEncoder.getPosition();
+    }
+    return 0;
+  }
+
+  public double getGrayhillPitch() {
+    if (grayhill != null) {
+      return grayhill.getDistance() - pitchOffset;
     }
     return 0;
   }

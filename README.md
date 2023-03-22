@@ -20,7 +20,7 @@ Auto is named with a combination of start position (Wall, Mid, Human), number of
 * Analog 1: left front home encoder
 * Analog 2: left back home encoder
 * Analog 3: right back home encoder
-* Analog 4: cannon elevation encoder
+* Analog 4 (navX analog 0): cannon elevation encoder
 
 ## Motor Controllers
 

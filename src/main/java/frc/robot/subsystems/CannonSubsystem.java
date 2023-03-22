@@ -112,6 +112,14 @@ public class CannonSubsystem extends SubsystemBase {
     return cannonPitchMechanism.getCurrentPitch();
   }
 
+  public double getCurrentPitchFromGrayhill() {
+    return cannonPitchMechanism.getGrayhillPitch();
+  }
+
+  public double getCurrentPitchFromMotor() {
+    return cannonPitchMechanism.getPitchMotorPitch();
+  }
+
   public double getRequestedElevation() {
     return cannonElevateMechanism.getRequestedElevation();
   }
