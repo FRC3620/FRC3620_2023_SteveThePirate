@@ -11,7 +11,7 @@ import edu.wpi.first.math.util.Units;
 /** Add your docs here. */
 public class FieldLocation {
     static double yOffset = 0;
-    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422,4.60 + yOffset); //4.800
+    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122,4.60 + yOffset); //4.800
     public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.722, 2.203 + yOffset);
     public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963 + yOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
