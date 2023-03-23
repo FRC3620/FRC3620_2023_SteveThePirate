@@ -29,8 +29,10 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     double direction = 1;
+    double angleLogic = 180;
     if(DriverStation.getAlliance() == Alliance.Blue){
       direction = -1;
+      angleLogic = 0;
     }
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
@@ -73,7 +75,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.7, 0.3, 180, driveSubsystem)
       ,
-      new AutoSpinCommand(0.3 * direction, 135, driveSubsystem)
+      new AutoSpinCommand(-0.3 * direction, angleLogic - 135, driveSubsystem)
       ,
       new ParallelDeadlineGroup(
         new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .2, 0.1, 135, driveSubsystem)

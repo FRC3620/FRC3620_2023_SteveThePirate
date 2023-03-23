@@ -66,6 +66,7 @@ public class AutoSpinCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     double diff = SwerveCalculator.calculateAngleDifference(RobotContainer.navigationSubsystem.getCorrectedHeading(), desiredHeading);
+    //TODO: Change logic so if we are past our angle return true
     if(Math.abs(diff) < 5){
       return true;
     }
