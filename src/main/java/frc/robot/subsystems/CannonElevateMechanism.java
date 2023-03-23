@@ -111,7 +111,7 @@ public class CannonElevateMechanism  {
    * @param elevation
    */
   public void setElevation(double elevation) {
-    elevation = MathUtil.clamp(elevation, -45, 185);
+    elevation = MathUtil.clamp(elevation, -45, 191);
     SmartDashboard.putNumber(name + ".requestedElevation", elevation);
     requestedPosition = elevation;
 
