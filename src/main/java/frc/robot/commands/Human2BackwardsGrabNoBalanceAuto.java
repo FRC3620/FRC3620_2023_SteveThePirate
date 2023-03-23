@@ -43,15 +43,17 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(2)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.4)
       ,
       new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.6, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.7, 0.2, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
+      ,
+      new WaitCommand(0.75)
       ,
       new ParallelDeadlineGroup(
         new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPost, .1, 0.1, 180, driveSubsystem)
@@ -61,7 +63,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.6, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.8, 0.2, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
@@ -73,15 +75,17 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.7, 0.3, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.8, 0.3, 180, driveSubsystem)
       ,
-      new AutoSpinCommand(-0.3 * direction, angleLogic * 140, driveSubsystem)
+      new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
       ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .2, 0.1, 140, driveSubsystem)
+        new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .2, 0.1, 143, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
-      )    
+      )
+      ,
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
     );
   }
 }
