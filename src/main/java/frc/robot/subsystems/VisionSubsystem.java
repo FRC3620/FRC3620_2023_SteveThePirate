@@ -170,6 +170,9 @@ public class VisionSubsystem extends SubsystemBase {
     return null;
   }
 
+  int lastBestTargetId = -1;
+  double lastBestTargetVX = 0, lastBestTargetVY = 0;
+
   List<Integer> tags = new ArrayList<>();
   void aprilTagsPeriodic() {
     lastFrontCameraAprilTagsResult = frontCamera.getLatestResult();
@@ -194,6 +197,8 @@ public class VisionSubsystem extends SubsystemBase {
           targetsToProcess = Collections.singletonList(bestTarget);
         }
 
+        lastBestTargetId = -1;
+
         for (var target : targetsToProcess) {
           int targetId = target.getFiducialId();
           Transform3d transformFromCameraToTag = target.getBestCameraToTarget();
@@ -209,6 +214,10 @@ public class VisionSubsystem extends SubsystemBase {
       
             SmartDashboard.putNumber("Translated X", vectorFromCameraToTag.getX());
             SmartDashboard.putNumber("Translated Y", vectorFromCameraToTag.getY());
+
+            lastBestTargetId = targetId;
+            lastBestTargetVX = vectorFromCameraToTag.getX();
+            lastBestTargetVY = vectorFromCameraToTag.getY();
           }
 
           if (vectorFromOriginToTag != null) {
@@ -246,6 +255,18 @@ public class VisionSubsystem extends SubsystemBase {
         visionDataLogger.send(visionData);
       }
     }      
+  }
+
+  public int getLastBestTargetId() {
+    return lastBestTargetId;
+  }
+
+  public double getLastBestTargetVX() {
+    return lastBestTargetVX;
+  }
+
+  public double getLastBestTargetVY() {
+    return lastBestTargetVY;
   }
 
   public String whereIsTheCenterOfTheRobotX() {

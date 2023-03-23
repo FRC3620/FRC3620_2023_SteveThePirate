@@ -35,6 +35,9 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("vision.lastAprilTagTimestamp", () -> RobotContainer.visionSubsystem.getLastAprilTagTimestamp());
 		dataLogger.addDataProvider("vision.camera_x", () -> RobotContainer.visionSubsystem.whereIsTheCenterOfTheRobotX());
 		dataLogger.addDataProvider("vision.camera_y", () -> RobotContainer.visionSubsystem.whereIsTheCenterOfTheRobotY());
+		dataLogger.addDataProvider("vision.best_target_id", () -> RobotContainer.visionSubsystem.getLastBestTargetId());
+		dataLogger.addDataProvider("vision.best_target_vx", () -> RobotContainer.visionSubsystem.getLastBestTargetVX());
+		dataLogger.addDataProvider("vision.best_target_vy", () -> RobotContainer.visionSubsystem.getLastBestTargetVY());
 
 		dataLogger.addDataProvider("odometry.x", () -> RobotContainer.odometrySubsystem.getPoseMeters().getX());
 		dataLogger.addDataProvider("odometry.y", () -> RobotContainer.odometrySubsystem.getPoseMeters().getY());
