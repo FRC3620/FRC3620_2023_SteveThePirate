@@ -7,17 +7,17 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CannonLocation {
-    public static CannonLocation coneHighLocation = new CannonLocation(40.08, 29.79, -44.86);
-    public static CannonLocation cubeHighLocation = new CannonLocation(40.21, 24.33, -55.93);
+    public static CannonLocation coneHighLocation = new CannonLocation(41.97, 29.95, -44.86);
+    public static CannonLocation cubeHighLocation = new CannonLocation(38.29, 24.33, -47.24);
     public static CannonLocation coneMidLocation = new CannonLocation(42.59, 8.86, -46.91);
-    public static CannonLocation cubeMidLocation = new CannonLocation(42.2, 7.8, -62.72);
+    public static CannonLocation cubeMidLocation = new CannonLocation(36.78, 5.6, -51.38);
     public static CannonLocation lowLocation = new CannonLocation(3.5, 0, -67);
-    public static CannonLocation coneFloorPickLocation = new CannonLocation(-6.18, 0.0,-20.82);
+    public static CannonLocation coneFloorPickLocation = new CannonLocation(-3.68, 0.0,-30.52);
     public static CannonLocation chuteLocation = new CannonLocation(28.65, 0.82, 10.86);
-    public static CannonLocation stationLocation = new CannonLocation(73.14, 8.36, -79.06); //8.89
+    public static CannonLocation stationLocation = new CannonLocation(72.62, 7.7, -77.9); //8.89
     public static CannonLocation parkLocation = new CannonLocation(90, 1, -130);
 
-    public static CannonLocation sidewaysConeLocation = new CannonLocation(-26.5, 0.0, 35.05); //27.5
+    public static CannonLocation sidewaysConeLocation = new CannonLocation(-27.99, 0.0, 33.76); //27.5
     public static CannonLocation backwardsHalfwayLocation = new CannonLocation(155, 0, 25);
     public static CannonLocation backwardsFloorPickupLocation = new CannonLocation(183.57, 0.0, 39.65); //elev: 190.4, pitch: 1.32
     double elevation;
