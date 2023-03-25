@@ -49,13 +49,13 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(.5)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.1, 180, driveSubsystem)
-      ,
+      //new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.1, 180, driveSubsystem)
+      //,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
       new WaitCommand(1)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midPickupBehindPre, 0.3, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midPickupBehindPre, 0.4, 0.1, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,

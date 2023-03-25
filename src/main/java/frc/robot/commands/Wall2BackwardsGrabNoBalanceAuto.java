@@ -70,6 +70,8 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.5)
+      ,
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
     );
   }
 }
