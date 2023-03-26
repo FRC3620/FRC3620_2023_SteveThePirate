@@ -37,7 +37,11 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
-      new WaitCommand(2)
+      new ParallelDeadlineGroup(
+        new WaitCommand(2)
+        ,
+        new CannonClawInCommand(cannonSubsystem, 0.5)
+      )
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
       ,
