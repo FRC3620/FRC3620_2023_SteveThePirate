@@ -5,8 +5,8 @@
     "makeAllCANDevices": true,
     "swerveParameters": {
       "he.rf": 156.35, // right front
-      "he.lf": 37.968,   // left front
-      "he.lb": 19.072,  // left back
+      "he.lf": 78.398,   // left front
+      "he.lb": 16.699,  // left back
       "he.rb": -127.36,   // right back
       // 
       "chassis_width": 19.00,  // inches
