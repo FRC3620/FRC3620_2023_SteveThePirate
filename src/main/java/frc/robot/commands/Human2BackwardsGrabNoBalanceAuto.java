@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.usfirst.frc3620.misc.PoseOnField;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,10 +32,17 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     double direction = 1;
     double angleLogic = 1;
+    PoseOnField prePickup = FieldLocation.humanPickupBehindPre;
+    PoseOnField postPickup = FieldLocation.humanPickupBehindPost;
+    PoseOnField secondPiece = FieldLocation.humanGrabSecondPiece;
     if(DriverStation.getAlliance() == Alliance.Blue){
       direction = -1;
       angleLogic = -1;
+      prePickup = FieldLocation.humanPickupBehindPreBlue;
+      postPickup = FieldLocation.humanPickupBehindPostBlue;
+      secondPiece = FieldLocation.humanGrabSecondPieceBlue;
     }
+
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
@@ -49,14 +58,14 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.7, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(prePickup, 0.7, 0.2, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
       new WaitCommand(0.75)
       ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPost, .1, 0.1, 180, driveSubsystem)
+        new DriveToCoordinateCommand(postPickup, .1, 0.1, 180, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )
@@ -75,12 +84,12 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.8, 0.3, 180, driveSubsystem)
+      new DriveToCoordinateCommand(prePickup, 0.8, 0.3, 180, driveSubsystem)
       ,
       new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
       ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .2, 0.1, 143, driveSubsystem)
+        new DriveToCoordinateCommand(secondPiece, .2, 0.1, 143, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )

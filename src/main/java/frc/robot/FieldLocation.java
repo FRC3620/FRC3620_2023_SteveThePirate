@@ -10,6 +10,7 @@ import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */
 public class FieldLocation {
+    static double blueOffset = 0.5;
     static double yOffset = 0;
     public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122,4.60 + yOffset); //4.800
     public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.722, 2.203 + yOffset);
@@ -31,7 +32,7 @@ public class FieldLocation {
     public static PoseOnField wallBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(10.024, 1.053 + yOffset);
     public static PoseOnField wallMiddleBlind = PoseOnField.fromRedAlliancePositionInMeters(12.1, 0.963 + yOffset);
 
-    public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 + yOffset);
+    public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777  + yOffset);
     public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + yOffset);
     public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.2 + yOffset);
     public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.2 + yOffset);
@@ -43,5 +44,10 @@ public class FieldLocation {
     //public static PoseOnField midPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85,2.869);
 
     public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50); //x was 10.708
+
+    public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 -blueOffset + yOffset);
+    public static PoseOnField humanPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 - blueOffset + yOffset);
+    public static PoseOnField humanGrabSecondPieceBlue = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50 -blueOffset); //x was 10.708
+
 }
 
