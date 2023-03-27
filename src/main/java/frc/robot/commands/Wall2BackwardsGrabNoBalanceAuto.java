@@ -31,13 +31,19 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.wallStart)
       ,
-      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      new SetCannonLocationCommand(CannonLocation.halfwayToConeHighLocation)
       ,
       new ParallelDeadlineGroup(
-        new WaitCommand(2)
+        new WaitCommand(0.6)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.5)
       )
+      ,
+      new WaitCommand(0.4)
+      ,
+      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      ,
+      new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
       ,

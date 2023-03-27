@@ -48,13 +48,19 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.humanStart)
       ,
-      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      new SetCannonLocationCommand(CannonLocation.halfwayToConeHighLocation)
       ,
       new ParallelDeadlineGroup(
-        new WaitCommand(2)
+        new WaitCommand(0.6)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.5)
       )
+      ,
+      new WaitCommand(0.4)
+      ,
+      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      ,
+      new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.4)
       ,
@@ -62,7 +68,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.7, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(prePickup, 0.5, 0.2, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,

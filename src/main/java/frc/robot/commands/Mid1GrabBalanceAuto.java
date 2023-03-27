@@ -8,6 +8,7 @@ import org.usfirst.frc3620.misc.PoseOnField;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.CannonLocation;
@@ -35,13 +36,19 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.midStart)
       ,
-      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      new SetCannonLocationCommand(CannonLocation.halfwayToConeHighLocation)
       ,
       new ParallelDeadlineGroup(
-        new WaitCommand(2)
+        new WaitCommand(0.6)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.5)
       )
+      ,
+      new WaitCommand(0.4)
+      ,
+      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      ,
+      new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
       ,
@@ -57,13 +64,13 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       //,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new WaitCommand(1)
-      ,
       new DriveToCoordinateCommand(FieldLocation.midPickupBehindPre, 0.4, 0.1, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new ParallelDeadlineGroup(
+      new WaitCommand(1)
+      ,
+      new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.midPickupBehindPost, 0.2, 0.1, 180, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.5)
@@ -71,7 +78,7 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.3, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.2, 180, driveSubsystem)
       ,
       new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
     );
