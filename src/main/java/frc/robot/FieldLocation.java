@@ -10,7 +10,7 @@ import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */
 public class FieldLocation {
-    static double blueOffset = 0.5;
+    static double blueOffset = 0.48;
     static double yOffset = 0;
     public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122,4.60 + yOffset); //4.800
     public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.722, 2.203 + yOffset);
