@@ -4,6 +4,10 @@
 
 package frc.robot.commands;
 
+import org.usfirst.frc3620.misc.PoseOnField;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -26,6 +30,12 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
   public Wall2BackwardsGrabNoBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    PoseOnField prePickup = FieldLocation.wallPickupBehindPre;
+    PoseOnField postPickup = FieldLocation.wallPickupBehindPost;
+    if(DriverStation.getAlliance() == Alliance.Blue){
+      prePickup = FieldLocation.wallPickupBehindPreBlue;
+      postPickup = FieldLocation.wallPickupBehindPostBlue;
+    }
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
@@ -55,12 +65,12 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.5)
       ,
-      new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPre, 0.3, 0.1, 180, driveSubsystem)
+      new DriveToCoordinateCommand(prePickup, 0.3, 0.1, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
       new ParallelDeadlineGroup(
-        new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPost, .2, 0.1, 180, driveSubsystem)
+        new DriveToCoordinateCommand(postPickup, .2, 0.1, 180, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.5)
       )
