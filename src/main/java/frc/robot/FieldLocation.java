@@ -12,7 +12,7 @@ import edu.wpi.first.math.util.Units;
 public class FieldLocation {
     static double blueOffset = 0.48;
     static double yOffset = 0;
-    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122,4.60 + yOffset); //4.800
+    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 4.60 + yOffset); //4.800
     public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.722, 2.203 + yOffset);
     public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963 + yOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
@@ -45,11 +45,11 @@ public class FieldLocation {
 
     public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50); //x was 10.708
 
-    public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 -blueOffset + yOffset);
+    public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 - blueOffset + yOffset);
     public static PoseOnField humanPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 - blueOffset + yOffset);
     public static PoseOnField humanGrabSecondPieceBlue = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50 - blueOffset); //x was 10.708
 
-    public static PoseOnField wallPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.05 -blueOffset + yOffset);
-    public static PoseOnField wallPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.05 -blueOffset + yOffset);
+    public static PoseOnField wallPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.05 - blueOffset + yOffset);
+    public static PoseOnField wallPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.05 - blueOffset + yOffset);
 }
 

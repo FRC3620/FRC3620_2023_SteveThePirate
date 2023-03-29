@@ -47,11 +47,13 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(0.4)
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      // here we're at the location to spit out the cone
       ,
       new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
       ,
+      // cone got spit out
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       new WaitCommand(.5)
