@@ -327,6 +327,7 @@ public class RobotContainer {
     chooser.addOption("Human2BackwardsGrabNoBalanceAuto", () -> new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     chooser.addOption("Wall2BackwardsGrabNoBalanceAuto", () -> new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     chooser.addOption("Mid1GrabBalanceAuto", () -> new Mid1GrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human2BackwardsGrabBalanceAuto", () -> new Human2BackwardsGrabBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
   }
 
   interface CommandFactory extends Supplier<Command> { }

@@ -69,7 +69,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new ParallelDeadlineGroup(
+      new ParallelRaceGroup(
         new DriveToCoordinateCommand(postPickup, .2, 0.1, 180, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.5)
@@ -87,7 +87,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
         //new WaitUntilAutoIsDoneCommand(1)
       )
       ,
-      new WaitCommand(1)
+      new WaitCommand(1) //TODO: SHORTEN THIS
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.5)
       ,

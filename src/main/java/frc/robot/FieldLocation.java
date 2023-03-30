@@ -13,7 +13,7 @@ public class FieldLocation {
     static double blueOffset = 0.48;
     static double yOffset = 0;
     public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 4.60 + yOffset); //4.800
-    public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.722, 2.203 + yOffset);
+    public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.683 + yOffset);
     public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963 + yOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
     public static PoseOnField humanMiddlePlus = PoseOnField.fromRedAlliancePositionInMeters(10, 4.990 + yOffset); //4.800

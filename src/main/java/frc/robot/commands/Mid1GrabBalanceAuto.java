@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import org.usfirst.frc3620.misc.PoseOnField;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -55,6 +56,8 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       // cone got spit out
       new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new WaitCommand(.5)
       ,

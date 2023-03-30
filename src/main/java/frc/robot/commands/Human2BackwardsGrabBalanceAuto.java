@@ -25,26 +25,26 @@ import frc.robot.subsystems.VisionSubsystem;
 /**
  * Start/place at human, go out and grab piece from behind via odometry, place piece
  */
-public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
+public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
   /** Creates a new Human2BackwardsGrabNoBalanceAuto. */
-  public Human2BackwardsGrabNoBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
+  public Human2BackwardsGrabBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     double direction = 1;
     double angleLogic = 1;
     PoseOnField prePickup = FieldLocation.humanPickupBehindPre;
     PoseOnField postPickup = FieldLocation.humanPickupBehindPost;
-    PoseOnField secondPiece = FieldLocation.humanGrabSecondPiece;
     if(DriverStation.getAlliance() == Alliance.Blue){
       direction = -1;
       angleLogic = -1;
       prePickup = FieldLocation.humanPickupBehindPreBlue;
       postPickup = FieldLocation.humanPickupBehindPostBlue;
-      secondPiece = FieldLocation.humanGrabSecondPieceBlue;
     }
 
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
+      ,
+      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new ZapOdometryCommand(FieldLocation.humanStart)
       ,
@@ -59,23 +59,24 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(0.4)
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
+      //,
+      //new WaitCommand(1)
       ,
-      new WaitCommand(1)
-      ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.4)
-      ,
-      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
+      new CannonClawOutCommand(cannonSubsystem, -1.0).withTimeout(.4) //time is .4
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.5, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(prePickup, 0.35, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new WaitCommand(0.75)
+      new WaitCommand(0)
+
+
+
       ,
       new ParallelRaceGroup(
-        new DriveToCoordinateCommand(postPickup, .1, 0.1, 180, driveSubsystem)
+        new DriveToCoordinateCommand(postPickup, .25, 0.1, 180, driveSubsystem) //was .25 speed
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )
@@ -92,19 +93,11 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.5)
       ,
-      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
-      ,
-      new DriveToCoordinateCommand(prePickup, 0.8, 0.3, 180, driveSubsystem)
-      ,
-      new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
-      ,
-      new ParallelRaceGroup(
-        new DriveToCoordinateCommand(secondPiece, .2, 0.1, 143, driveSubsystem)
-        ,
-        new CannonClawInCommand(cannonSubsystem, 0.4)
-      )
-      ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midCommunity, 0.5, 0.2, 180, driveSubsystem)
+      ,
+      new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }
