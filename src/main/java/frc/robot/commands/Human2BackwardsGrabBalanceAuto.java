@@ -44,6 +44,8 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
+      new InstantCommand(() -> driveSubsystem.fixRelativeEncoders())
+      ,
       new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
       ,
       new ZapOdometryCommand(FieldLocation.humanStart)
@@ -59,23 +61,21 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(0.4)
       ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
-      //,
-      //new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -1.0).withTimeout(.4) //time is .4
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
+      new WaitCommand(1.5) //Shorten this?????????
+      ,
       new DriveToCoordinateCommand(prePickup, 0.6, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
-      ,
-      new WaitCommand(660)
-
-
-
+      //,
+      //new WaitCommand(660)
       ,
       new ParallelRaceGroup(
+        //change speed for this definitely
         new DriveToCoordinateCommand(postPickup, .25, 0.1, 180, driveSubsystem) //was .25 speed
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)

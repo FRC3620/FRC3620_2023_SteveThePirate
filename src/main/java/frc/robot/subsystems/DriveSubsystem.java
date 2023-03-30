@@ -126,9 +126,9 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	private boolean fieldRelative = true;
 
 	private PIDController spinPIDController;
-	private double kSpinP = 0.005; //0.005 works
+	private double kSpinP = 0.015; //0.005 works
 	private double kSpinI = 0.00000; //0.0000
-	private double kSpinD = 0.000; //0.000
+	private double kSpinD = 0.001; //0.000
 	private boolean autoSpinMode;
 	private boolean forceManualMode = false;
 	private double currentHeading;
