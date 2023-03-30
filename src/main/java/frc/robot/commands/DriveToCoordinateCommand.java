@@ -104,13 +104,14 @@ public class DriveToCoordinateCommand extends CommandBase {
 
     double speed = 0;
 
-    if(distance > 1){
+    if(distance > 2){
       speed = maxSpeed;
+    } else if(distance > 1){
+      speed = maxSpeed * 0.75;
+    } else {
+      speed = Math.min(0.4 * maxSpeed, 0.2);
     }
     
-    if(distance < 1){
-      speed = Math.min(0.2, maxSpeed);
-    }
 
     // need to correct for what direction we are heading
     double desiredAngleRelativeToRobot = angle - RobotContainer.navigationSubsystem.getCorrectedHeading();

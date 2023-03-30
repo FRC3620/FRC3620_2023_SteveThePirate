@@ -66,11 +66,11 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.35, 0.2, 180, driveSubsystem) //was .6 speed
+      new DriveToCoordinateCommand(prePickup, 0.6, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new WaitCommand(0)
+      new WaitCommand(660)
 
 
 
