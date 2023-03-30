@@ -25,7 +25,7 @@ public class CannonElevateMechanism  {
 
   int elevateEncoderValueAt90Degrees;
 
-  private static final double kP = 0.0175;  //0.02
+  private static final double kP = 0.016;  //0.0175
   private static final double kI = 0;
   private static final double kD = 0;   
 
