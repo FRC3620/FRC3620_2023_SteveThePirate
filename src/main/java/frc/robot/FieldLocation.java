@@ -6,11 +6,9 @@ package frc.robot;
 
 import org.usfirst.frc3620.misc.PoseOnField;
 
-import edu.wpi.first.math.util.Units;
-
 /** Add your docs here. */
 public class FieldLocation {
-    static double blueOffset = 0.48;
+    static double blueOffset = -0.48;
     static double yOffset = 0;
     public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 4.60 + yOffset); //4.800
     public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.683 + yOffset);
@@ -45,11 +43,10 @@ public class FieldLocation {
 
     public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50); //x was 10.708
 
-    public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 - blueOffset + yOffset);
-    public static PoseOnField humanPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 - blueOffset + yOffset);
-    public static PoseOnField humanGrabSecondPieceBlue = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50 - blueOffset); //x was 10.708
+    public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 + blueOffset + yOffset);
+    public static PoseOnField humanPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + blueOffset + yOffset);
+    public static PoseOnField humanGrabSecondPieceBlue = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50 + blueOffset); //x was 10.708
 
-    public static PoseOnField wallPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.05 - blueOffset + yOffset);
-    public static PoseOnField wallPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.05 - blueOffset + yOffset);
+    public static PoseOnField wallPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.05 + blueOffset + yOffset);
+    public static PoseOnField wallPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.05 + blueOffset + yOffset);
 }
-

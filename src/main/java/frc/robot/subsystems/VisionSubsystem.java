@@ -64,6 +64,9 @@ public class VisionSubsystem extends SubsystemBase {
 
   static AprilTagFieldLayout fieldLayout;
 
+  // camera is 0.166 m to left of center of the robot
+  public static final double CAMERA_Y_OFFSET = 0.166;
+
   public VisionSubsystem() {
     super();
     try {
@@ -221,9 +224,7 @@ public class VisionSubsystem extends SubsystemBase {
           }
 
           if (vectorFromOriginToTag != null) {
-            // camera is 0.166 m to left of center of the robotr
-            Translation2d vectorFromCenterOfRobotToTag = vectorFromCameraToTag.plus(new Translation2d(0, 0.166));
-            whereIsTheCenterOfTheRobot = FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorFromCenterOfRobotToTag, whichWayAreWeFacing.getRadians());
+            whereIsTheCenterOfTheRobot = calculateCenterOfRobot(vectorFromCameraToTag, vectorFromOriginToTag, whichWayAreWeFacing.getRadians());
             if (targetId == bestTargetId) {
               if(transformFromCameraToTag.getX() < 4.2){
                 RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCenterOfTheRobot);
@@ -255,6 +256,11 @@ public class VisionSubsystem extends SubsystemBase {
         visionDataLogger.send(visionData);
       }
     }      
+  }
+
+  public static Translation2d calculateCenterOfRobot (Translation2d vectorFromCameraToTag, Translation3d vectorFromOriginToTag, double fieldHeading) {
+    Translation2d vectorFromCenterOfRobotToTag = vectorFromCameraToTag.plus(new Translation2d(0, CAMERA_Y_OFFSET));
+    return FieldCalculations.locateCameraViaTarget (vectorFromOriginToTag.toTranslation2d(), vectorFromCenterOfRobotToTag, fieldHeading);
   }
 
   public int getLastBestTargetId() {

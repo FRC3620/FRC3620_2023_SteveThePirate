@@ -36,7 +36,8 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	private final double DRIVE_CLOSED_LOOP_RAMP_RATE_CONSTANT = 0.3;
 	private final double AZIMUTH_CLOSED_LOOP_RAMP_RATE_CONSTANT = 0.3;
 
-	private final double AZIMUTH_ENCODER_CONVERSION_FACTOR = (1/(11.7))*235; //units are tics*motor revolutions
+	// encoder gives 360 degrees per encoder tick, and is geared 18:1 to the wheel.
+	private final double AZIMUTH_ENCODER_CONVERSION_FACTOR = 360. / 18.; // (1/(11.7))*235; 
 	private final double SPEED_ENCODER_TICS = 42;
 	//private final double WHEEL_TO_ENCODER_RATIO_VELOCITY = (1/8.31); //for every full wheel turn, the motor turns 8.31 times
 	private final double WHEEL_RADIUS = 2; //in inches
@@ -304,11 +305,11 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	void fillSwerveModulePosition(int index, RelativeEncoder driveEncoder, RelativeEncoder azimuthEncoder) {
 		double distanceInInches = 0;
 		if (driveEncoder != null) distanceInInches = driveEncoder.getPosition();
+		// I don't know why we have to negate this, but we do
 		double distanceInMeters = - Units.inchesToMeters(distanceInInches);
 		swerveModulePositions[index].distanceMeters = distanceInMeters;
 
 		double azimuthInDegrees0ToRight = getFixedPosition(azimuthEncoder);
-		// I don't know why we have to negate this, but we do
 		double azimuthInRadians0InFront = Units.degreesToRadians(azimuthInDegrees0ToRight + 90);
 		swerveModulePositions[index].angle = new Rotation2d(azimuthInRadians0InFront);
 	}
@@ -1247,7 +1248,8 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 			leftBackAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
 			rightBackAzimuthEncoder.setPositionConversionFactor(AZIMUTH_ENCODER_CONVERSION_FACTOR);
 
-			rightBackDriveEncoder.setPositionConversionFactor(1);
+			// TODO Wat the heck???????? Why just this one???????
+			// rightBackDriveEncoder.setPositionConversionFactor(1);
 
 			setPositionPID(rightFrontPositionPID);
 			setPositionPID(leftFrontPositionPID);

@@ -55,7 +55,14 @@ public class OdometrySubsystem extends SubsystemBase {
     public void resetPosition (Alliance alliance, Translation2d currentPosition) {
         Rotation2d r2d = getOdometryHeading(alliance);
         Pose2d pose2d = new Pose2d(currentPosition, r2d);
-        sdo.resetPosition(r2d, getPositions(), pose2d);
+        SwerveModulePosition[] sp = getPositions();
+        sdo.resetPosition(r2d, sp, pose2d);
+        if (blind_sdo == null) {
+            blind_sdo = new SwerveDriveOdometry(kinematics, r2d, sp);
+            blind_sdo.resetPosition(r2d, sp, pose2d);  // perhaps superfluous?
+        } else {
+            blind_sdo.resetPosition(r2d, sp, pose2d);
+        }
     }
 
     SwerveModulePosition[] getPositions() {
@@ -74,8 +81,10 @@ public class OdometrySubsystem extends SubsystemBase {
     }
 
     public Pose2d update(Alliance alliance) {
-        if (blind_sdo != null) blind_sdo.update(getOdometryHeading(alliance), getPositions());
-        return sdo.update(getOdometryHeading(alliance), getPositions());
+        SwerveModulePosition[] sp = getPositions();
+        Rotation2d heading = getOdometryHeading(alliance);
+        if (blind_sdo != null) blind_sdo.update(heading, sp);
+        return sdo.update(heading, sp);
     }
 
     @Override
@@ -94,20 +103,10 @@ public class OdometrySubsystem extends SubsystemBase {
         return rv;
     }
 
-    public void makeBlindOdometry(Alliance alliance) {
-        blind_sdo = new SwerveDriveOdometry(kinematics, getOdometryHeading(alliance), modulePositionProvider.get());
-        Rotation2d r2d = getOdometryHeading(alliance);
-        Pose2d pose2d = sdo.getPoseMeters();
-        blind_sdo.resetPosition(r2d, getPositions(), pose2d);
-    }
-
-    public void doneWithBlindOdometry() {
-        blind_sdo = null;
-    }
-
+    Pose2d zeroPose = new Pose2d(0, 0, new Rotation2d());
     public Pose2d getBlindPoseMeters() {
         if (blind_sdo != null) return blind_sdo.getPoseMeters();
-        return null;
+        return zeroPose;
     }
     
 }
