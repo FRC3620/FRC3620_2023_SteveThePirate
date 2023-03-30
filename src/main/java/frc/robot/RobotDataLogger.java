@@ -39,8 +39,11 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("vision.best_target_vx", () -> RobotContainer.visionSubsystem.getLastBestTargetVX());
 		dataLogger.addDataProvider("vision.best_target_vy", () -> RobotContainer.visionSubsystem.getLastBestTargetVY());
 
-		dataLogger.addDataProvider("odometry.x", () -> RobotContainer.odometrySubsystem.getPoseMeters().getX());
-		dataLogger.addDataProvider("odometry.y", () -> RobotContainer.odometrySubsystem.getPoseMeters().getY());
+		dataLogger.addDataProvider("odometry.x", () -> RobotContainer.odometrySubsystem.getBlindPoseMeters().getX());
+		dataLogger.addDataProvider("odometry.y", () -> RobotContainer.odometrySubsystem.getBlindPoseMeters().getY());
+
+		dataLogger.addDataProvider("odometry.blind_x", () -> RobotContainer.odometrySubsystem.getPoseMeters().getX());
+		dataLogger.addDataProvider("odometry.blind_y", () -> RobotContainer.odometrySubsystem.getPoseMeters().getY());
 		
 		dataLogger.addDataProvider("nav.heading_raw", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getRawHeading()));
 		dataLogger.addDataProvider("nav.heading", () -> DataLogger.f2(RobotContainer.navigationSubsystem.getCorrectedHeading()));

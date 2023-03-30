@@ -108,6 +108,7 @@ test {
         setFailOnNoMatchingTests(false)
 
         includeTestsMatching 'DummyTest'
+        includeTestsMatching 'VisionLocateRobotTest'
     }
     // ****************************************************************************
 }

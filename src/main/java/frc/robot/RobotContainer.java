@@ -295,7 +295,6 @@ public class RobotContainer {
     SmartDashboard.putData("BackwardsFloorPickupLocation", new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation));
 
     // Odometry and Vision Tests
-    SmartDashboard.putData(new InstrumentOdometryAndVisionCommand());
     SmartDashboard.putData(new SeeConeCommand());
     SmartDashboard.putData(new SeeCubeCommand());
     SmartDashboard.putData(new TestPhotonVisionPipelineSwitchCommand());
