@@ -23,7 +23,7 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
- * Start/place at human, go out and grab piece from behind via odometry, place piece
+ * Start/place at human, go out and grab piece from behind via odometry, place piece, balance
  */
 public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
   /** Creates a new Human2BackwardsGrabNoBalanceAuto. */
@@ -62,13 +62,11 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new CannonClawOutCommand(cannonSubsystem, -1.0).withTimeout(.4) //time is .4
       ,
-      new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
+      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
       new WaitCommand(0.75)
       ,
       new DriveToCoordinateCommand(prePickup, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
-      ,
-      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       //,
       //new WaitCommand(660)
       ,
@@ -93,7 +91,7 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midCommunity, 0.8, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midCommunityHuman, 0.8, 0.2, 180, driveSubsystem)
       ,
       new ParallelRaceGroup(
         new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)

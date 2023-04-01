@@ -22,12 +22,12 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
- * Start/place piece at mid, go over charge station and grab piece, balance
+ * Start/place piece at mid, go over charge station and grab piece, place, balance
  */
-public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
+public class Mid2BalanceAuto extends SequentialCommandGroup {
 
   /** Creates a new Mid1BalanceAuto. */
-  public Mid1GrabBalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem,
+  public Mid2BalanceAuto(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem,
       CannonSubsystem cannonSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -85,7 +85,19 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.2, 180, driveSubsystem)
       ,
-      new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midCommunityHuman, 0.4, 0.2, 180, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeHigherLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midPlaceCube, 0.3, 0.1, 180, driveSubsystem)
+      ,
+      new WaitCommand(0.25)
+      ,
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.4)
+      ,
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)
     );
   }
 }

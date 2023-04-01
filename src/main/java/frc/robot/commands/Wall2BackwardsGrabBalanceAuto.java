@@ -25,9 +25,9 @@ import frc.robot.subsystems.VisionSubsystem;
 /**
  * Start/place at wall, go out and grab piece from behind via odometry, place piece
  */
-public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
+public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
   /** Creates a new Human2BackwardsGrabNoBalanceAuto. */
-  public Wall2BackwardsGrabNoBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
+  public Wall2BackwardsGrabBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     PoseOnField prePickup = FieldLocation.wallPickupBehindPre;
@@ -86,6 +86,16 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.4)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.midCommunityWall, 0.8, 0.2, 180, driveSubsystem)
+      ,
+      new ParallelRaceGroup(
+        new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)
+        ,
+        new WaitUntilAutoIsDoneCommand(0.4)
+      )
+      ,
+      new XModeCommand(driveSubsystem)    
     );
   }
 }

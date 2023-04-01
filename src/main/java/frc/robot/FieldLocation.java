@@ -11,8 +11,9 @@ public class FieldLocation {
     static double blueOffset = -0.48;
     static double yOffset = 0;
     public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 4.75 + yOffset); //4.800
-    public static PoseOnField midCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.683 + yOffset);
-    public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.422, 0.963 + yOffset);
+    public static PoseOnField midCommunityHuman = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.683 + yOffset);
+    public static PoseOnField midCommunityWall = PoseOnField.fromRedAlliancePositionInMeters(14.422, 1.746 + yOffset);
+    public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 0.888 + yOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
     public static PoseOnField humanMiddlePlus = PoseOnField.fromRedAlliancePositionInMeters(10, 4.990 + yOffset); //4.800
     public static PoseOnField midMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.4, 2.203 + yOffset);
@@ -32,14 +33,14 @@ public class FieldLocation {
 
     public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.927  + yOffset);
     public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.927 + yOffset);
-    public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.05 + yOffset);
-    public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.05 + yOffset);
+    public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 0.75 + yOffset);
+    public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.18 + yOffset);
     public static PoseOnField midPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.668, 2.203);
     public static PoseOnField midPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 2.203);
     
     public static PoseOnField humanPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85, 4.44);
     public static PoseOnField wallPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85, 1.047);
-    //public static PoseOnField midPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85,2.869);
+    public static PoseOnField midPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85,2.869);
 
     public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50); //x was 10.708
 
