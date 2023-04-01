@@ -50,7 +50,7 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.humanStart)
       ,
-      new SetCannonLocationCommand(CannonLocation.halfwayToConeHighLocation)
+      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new ParallelDeadlineGroup(
         new WaitCommand(0.6)
@@ -60,15 +60,13 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.4)
       ,
-      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
-      ,
       new CannonClawOutCommand(cannonSubsystem, -1.0).withTimeout(.4) //time is .4
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
-      new WaitCommand(1.5) //Shorten this?????????
+      new WaitCommand(0.75)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.6, 0.2, 180, driveSubsystem) //was .6 speed
+      new DriveToCoordinateCommand(prePickup, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       //,
@@ -76,28 +74,34 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new ParallelRaceGroup(
         //change speed for this definitely
-        new DriveToCoordinateCommand(postPickup, .25, 0.1, 180, driveSubsystem) //was .25 speed
+        new DriveToCoordinateCommand(postPickup, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.8, 0.3, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.9, 0.3, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      new SetCannonLocationCommand(CannonLocation.cubeHigherLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanPlaceCube, 0.3, 0.1, 180, driveSubsystem)
       ,
-      new WaitCommand(0.5)
+      new WaitCommand(0.25)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.5)
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.4)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midCommunity, 0.5, 0.2, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.midCommunity, 0.8, 0.2, 180, driveSubsystem)
       ,
-      new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)
+      new ParallelRaceGroup(
+        new BackwardsAutoLevelCommunityCommand(driveSubsystem, cannonSubsystem)
+        ,
+        new WaitUntilAutoIsDoneCommand(0.4)
+      )
+      ,
+      new XModeCommand(driveSubsystem)
     );
   }
 }

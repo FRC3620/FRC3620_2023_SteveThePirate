@@ -109,7 +109,7 @@ public class DriveToCoordinateCommand extends CommandBase {
     } else if(distance > 1){
       speed = maxSpeed * 0.75;
     } else {
-      speed = Math.min(0.4 * maxSpeed, 0.2);
+      speed = Math.max(0.4 * maxSpeed, 0.2);
     }
     
 
