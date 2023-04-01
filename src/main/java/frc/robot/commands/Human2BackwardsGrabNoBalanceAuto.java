@@ -32,15 +32,9 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     double direction = 1;
     double angleLogic = 1;
-    PoseOnField prePickup = FieldLocation.humanPickupBehindPre;
-    PoseOnField postPickup = FieldLocation.humanPickupBehindPost;
-    PoseOnField secondPiece = FieldLocation.humanGrabSecondPiece;
     if(DriverStation.getAlliance() == Alliance.Blue){
       direction = -1;
       angleLogic = -1;
-      prePickup = FieldLocation.humanPickupBehindPreBlue;
-      postPickup = FieldLocation.humanPickupBehindPostBlue;
-      secondPiece = FieldLocation.humanGrabSecondPieceBlue;
     }
 
     addCommands(
@@ -68,7 +62,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.75)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
+      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       //,
@@ -76,7 +70,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new ParallelRaceGroup(
         //change speed for this definitely
-        new DriveToCoordinateCommand(postPickup, .35, 0.1, 180, driveSubsystem) //was .25 speed
+        new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )
@@ -95,12 +89,12 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.9, 0.3, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.9, 0.3, 180, driveSubsystem)
       ,
       new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
       ,
       new ParallelRaceGroup(
-        new DriveToCoordinateCommand(secondPiece, .3, 0.1, 143, driveSubsystem)
+        new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .3, 0.1, 143, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )

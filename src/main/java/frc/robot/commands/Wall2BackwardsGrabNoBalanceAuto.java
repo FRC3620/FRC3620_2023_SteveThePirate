@@ -30,12 +30,6 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
   public Wall2BackwardsGrabNoBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    PoseOnField prePickup = FieldLocation.wallPickupBehindPre;
-    PoseOnField postPickup = FieldLocation.wallPickupBehindPost;
-    if(DriverStation.getAlliance() == Alliance.Blue){
-      prePickup = FieldLocation.wallPickupBehindPreBlue;
-      postPickup = FieldLocation.wallPickupBehindPostBlue;
-    }
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
@@ -61,14 +55,14 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.75)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
+      new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPre, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       //,
       //new WaitCommand(660)
       ,
       new ParallelRaceGroup(
-        new DriveToCoordinateCommand(postPickup, .35, 0.1, 180, driveSubsystem) //was .25 speed
+        new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )

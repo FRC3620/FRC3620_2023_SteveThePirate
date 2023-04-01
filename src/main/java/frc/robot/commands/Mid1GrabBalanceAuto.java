@@ -37,7 +37,7 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.midStart)
       ,
-      new SetCannonLocationCommand(CannonLocation.halfwayToConeHighLocation)
+      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new ParallelDeadlineGroup(
         new WaitCommand(0.6)
@@ -46,11 +46,6 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       )
       ,
       new WaitCommand(0.4)
-      ,
-      new SetCannonLocationCommand(CannonLocation.coneHighLocation)
-      // here we're at the location to spit out the cone
-      ,
-      new WaitCommand(1)
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(.5)
       ,
@@ -61,19 +56,19 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(.5)
       ,
-      new DriveToCoordinateCommand(FieldLocation.midCommunityHuman, 0.3, 0.1, 180, driveSubsystem)
-      ,
-      new WaitCommand(.5)
-      ,
+      //new DriveToCoordinateCommand(FieldLocation.midCommunityWall, 0.3, 0.1, 180, driveSubsystem)
+      //,
       //new DriveToCoordinateCommand(FieldLocation.midMiddle, 0.4, 0.1, 180, driveSubsystem)
       //,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
+      //new WaitCommand(0.75)
+      //,
       new DriveToCoordinateCommand(FieldLocation.midPickupBehindPre, 0.4, 0.1, 180, driveSubsystem)
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
-      new WaitCommand(1)
+      new WaitCommand(0.25)
       ,
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.midPickupBehindPost, 0.2, 0.1, 180, driveSubsystem)

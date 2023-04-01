@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.sql.Time;
+
 import org.usfirst.frc3620.misc.PoseOnField;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,19 +25,13 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
- * Start/place at wall, go out and grab piece from behind via odometry, place piece
+ * Start/place at wall, go out and grab piece from behind via odometry, place piece, balance
  */
 public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
   /** Creates a new Human2BackwardsGrabNoBalanceAuto. */
   public Wall2BackwardsGrabBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    PoseOnField prePickup = FieldLocation.wallPickupBehindPre;
-    PoseOnField postPickup = FieldLocation.wallPickupBehindPost;
-    if(DriverStation.getAlliance() == Alliance.Blue){
-      prePickup = FieldLocation.wallPickupBehindPreBlue;
-      postPickup = FieldLocation.wallPickupBehindPostBlue;
-    }
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
@@ -61,17 +57,19 @@ public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.75)
       ,
-      new DriveToCoordinateCommand(prePickup, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
+      new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPre, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       //,
       //new WaitCommand(660)
       ,
       new ParallelRaceGroup(
-        new DriveToCoordinateCommand(postPickup, .35, 0.1, 180, driveSubsystem) //was .25 speed
+        new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )
+      ,
+      new WaitCommand(999)
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
@@ -95,7 +93,7 @@ public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
         new WaitUntilAutoIsDoneCommand(0.4)
       )
       ,
-      new XModeCommand(driveSubsystem)    
+      new XModeCommand(driveSubsystem) 
     );
   }
 }

@@ -101,7 +101,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
       }
       timer.start();
       power = 0.4;
-      if(timer.advanceIfElapsed(1)){
+      if(timer.advanceIfElapsed(.5)){
         myState = LevelingState.PRETILTED;
         logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kYellow);
