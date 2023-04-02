@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.UUID;
+
 import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
@@ -16,10 +18,10 @@ public class RobotDataLogger {
 	boolean logDriveMotorCurrent = true;
 	DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
 	CannonSubsystem cannonSubsystem = RobotContainer.cannonSubsystem;
+	BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
+	UUID uuid = UUID.randomUUID();
 
 	public RobotDataLogger (DataLogger dataLogger, CANDeviceFinder canDeviceFinder) {
-		BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
-
 		dataLogger.addDataProvider("matchTime", () -> DataLogger.f2(DriverStation.getMatchTime()));
 		dataLogger.addDataProvider("robotMode", () -> Robot.getCurrentRobotMode().toString());
 		dataLogger.addDataProvider("robotModeInt", () -> Robot.getCurrentRobotMode().ordinal());
@@ -38,6 +40,8 @@ public class RobotDataLogger {
 		dataLogger.addDataProvider("vision.best_target_id", () -> RobotContainer.visionSubsystem.getLastBestTargetId());
 		dataLogger.addDataProvider("vision.best_target_vx", () -> RobotContainer.visionSubsystem.getLastBestTargetVX());
 		dataLogger.addDataProvider("vision.best_target_vy", () -> RobotContainer.visionSubsystem.getLastBestTargetVY());
+
+		dataLogger.addDataProvider("vision.odometry_set_rate", () -> RobotContainer.visionSubsystem.getOdometryUpdates(uuid).getRate());
 
 		dataLogger.addDataProvider("odometry.x", () -> RobotContainer.odometrySubsystem.getBlindPoseMeters().getX());
 		dataLogger.addDataProvider("odometry.y", () -> RobotContainer.odometrySubsystem.getBlindPoseMeters().getY());

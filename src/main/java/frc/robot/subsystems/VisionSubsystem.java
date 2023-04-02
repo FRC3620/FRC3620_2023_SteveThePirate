@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -21,6 +22,7 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.LoggingMaster;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.FieldCalculations;
+import org.usfirst.frc3620.misc.ValueTracker;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,6 +61,8 @@ public class VisionSubsystem extends SubsystemBase {
       return pipelineIndex;
     }
   }
+
+  ValueTracker odometryUpdates = new ValueTracker();
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
   public PhotonCamera frontCamera;
@@ -228,7 +232,8 @@ public class VisionSubsystem extends SubsystemBase {
           if (vectorFromOriginToTag != null) {
             whereIsTheCenterOfTheRobot = calculateCenterOfRobot(vectorFromCameraToTag, vectorFromOriginToTag, whichWayAreWeFacing.getRadians() + Math.toRadians(CAMERA_TWIST));
             if (targetId == bestTargetId) {
-              if(transformFromCameraToTag.getX() < 4.2){
+              if(transformFromCameraToTag.getX() < 4.2) {
+                odometryUpdates.bump();
                 RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCenterOfTheRobot);
               }
 
@@ -353,6 +358,9 @@ public class VisionSubsystem extends SubsystemBase {
       s += "\n";
       return s.getBytes();
     }
+  }
 
+  public ValueTracker.Change getOdometryUpdates(UUID uuid) {
+    return odometryUpdates.getChange(uuid);
   }
 }
