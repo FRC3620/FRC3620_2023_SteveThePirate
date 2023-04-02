@@ -224,7 +224,7 @@ public class VisionSubsystem extends SubsystemBase {
           }
 
           if (vectorFromOriginToTag != null) {
-            whereIsTheCenterOfTheRobot = calculateCenterOfRobot(vectorFromCameraToTag, vectorFromOriginToTag, whichWayAreWeFacing.getRadians());
+            whereIsTheCenterOfTheRobot = calculateCenterOfRobot(vectorFromCameraToTag, vectorFromOriginToTag, whichWayAreWeFacing.getRadians() - Math.toRadians(2.578));
             if (targetId == bestTargetId) {
               if(transformFromCameraToTag.getX() < 4.2){
                 RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCenterOfTheRobot);
