@@ -41,6 +41,11 @@ import frc.robot.FieldLayout;
 import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
+  // camera is 0.166 m to left of center of the robot
+  static final double CAMERA_Y_OFFSET = 0.166;
+  // camera is pointing to left or right of robot (+ is CCW, in degrees)
+  static final double CAMERA_TWIST = 2.578;
+
   public enum FrontCameraMode {
     APRILTAGS(0), CONES(1), CUBES(2);
 
@@ -63,9 +68,6 @@ public class VisionSubsystem extends SubsystemBase {
   Translation2d whereIsTheCenterOfTheRobot;
 
   static AprilTagFieldLayout fieldLayout;
-
-  // camera is 0.166 m to left of center of the robot
-  public static final double CAMERA_Y_OFFSET = 0.166;
 
   public VisionSubsystem() {
     super();
@@ -224,7 +226,7 @@ public class VisionSubsystem extends SubsystemBase {
           }
 
           if (vectorFromOriginToTag != null) {
-            whereIsTheCenterOfTheRobot = calculateCenterOfRobot(vectorFromCameraToTag, vectorFromOriginToTag, whichWayAreWeFacing.getRadians() - Math.toRadians(2.578));
+            whereIsTheCenterOfTheRobot = calculateCenterOfRobot(vectorFromCameraToTag, vectorFromOriginToTag, whichWayAreWeFacing.getRadians() + Math.toRadians(CAMERA_TWIST));
             if (targetId == bestTargetId) {
               if(transformFromCameraToTag.getX() < 4.2){
                 RobotContainer.odometrySubsystem.resetPosition(DriverStation.getAlliance(), whereIsTheCenterOfTheRobot);
