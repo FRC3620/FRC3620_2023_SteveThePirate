@@ -46,7 +46,7 @@ public class VisionSubsystem extends SubsystemBase {
   // camera is 0.166 m to left of center of the robot
   static final double CAMERA_Y_OFFSET = 0.166;
   // camera is pointing to left or right of robot (+ is CCW, in degrees)
-  static final double CAMERA_TWIST = 2.578;
+  static final double CAMERA_TWIST = 0; //2.578;
 
   public enum FrontCameraMode {
     APRILTAGS(0), CONES(1), CUBES(2);

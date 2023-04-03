@@ -25,12 +25,14 @@ public class WaitUntilAutoIsDoneCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (DriverStation.getMatchTime() < howLongSeconds) {
+    double matchTime = DriverStation.getMatchTime();
+    if (matchTime >= 0 && matchTime < howLongSeconds) {
       return true;
     } else {
       return false;
