@@ -8,15 +8,14 @@ import org.usfirst.frc3620.misc.PoseOnField;
 
 /** Add your docs here. */
 public class FieldLocation {
-    static double blueOffset = 0; //was -0.48
     static double yOffset = 0;
-    static double yMidOffset = -0.15; // use this for location in close
-    static double yPreOffset = -0.30;
-    static double yFarOffset = -0.47; // use this for location way out there
-    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 4.75 + yMidOffset); //4.800
-    public static PoseOnField midCommunityHuman = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.683 + yMidOffset);
-    public static PoseOnField midCommunityWall = PoseOnField.fromRedAlliancePositionInMeters(14.422, 1.746 + yOffset);
-    public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 0.888 + yMidOffset);
+    static double blueMidYOffset = -0.15; // use this for location in close
+    static double bluePreYOffset = -0.30;
+    static double bluePostYOffset = -0.47; // use this for location way out there
+    public static PoseOnField humanCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 4.75, blueMidYOffset); //4.800
+    public static PoseOnField midCommunityHuman = PoseOnField.fromRedAlliancePositionInMeters(14.422, 3.683, blueMidYOffset);
+    public static PoseOnField midCommunityWall = PoseOnField.fromRedAlliancePositionInMeters(14.422, 1.746);
+    public static PoseOnField wallCommunity = PoseOnField.fromRedAlliancePositionInMeters(14.122, 0.888, blueMidYOffset);
     public static PoseOnField humanMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.33, 4.990 + yOffset); //4.800
     public static PoseOnField humanMiddlePlus = PoseOnField.fromRedAlliancePositionInMeters(10, 4.990 + yOffset); //4.800
     public static PoseOnField midMiddle = PoseOnField.fromRedAlliancePositionInMeters(11.4, 2.203 + yOffset);
@@ -34,10 +33,11 @@ public class FieldLocation {
     public static PoseOnField wallBlindPosition = PoseOnField.fromRedAlliancePositionInMeters(10.024, 1.053 + yOffset);
     public static PoseOnField wallMiddleBlind = PoseOnField.fromRedAlliancePositionInMeters(12.1, 0.963 + yOffset);
 
-    public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.927 + yPreOffset);
-    public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.927 + yFarOffset);
+    public static PoseOnField humanPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.927, bluePreYOffset);
+    public static PoseOnField humanPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.927, bluePostYOffset);
+    // don't do a blue offset here, you could snag the charging station
     public static PoseOnField wallPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.968, 0.75);
-    public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.18 + yFarOffset);
+    public static PoseOnField wallPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 1.18, bluePostYOffset);
     public static PoseOnField midPickupBehindPre = PoseOnField.fromRedAlliancePositionInMeters(11.450, 2.345);
     public static PoseOnField midPickupBehindPost = PoseOnField.fromRedAlliancePositionInMeters(10.968, 2.345);
     
