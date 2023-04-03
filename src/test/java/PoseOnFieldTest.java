@@ -29,6 +29,17 @@ public class PoseOnFieldTest {
   }
 
   @Test
+  public void testBlueOffset() {
+    PoseOnField p = PoseOnField.fromRedAlliancePositionInMeters(Constants.FIELD_LENGTH_IN_METERS, 0, 10);
+    Translation2d rt = p.getTranslationInMeters(DriverStation.Alliance.Red);
+    Assertions.assertEquals(Constants.FIELD_LENGTH_IN_METERS, rt.getX());
+    Assertions.assertEquals(0, rt.getY());    
+    Translation2d bt = p.getTranslationInMeters(DriverStation.Alliance.Blue);
+    Assertions.assertEquals(0, bt.getX());
+    Assertions.assertEquals(10, bt.getY());    
+  }
+
+  @Test
   public void testCenterLine() {
     testOneCenterLine(1, 0);
     testOneCenterLine(-1, 0);

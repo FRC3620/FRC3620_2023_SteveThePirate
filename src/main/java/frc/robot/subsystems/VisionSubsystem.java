@@ -44,7 +44,7 @@ import frc.robot.RobotContainer;
 
 public class VisionSubsystem extends SubsystemBase {
   // camera is 0.166 m to left of center of the robot
-  static final double CAMERA_Y_OFFSET = 0.166;
+  static public final double CAMERA_Y_OFFSET = 0.166;
   // camera is pointing to left or right of robot (+ is CCW, in degrees)
   static final double CAMERA_TWIST = 2.578;
 

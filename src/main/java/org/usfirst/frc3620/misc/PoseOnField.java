@@ -29,15 +29,22 @@ abstract public class PoseOnField {
 
         final Translation2d translationInMeters;
         final Rotation2d rotation = null;
+        double blueOffset = 0.0;
 
         PoseOnFieldBase(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
+            this (where, uol, angleInDegrees, 0.0);
+        }
+
+        PoseOnFieldBase(Translation2d where, UnitsOfLength uol, Double angleInDegrees, double blueOffset) {
             if (uol == null) uol = UnitsOfLength.INCH;
             switch (uol) {
                 case INCH:
                     translationInMeters = where.div(inchesPerMeter);
+                    this.blueOffset = blueOffset / inchesPerMeter;
                     break;
                 case METER:
                     translationInMeters = where;
+                    this.blueOffset = blueOffset;
                     break;
                 default:
                     throw new IllegalArgumentException("Unsupported enum value");
@@ -49,7 +56,7 @@ abstract public class PoseOnField {
 
         double getFixedY(Alliance alliance){
             if (alliance == Alliance.Blue){
-                return translationInMeters.getY() - 0;
+                return translationInMeters.getY() + blueOffset;
             }
             return translationInMeters.getY();
         }
@@ -119,8 +126,8 @@ abstract public class PoseOnField {
     }
 
     static class PoseOnFieldSetFromRedAlliance extends PoseOnFieldBase {
-        public PoseOnFieldSetFromRedAlliance(Translation2d where, UnitsOfLength uol, Double angleInDegrees) {
-            super(where, uol, angleInDegrees);
+        public PoseOnFieldSetFromRedAlliance(Translation2d where, UnitsOfLength uol, Double angleInDegrees, double blue_y_offset) {
+            super(where, uol, angleInDegrees, blue_y_offset);
         }
 
         @Override
@@ -142,11 +149,16 @@ abstract public class PoseOnField {
 
     public static PoseOnField fromRedAlliancePositionInMeters(double x, double y) {
         Translation2d t = new Translation2d(x, y);
-        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null);
+        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null, 0.0);
+    }
+
+    public static PoseOnField fromRedAlliancePositionInMeters(double x, double y, double blue_y_offset) {
+        Translation2d t = new Translation2d(x, y);
+        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null, blue_y_offset);
     }
 
     public static PoseOnField fromRedAlliancePositionInMeters(Translation2d t) {
-        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null);
+        return new PoseOnFieldSetFromRedAlliance(t, UnitsOfLength.METER, null, 0.0);
     }
 
 }
