@@ -325,11 +325,11 @@ public class RobotContainer {
     //chooser.addOption("Wall1NoPickupBalanceAuto", () -> new Wall1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     //chooser.addOption("Wall2BlindNoPickupNoBalanceAuto", () -> new Wall2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     //chooser.addOption("Wall2NoPickupNoBalanceAuto", () -> new Wall2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    chooser.addOption("Human2NoBalanceAuto", () -> new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
-    chooser.addOption("Wall2NoBalanceAuto", () -> new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     chooser.addOption("Mid1GrabBalanceAuto", () -> new Mid1GrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Human2NoBalanceAuto", () -> new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     chooser.addOption("Human2BalanceAuto", () -> new Human2BackwardsGrabBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
-    chooser.addOption("Mid2BalanceAuto", () -> new Mid2BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    chooser.addOption("Wall2NoBalanceAuto", () -> new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
+    //chooser.addOption("Mid2BalanceAuto", () -> new Mid2BalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("Wall2BalanceAuto", () -> new Wall2BackwardsGrabBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
   }
 
