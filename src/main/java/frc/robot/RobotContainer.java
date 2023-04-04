@@ -253,6 +253,7 @@ public class RobotContainer {
     SmartDashboard.putData("RotateWheelsButton", new RotateWheelsButton());
     SmartDashboard.putData("Auto Level No Counter", new AutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem));
     SmartDashboard.putData("Backwards Auto Level No Counter", new BackwardsAutoLevelNoCounterCommand(driveSubsystem, cannonSubsystem));
+    SmartDashboard.putData("AutoAlignToChute", new AutoAlignToChuteCommand(driveSubsystem));
 
     // Autos
     SmartDashboard.putData("Mid1NoPickupBalanceAuto", new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
