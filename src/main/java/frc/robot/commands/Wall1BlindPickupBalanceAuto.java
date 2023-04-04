@@ -54,7 +54,7 @@ public class Wall1BlindPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new AutoSpinCommand(.4, 0, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      new SetCannonLocationCommand(CannonLocation.cubePickLocation)
       ,
       new WaitCommand(2)
       ,

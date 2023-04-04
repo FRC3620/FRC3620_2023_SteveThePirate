@@ -184,7 +184,7 @@ public class RobotContainer {
             .onTrue(new SetCannonLocationCommand(CannonLocation.cubeMidLocation));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X)
-            .onTrue(new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation));
+            .onTrue(new SetCannonLocationCommand(CannonLocation.cubePickLocation));
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B)
             .onTrue(new SetCannonLocationCommand(CannonLocation.chuteLocation));

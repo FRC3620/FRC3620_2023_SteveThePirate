@@ -65,7 +65,7 @@ public class DriveToGamePieceCommand extends CommandBase {
     lastTimestamp = -1;
     currentCameraMode = visionSubsystem.setFrontCameraMode(pipeline);
     logger.info("Searching for {}", pipeline);
-    cannonSubsystem.setLocation(CannonLocation.coneFloorPickLocation);
+    cannonSubsystem.setLocation(CannonLocation.cubePickLocation);
     RobotContainer.flareSubsystem.setColor(Color.kDarkMagenta);
   }
 
@@ -153,7 +153,7 @@ public class DriveToGamePieceCommand extends CommandBase {
         cannonSubsystem.setClawPower(0.6);
         double spinPower = driveSubsystem.getSpinPower();
         driveSubsystem.autoDrive(targetHeading - currentHeading, 0.2, spinPower);
-        cannonSubsystem.setLocation(CannonLocation.sidewaysConeLocation);
+        cannonSubsystem.setLocation(CannonLocation.cubePickLocation);
         if (target != null) {
           if (currentTargetPitch < 1.6) { // MAY CHANGE NUM
             logger.info ("done driving; targetPitch = {}", currentTargetPitch);

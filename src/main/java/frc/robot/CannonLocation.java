@@ -13,12 +13,12 @@ public class CannonLocation {
     public static CannonLocation coneMidLocation = new CannonLocation(40.04, 10.55, -46.91);
     public static CannonLocation cubeMidLocation = new CannonLocation(36.78, 5.6, -51.38);
     public static CannonLocation lowLocation = new CannonLocation(3.5, 0, -67);
-    public static CannonLocation coneFloorPickLocation = new CannonLocation(-3.68, 0.0,-30.52);
+    public static CannonLocation cubePickLocation = new CannonLocation(-8.0, 0.0,-30.52); //change this
     public static CannonLocation chuteLocation = new CannonLocation(28.65, 0.82, 10.86);
     public static CannonLocation stationLocation = new CannonLocation(72.62, 7.7, -77.9); //8.89
     public static CannonLocation parkLocation = new CannonLocation(90, 1, -130);
 
-    public static CannonLocation sidewaysConeLocation = new CannonLocation(-27.99, 0.0, 33.76); //27.5
+    public static CannonLocation coneFloorPickLocation = new CannonLocation(-21.506, 6.451, 37.573); //27.5
     public static CannonLocation backwardsHalfwayLocation = new CannonLocation(175, 0, 25);
     public static CannonLocation backwardsFloorPickupLocation = new CannonLocation(185.24, 0.0, 39.29); //elev: 190.4, pitch: 1.32
 

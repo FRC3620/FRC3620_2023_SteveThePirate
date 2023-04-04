@@ -56,7 +56,7 @@ public class Human1BlindPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.humanMiddleBlind, 0.2, 0.2, -30, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.sidewaysConeLocation)
+      new SetCannonLocationCommand(CannonLocation.cubePickLocation)
       ,
       new ParallelDeadlineGroup(
         new DriveToCoordinateCommand(FieldLocation.humanBlindPosition, .2, 0.1, 0, driveSubsystem)
