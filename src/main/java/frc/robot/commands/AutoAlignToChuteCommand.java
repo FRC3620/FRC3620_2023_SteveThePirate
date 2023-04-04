@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.usfirst.frc3620.misc.PoseOnField;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.CannonLocation;
 import frc.robot.subsystems.DriveSubsystem;
@@ -14,14 +16,15 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutoAlignToChuteCommand extends SequentialCommandGroup {
   /** Creates a new AutoAlignToChuteCommand. */
   public AutoAlignToChuteCommand(DriveSubsystem driveSubsystem) {
+    PoseOnField coord = PoseOnField.fromRedAlliancePositionInMeters(2.5, 7);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveToCoordinateCommand(null, 0.2, 0.1, 0, driveSubsystem)
-      ,
-      new SetCannonLocationCommand(CannonLocation.chuteLocation)
+      new DriveToCoordinateCommand(coord, 0.2, 0.1, 0, driveSubsystem)
       ,
       new AutoSpinCommand(0.2, 90, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.chuteLocation)
     );
   }
 }
