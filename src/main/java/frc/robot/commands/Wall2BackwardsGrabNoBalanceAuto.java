@@ -23,13 +23,22 @@ import frc.robot.subsystems.OdometrySubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
- * Start/place at wall, go out and grab piece from behind via odometry, place piece
+ * Start/place at wall, go out and grab piece from behind via odometry, place piece, grab third
  */
 public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
-  /** Creates a new Human2BackwardsGrabNoBalanceAuto. */
+  /** Creates a new Wall2BackwardsGrabNoBalanceAuto. */
   public Wall2BackwardsGrabNoBalanceAuto(DriveSubsystem driveSubsystem, CannonSubsystem cannonSubsystem, VisionSubsystem visionSubsystem, OdometrySubsystem odometrySubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    double direction = 1;
+    double angleLogic = 1;
+    PoseOnField cornerOfStation = PoseOnField.fromRedAlliancePositionInMeters(12.068, 4.627);
+    if(DriverStation.getAlliance() == Alliance.Blue){
+      direction = -1;
+      angleLogic = -1;
+      cornerOfStation = PoseOnField.fromRedAlliancePositionInMeters(12.068, 4.627 + 0.2);
+    }
+
     addCommands(
       new SetInitialNavXOffsetCommand(RobotContainer.navigationSubsystem, driveSubsystem, 180)
       ,
@@ -49,7 +58,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.4)
       ,
-      new CannonClawOutCommand(cannonSubsystem, -1.0).withTimeout(.4) //time is .4
+      new CannonClawOutCommand(cannonSubsystem, -1.0).withTimeout(.3) //time is .4
       ,
       new SetCannonLocationCommand(CannonLocation.backwardsHalfwayLocation)
       ,
@@ -62,24 +71,52 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       //new WaitCommand(660)
       ,
       new ParallelRaceGroup(
+        //change speed for this definitely
         new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.4)
+        new CannonClawInCommand(cannonSubsystem, 0.3)
       )
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.9, 0.3, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.cubeHigherLocation)
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.wallPlaceCube, 0.4, 0.1, 180, driveSubsystem)
+      //,
+      //new WaitCommand(0.15)
+      ,
+      new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.3)
+      ,
+      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPre, 0.9, 0.3, 180, driveSubsystem)
+      //,
+      //new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
+      ,
+      new ParallelRaceGroup(
+        //need new point here but we'll see
+        new DriveToCoordinateCommand(FieldLocation.wallGrabSecondPiece, .5, 0.1, 215, driveSubsystem)
+        ,
+        new CannonClawInCommand(cannonSubsystem, 0.4)
+      )
+      ,
+      new SetCannonLocationCommand(CannonLocation.parkLocation)
+      ,
+      new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPre, 0.7, 0.15, 180, driveSubsystem)
+      ,
+      new ParallelRaceGroup(
+        new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.5, 0.15, 180, driveSubsystem)
+        ,
+        new WaitUntilAutoIsDoneCommand(0.5)
+      )
+      ,
+      new SetCannonLocationCommand(CannonLocation.cubeMidLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.wallPlaceCube, 0.3, 0.1, 180, driveSubsystem)
       ,
-      new WaitCommand(0.25)
-      ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.4)
-      ,
-      new SetCannonLocationCommand(CannonLocation.parkLocation)
     );
   }
 }

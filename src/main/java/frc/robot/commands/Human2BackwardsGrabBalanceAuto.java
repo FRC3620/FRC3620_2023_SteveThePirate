@@ -77,7 +77,7 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.9, 0.3, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.cubeHigherLocation)
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanPlaceCube, 0.3, 0.1, 180, driveSubsystem)
       ,

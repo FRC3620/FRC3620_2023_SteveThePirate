@@ -75,7 +75,7 @@ public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.9, 0.3, 180, driveSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.cubeHigherLocation)
+      new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.wallPlaceCube, 0.3, 0.1, 180, driveSubsystem)
       ,
