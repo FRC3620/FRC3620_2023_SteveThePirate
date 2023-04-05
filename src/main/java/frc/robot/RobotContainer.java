@@ -257,6 +257,7 @@ public class RobotContainer {
 
     // Autos
     SmartDashboard.putData("Mid1NoPickupBalanceAuto", new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("MidCrossoverBalanceAuto", new Mid1NoGrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Human1PickupBalanceAuto", new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Wall1PickupBalanceAuto", new Wall1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Human2NoPickupNoBalanceAuto", new Human2NoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
@@ -313,6 +314,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auto mode", chooser);
     chooser.setDefaultOption("Do nothing", () -> new LogCommand("no autonomous specified, did nothing"));
     //chooser.addOption("April Tag Auto Test", () -> new AprilTagAutoTestCommand(driveSubsystem, visionSubsystem));
+    chooser.addOption("MidCrossoverBalanceAuto", () -> new Mid1NoGrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     chooser.addOption("MidOnlyBalanceAuto", () -> new MidOnlyBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     //chooser.addOption("Mid1BalanceAuto", () -> new Mid1NoPickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     //chooser.addOption("Human1PickupBalanceAuto", () -> new Human1PickupBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
