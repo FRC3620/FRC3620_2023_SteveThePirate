@@ -115,7 +115,7 @@ public class AutoLevelNoCounterCommand extends CommandBase implements ILevelingD
         timer = new Timer();
         timer.start();
       }
-      if(timer.advanceIfElapsed(.5)){
+      if(timer.advanceIfElapsed(1)){
         myState = LevelingState.TILTED;
         logger.info("switching to {}, pitch = {}", myState, pitch);
         setColor(Color.kPurple);
