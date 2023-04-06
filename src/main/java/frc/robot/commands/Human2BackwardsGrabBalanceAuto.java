@@ -97,7 +97,7 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
         new WaitUntilAutoIsDoneCommand(0.4)
       )
       ,
-      new XModeCommand(driveSubsystem)
+      new XModeForThreeSecondsCommand(driveSubsystem) 
     );
   }
 }
