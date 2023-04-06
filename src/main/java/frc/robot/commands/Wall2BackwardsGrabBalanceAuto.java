@@ -41,6 +41,8 @@ public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.wallStart)
       ,
+      new WaitForValidExtensionEncoderCommand()
+      ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new ParallelDeadlineGroup(

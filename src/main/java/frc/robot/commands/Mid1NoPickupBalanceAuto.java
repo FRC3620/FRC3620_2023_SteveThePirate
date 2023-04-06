@@ -45,6 +45,8 @@ public class Mid1NoPickupBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.midStart)
       ,
+      new WaitForValidExtensionEncoderCommand()
+      ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new WaitCommand(2)

@@ -38,6 +38,8 @@ public class MidOnlyBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.midStart)
       ,
+      new WaitForValidExtensionEncoderCommand()
+      ,
       new SetCannonLocationCommand(CannonLocation.halfwayToConeHighLocation)
       ,
       new ParallelDeadlineGroup(

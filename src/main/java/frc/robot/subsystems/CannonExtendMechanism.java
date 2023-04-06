@@ -143,6 +143,10 @@ public class CannonExtendMechanism  {
     }
   }
 
+  public boolean isEncoderValid(){
+    return encoderIsValid;
+  }
+
   public void extendCannon(double power) {
     motor.set(power);
   }

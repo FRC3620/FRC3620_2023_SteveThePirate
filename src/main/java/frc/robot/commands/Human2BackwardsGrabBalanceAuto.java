@@ -46,6 +46,8 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new ZapOdometryCommand(FieldLocation.humanStart)
       ,
+      new WaitForValidExtensionEncoderCommand()
+      ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new ParallelDeadlineGroup(

@@ -37,6 +37,8 @@ public class Mid1NoGrabBalanceAuto extends SequentialCommandGroup {
       // tell odometry where we is
       new ZapOdometryCommand(FieldLocation.midStart)
       ,
+      new WaitForValidExtensionEncoderCommand()
+      ,
       new SetCannonLocationCommand(CannonLocation.coneHighLocation)
       ,
       new ParallelDeadlineGroup(

@@ -144,6 +144,10 @@ public class CannonSubsystem extends SubsystemBase {
     cannonPitchMechanism.recalibrataePitch();
   }
 
+  public boolean isExtensionEncoderValid(){
+    return cannonExtendMechanism.isEncoderValid();
+  }
+
   void setupMotors() {
     CANDeviceFinder canDeviceFinder = RobotContainer.canDeviceFinder;
 		boolean shouldMakeAllCANDevices = RobotContainer.shouldMakeAllCANDevices();
