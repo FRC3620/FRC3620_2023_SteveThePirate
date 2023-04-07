@@ -48,8 +48,11 @@ public class FieldLocation {
     public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50, bluePostYOffset); //x was 10.708
     public static PoseOnField wallGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.60, 1.96); //had bluePostYOffset
 
-    public static PoseOnField humanAltPoint = PoseOnField.fromRedAlliancePositionInMeters(11.768, 5.427, bluePreYOffset);
-    public static PoseOnField wallAltPoint = PoseOnField.fromRedAlliancePositionInMeters(11.968, 0.45);
+    public static PoseOnField humanAltPointChangeX = PoseOnField.fromRedAlliancePositionInMeters(11.268, 4.927, bluePreYOffset);
+    public static PoseOnField wallAltPointChangeX = PoseOnField.fromRedAlliancePositionInMeters(11.468, 0.95);
+
+    public static PoseOnField humanAltPointChangeY = PoseOnField.fromRedAlliancePositionInMeters(11.768, 5.427, bluePreYOffset);
+    public static PoseOnField wallAltPointChangeY = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.25);
 
     /*public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 + blueOffset + yOffset);
     public static PoseOnField humanPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + blueOffset + yOffset);
