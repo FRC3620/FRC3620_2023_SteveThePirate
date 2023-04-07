@@ -109,7 +109,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(3620)
       ,
       //Not doing any of this
-      new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPre, 0.7, 0.15, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.wallAltPoint, 0.7, 0.15, 180, driveSubsystem)
       ,
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.wallCommunity, 0.5, 0.15, 180, driveSubsystem)

@@ -108,7 +108,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       new WaitCommand(3620)
       ,
       //DOING NONE OF THIS.
-      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.7, 0.15, 180, driveSubsystem)
+      new DriveToCoordinateCommand(FieldLocation.humanAltPoint, 0.7, 0.15, 180, driveSubsystem)
       ,
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.5, 0.15, 180, driveSubsystem)
