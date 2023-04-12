@@ -97,7 +97,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       //,
       //new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
       ,
-      new ParallelRaceGroup(
+      new ParallelDeadlineGroup(
         //need new point here but we'll see
         new DriveToCoordinateCommand(FieldLocation.wallGrabSecondPiece, .5, 0.1, 215, driveSubsystem)
         ,
