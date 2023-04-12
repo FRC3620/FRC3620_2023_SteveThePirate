@@ -156,7 +156,7 @@ public class RobotContainer {
             .onTrue(new SetNavX180Command());
             
     driverJoystick.analogButton(XBoxConstants.AXIS_LEFT_TRIGGER, FlySkyConstants.AXIS_SWE)
-            .onTrue(new CannonClawInCommand(cannonSubsystem, 0.5)); // was 0.6
+            .onTrue(new CannonClawInCommand(cannonSubsystem, 0.8)); // was 0.6
 
     driverJoystick.analogButton(XBoxConstants.AXIS_RIGHT_TRIGGER, FlySkyConstants.AXIS_SWH)
             .whileTrue(new CannonClawOutCommand(cannonSubsystem, -0.8));

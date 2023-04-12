@@ -7,20 +7,20 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CannonLocation {
-    public static CannonLocation coneHighLocation = new CannonLocation(41.97, 31.395, -53.69);
+    public static CannonLocation coneHighLocation = new CannonLocation(44.84, 31.40, -51.30);
     public static CannonLocation halfwayToConeHighLocation = new CannonLocation(50, 31.395, -53.69);
     public static CannonLocation cubeHighLocation = new CannonLocation(43.10, 24.33, -47.24);
-    public static CannonLocation coneMidLocation = new CannonLocation(40.04, 10.55 + 2.7, -46.91);
-    public static CannonLocation cubeMidLocation = new CannonLocation(36.78, 5.6, -51.38);
+    public static CannonLocation coneMidLocation = new CannonLocation(46.29, 12.21, -61.31);
+    public static CannonLocation cubeMidLocation = new CannonLocation(41.75, 5.6, -51.38);
     public static CannonLocation lowLocation = new CannonLocation(3.5, 0, -67);
-    public static CannonLocation cubePickLocation = new CannonLocation(-1.7275, 0.0,-30.52); //was -8
+    public static CannonLocation cubePickLocation = new CannonLocation(-11.56, 0.0,.26); //was -8
     public static CannonLocation chuteLocation = new CannonLocation(28.65, 0.82, 10.86);
-    public static CannonLocation stationLocation = new CannonLocation(70.71, 10.42, -77.9); //8.89
+    public static CannonLocation stationLocation = new CannonLocation(70.71, 10.39, -77.9); //8.89
     public static CannonLocation parkLocation = new CannonLocation(90, 1, -130);
 
     public static CannonLocation coneFloorPickLocation = new CannonLocation(-21.506, 6.451, 37.573); //27.5
     public static CannonLocation backwardsHalfwayLocation = new CannonLocation(175, 0, 25);
-    public static CannonLocation backwardsFloorPickupLocation = new CannonLocation(185.24, 0.0, 39.29); //elev: 190.4, pitch: 1.32
+    public static CannonLocation backwardsFloorPickupLocation = new CannonLocation(178.90, 0.0, 39.29); //elev: 190.4, pitch: 1.32
 
     public static CannonLocation cubeHigherLocation = new CannonLocation(46.45, 24.33, -47.24);
     double elevation;
