@@ -46,6 +46,8 @@ public class CannonSubsystem extends SubsystemBase {
   public CANSparkMaxSendable claw;
   public RelativeEncoder clawEncoder;
 
+  public boolean hasPiece = false;
+
   /** Creates a new ArmSubsystem. */
   public CannonSubsystem() {
     setupMotors();
@@ -146,6 +148,14 @@ public class CannonSubsystem extends SubsystemBase {
 
   public boolean isExtensionEncoderValid(){
     return cannonExtendMechanism.isEncoderValid();
+  }
+
+  public boolean doesHavePiece(){
+    return hasPiece;
+  }
+
+  public void setHasPiece(boolean bewlean){
+    hasPiece = bewlean;
   }
 
   void setupMotors() {

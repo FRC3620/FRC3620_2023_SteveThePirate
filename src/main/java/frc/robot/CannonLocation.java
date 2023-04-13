@@ -20,7 +20,7 @@ public class CannonLocation {
 
     public static CannonLocation coneFloorPickLocation = new CannonLocation(-21.506, 6.451, 37.573); //27.5
     public static CannonLocation backwardsHalfwayLocation = new CannonLocation(175, 0, 25);
-    public static CannonLocation backwardsFloorPickupLocation = new CannonLocation(178.90, 0.0, 39.29); //elev: 190.4, pitch: 1.32
+    public static CannonLocation backwardsFloorPickupLocation = new CannonLocation(183.22, 0.0, 39.29); //elev: 190.4, pitch: 1.32
 
     public static CannonLocation cubeHigherLocation = new CannonLocation(46.45, 24.33, -47.24);
     double elevation;

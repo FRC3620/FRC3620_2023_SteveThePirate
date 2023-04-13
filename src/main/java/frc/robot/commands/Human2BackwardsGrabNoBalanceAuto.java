@@ -103,6 +103,8 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
         new CannonClawInCommand(cannonSubsystem, 0.8) //0.4
       )
       ,
+      new CheckIfHavePieceCommand(cannonSubsystem)
+      ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       //new WaitCommand(3620)

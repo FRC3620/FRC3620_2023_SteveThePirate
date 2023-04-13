@@ -104,6 +104,8 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
         new CannonClawInCommand(cannonSubsystem, 0.4)
       )
       ,
+      new CheckIfHavePieceCommand(cannonSubsystem)
+      ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
       ,
       //new WaitCommand(3620)

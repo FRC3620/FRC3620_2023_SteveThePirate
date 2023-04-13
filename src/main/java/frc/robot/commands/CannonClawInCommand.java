@@ -36,6 +36,7 @@ public class CannonClawInCommand extends CommandBase {
     public void initialize() {
       logger.info("started");
       cannonSubsystem.setClawPower(desiredSpeed);
+      cannonSubsystem.setHasPiece(false);
     }
   
     // Called every time the scheduler runs while the command is scheduled.
@@ -62,6 +63,7 @@ public class CannonClawInCommand extends CommandBase {
       } else {
         if (getStartedTimer.get() > 0.5) {
           if (Math.abs(cannonSubsystem.getClawPower()) < 500) {
+            cannonSubsystem.setHasPiece(true);
             getStartedTimer = null;
             RobotContainer.flareSubsystem.setColor(Color.kGreen);
             return true;
