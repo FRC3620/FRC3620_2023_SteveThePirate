@@ -97,7 +97,7 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       //,
       //new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
       ,
-      new ParallelDeadlineGroup(
+      new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .5, 0.1, 150, driveSubsystem)
         ,
         new CannonClawInCommand(cannonSubsystem, 0.8) //0.4
