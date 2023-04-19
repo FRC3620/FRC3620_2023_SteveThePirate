@@ -268,9 +268,11 @@ public class RobotContainer {
     SmartDashboard.putData("Wall1BlindPickupBalanceAutoButWeStop", new Wall1BlindPickupBalanceAutoButWeStop(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Human2BlindNoPickupNoBalanceAuto", new Human2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
     SmartDashboard.putData("Wall2BlindNoPickupNoBalanceAuto", new Wall2BlindNoPickupNoBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
-    SmartDashboard.putData("Human2BackwardsGrabNoBalanceAuto", new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
-    SmartDashboard.putData("Wall2BackwardsGrabNoBalanceAuto", new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Human2.5", new Human2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Wall2.5", new Wall2BackwardsGrabNoBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
     SmartDashboard.putData("Mid1GrabBalanceAuto", new Mid1GrabBalanceAuto(driveSubsystem, visionSubsystem, cannonSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Human2Balance", new Human2BackwardsGrabBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
+    SmartDashboard.putData("Wall2Balance", new Wall2BackwardsGrabBalanceAuto(driveSubsystem, cannonSubsystem, visionSubsystem, odometrySubsystem));
 
     // Cannon
     SmartDashboard.putData("ExtendCommand0" , new CannonExtendCommand(cannonSubsystem, 0));
