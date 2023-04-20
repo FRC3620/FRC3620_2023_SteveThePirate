@@ -64,7 +64,7 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       ,
       new WaitCommand(0.75)
       ,
-      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.9, 0.2, 180, driveSubsystem) //was .6 speed
+      new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPre, 0.9, 0.15, 180, driveSubsystem) //was .6 speed
       //,
       //new WaitCommand(660)
       ,
