@@ -51,6 +51,7 @@ public class FieldLocation {
     public static PoseOnField humanAltPointChangeX = PoseOnField.fromRedAlliancePositionInMeters(11.268, 4.927, bluePreYOffset);
     public static PoseOnField wallAltPointChangeX = PoseOnField.fromRedAlliancePositionInMeters(11.468, 0.95);
 
+    //unused
     public static PoseOnField humanAltPointChangeY = PoseOnField.fromRedAlliancePositionInMeters(11.768, 5.427, bluePreYOffset);
     public static PoseOnField wallAltPointChangeY = PoseOnField.fromRedAlliancePositionInMeters(11.968, 1.25);
 

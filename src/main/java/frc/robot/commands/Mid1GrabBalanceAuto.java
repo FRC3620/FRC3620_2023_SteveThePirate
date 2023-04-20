@@ -75,7 +75,7 @@ public class Mid1GrabBalanceAuto extends SequentialCommandGroup {
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.midPickupBehindPost, 0.2, 0.1, 180, driveSubsystem)
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.5)
+        new CannonClawInCommand(cannonSubsystem, 0.8)
       )
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)

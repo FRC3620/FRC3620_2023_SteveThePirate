@@ -44,7 +44,7 @@ public class Mid1NoGrabBalanceAuto extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
         new WaitCommand(0.6)
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.5)
+        new CannonClawInCommand(cannonSubsystem, 0.8)
       )
       ,
       new WaitCommand(0.4)

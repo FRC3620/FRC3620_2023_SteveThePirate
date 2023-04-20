@@ -76,7 +76,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
         //change speed for this definitely
         new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.3)
+        new CannonClawInCommand(cannonSubsystem, 0.8)
       )
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)
@@ -101,7 +101,7 @@ public class Wall2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
         //need new point here but we'll see
         new DriveToCoordinateCommand(FieldLocation.wallGrabSecondPiece, .5, 0.1, 215, driveSubsystem)
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.4)
+        new CannonClawInCommand(cannonSubsystem, 0.8)
       )
       ,
       new CheckIfHavePieceCommand(cannonSubsystem)

@@ -72,7 +72,7 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
         //change speed for this definitely
         new DriveToCoordinateCommand(FieldLocation.humanPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.4)
+        new CannonClawInCommand(cannonSubsystem, 0.8)
       )
       ,
       new SetCannonLocationCommand(CannonLocation.parkLocation)

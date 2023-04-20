@@ -68,7 +68,7 @@ public class Wall2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.wallPickupBehindPost, .35, 0.1, 180, driveSubsystem) //was .25 speed
         ,
-        new CannonClawInCommand(cannonSubsystem, 0.4)
+        new CannonClawInCommand(cannonSubsystem, 0.8)
       )
       ,
       //new WaitCommand(999)
