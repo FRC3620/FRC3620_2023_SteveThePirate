@@ -82,8 +82,8 @@ public class Human2BackwardsGrabBalanceAuto extends SequentialCommandGroup {
       new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
       new DriveToCoordinateCommand(FieldLocation.humanPlaceCube, 0.3, 0.1, 180, driveSubsystem)
-      ,
-      new WaitCommand(0.25)
+      //,
+      //new WaitCommand(0.25) //could shorten?
       ,
       new CannonClawOutCommand(cannonSubsystem, -0.8).withTimeout(0.4)
       ,
