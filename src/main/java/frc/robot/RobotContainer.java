@@ -168,6 +168,8 @@ public class RobotContainer {
 
       new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
               .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW)));
+      
+      operatorDPad.down().onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.BLUE)));
     }
 
     // operator cannon stuff
