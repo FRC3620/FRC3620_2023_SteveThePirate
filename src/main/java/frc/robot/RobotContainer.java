@@ -169,7 +169,7 @@ public class RobotContainer {
       new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START)
               .onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.YELLOW)));
       
-      operatorDPad.down().onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.BLUE)));
+      //operatorDPad.down().onTrue(new InstantCommand (() -> flareSubsystem.setColor(FlareColor.BLUE)));
     }
 
     // operator cannon stuff
@@ -196,6 +196,8 @@ public class RobotContainer {
 
     new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y)
             .onTrue(new SetCannonLocationCommand(CannonLocation.stationLocation));
+    
+    operatorDPad.down().onTrue(new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation));
              
             
     // positive y-axis is when you pull it down
