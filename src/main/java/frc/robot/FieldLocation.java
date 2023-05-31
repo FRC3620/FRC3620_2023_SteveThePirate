@@ -45,7 +45,7 @@ public class FieldLocation {
     public static PoseOnField wallPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85, 1.047);
     public static PoseOnField midPlaceCube = PoseOnField.fromRedAlliancePositionInMeters(14.85,2.869);
 
-    public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50, bluePostYOffset); //x was 10.708
+    public static PoseOnField humanGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(11.173, 4.24, bluePostYOffset); //x was 10.708
     public static PoseOnField wallGrabSecondPiece = PoseOnField.fromRedAlliancePositionInMeters(10.60, 1.96); //had bluePostYOffset
 
     public static PoseOnField humanAltPointChangeX = PoseOnField.fromRedAlliancePositionInMeters(11.268, 4.927, bluePreYOffset);

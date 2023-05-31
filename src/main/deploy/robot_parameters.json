@@ -4,10 +4,10 @@
     "macAddress": "00-80-2F-18-5C-5F",
     "makeAllCANDevices": true,
     "swerveParameters": {
-      "he.rf": -165.8, // right front
-      "he.lf": 78.1,   // left front
-      "he.lb": -44.0,  // left back
-      "he.rb": -14.7,   // right back
+      "he.rf": -166.8, // right front
+      "he.lf": 78.8,   // left front
+      "he.lb": -47.5,  // left back
+      "he.rb": -19.3,   // right back
       // 
       "chassis_width": 19.00,  // inches
       "chassis_length": 19.00,

@@ -79,13 +79,19 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
         new CannonClawInCommand(cannonSubsystem, 0.8) //0.3
       )
       ,
-      new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
-      ,
-      new WaitCommand(.15)
-      ,
-      new SetCannonLocationCommand(CannonLocation.parkLocation)
-      ,
-      new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.9, 0.3, 180, driveSubsystem)
+      new ParallelDeadlineGroup(
+        new SequentialCommandGroup(
+          new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
+          ,
+          new WaitCommand(1)
+          ,
+          new SetCannonLocationCommand(CannonLocation.parkLocation)
+          ,
+          new WaitCommand(0.75)
+        )
+        ,
+        new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.9, 0.3, 180, driveSubsystem)
+      )
       ,
       new SetCannonLocationCommand(CannonLocation.cubeHighLocation)
       ,
@@ -98,8 +104,8 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
       ,
       new DriveToCoordinateCommand(cornerOfStation, 0.9, 0.3, 180, driveSubsystem)
-      //,
-      //new AutoSpinCommand(-0.5 * direction, angleLogic * 143, driveSubsystem)
+      ,
+      new SetCannonLocationCommand(CannonLocation.lizardTonguePickupLocation)
       ,
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.humanGrabSecondPiece, .5, 0.1, 150, driveSubsystem)
@@ -109,11 +115,19 @@ public class Human2BackwardsGrabNoBalanceAuto extends SequentialCommandGroup {
       ,
       new CheckIfHavePieceCommand(cannonSubsystem)
       ,
-      new SetCannonLocationCommand(CannonLocation.parkLocation)
-      ,
-      //new WaitCommand(3620)
-      //,
-      new DriveToCoordinateCommand(FieldLocation.humanAltPointChangeY, 0.7, 0.15, 180, driveSubsystem)
+      new ParallelDeadlineGroup(
+        new SequentialCommandGroup(
+          new SetCannonLocationCommand(CannonLocation.backwardsFloorPickupLocation)
+          ,
+          new WaitCommand(1)
+          ,
+          new SetCannonLocationCommand(CannonLocation.parkLocation)
+          ,
+          new WaitCommand(0.75)
+        )
+        ,
+        new DriveToCoordinateCommand(FieldLocation.humanAltPointChangeY, 0.7, 0.15, 180, driveSubsystem)
+      )
       ,
       new ParallelRaceGroup(
         new DriveToCoordinateCommand(FieldLocation.humanCommunity, 0.5, 0.15, 180, driveSubsystem)
