@@ -121,7 +121,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	private double kVelocityMaxOutput = 1;
 	private double kVelocityMinOutput = -1;
 
-	private boolean drivePIDTuning = false;
+	private boolean drivePIDTuning = true;
 
 	private boolean fieldRelative = true;
 
@@ -274,10 +274,17 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		}
 
 		if(!autoSpinMode){
-			periodicManualSpinMode();
+			setTargetHeading(currentHeading);
+			commandedSpin = RobotContainer.getDriveSpinJoystick();
+			spinPower = commandedSpin;
 		}else{
-			periodicAutoSpinMode();
+			spinPIDController.setSetpoint(targetHeading);
+			spinPower = spinPIDController.calculate(currentHeading);
+
+			SmartDashboard.putNumber("drive.spin_pid_error", spinPIDController.getPositionError());
+			SmartDashboard.putNumber("drive.spin_pid_setpoint", spinPIDController.getSetpoint());
 		}
+
 		SmartDashboard.putNumber("drive.target_heading", targetHeading);
 		SmartDashboard.putNumber("drive.spin_power", spinPower);
 
@@ -314,7 +321,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		swerveModulePositions[index].angle = new Rotation2d(azimuthInRadians0InFront);
 	}
 
-  	public void periodicManualSpinMode(){
+  	/*public void periodicManualSpinMode(){
 		setTargetHeading(currentHeading);
 		double commandedSpin = RobotContainer.getDriveSpinJoystick();
 		spinPower = commandedSpin;
@@ -326,7 +333,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 		SmartDashboard.putNumber("drive.spin_pid_error", spinPIDController.getPositionError());
 		SmartDashboard.putNumber("drive.spin_pid_setpoint", spinPIDController.getSetpoint());
-  	}
+  	}*/
 
   	public double getStrafeXValue() {
 		double rv = MAX_VELOCITY_RPM*RobotContainer.getDriveHorizontalJoystick();
@@ -383,11 +390,21 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		newVectors = SwerveCalculator.fixVectors(newVectors, currentDirections);
 
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 		}
+	}
+
+	void setPositionPIDReference (String label, SparkMaxPIDController positionPID, double v) {
+		positionPID.setReference(v, ControlType.kPosition);
+		SmartDashboard.putNumber("drive." + label + ".azimuth.pidset", v);
 	}
 
 	/**
@@ -443,10 +460,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		}
 
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 
 			rightFrontVelPID.setReference(newVectors.rightFront.getMagnitude(), ControlType.kVelocity);
 			leftFrontVelPID.setReference(newVectors.leftFront.getMagnitude(), ControlType.kVelocity);
@@ -525,10 +547,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		}
 
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 			
 			rightFrontVelPID.setReference(newVectors.rightFront.getMagnitude(), ControlType.kVelocity);
 			leftFrontVelPID.setReference(newVectors.leftFront.getMagnitude(), ControlType.kVelocity);
@@ -554,10 +581,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		newVectors = SwerveCalculator.fixVectors(newVectors, currentDirections);
 
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 			
 			// ignore velocity component of vectors
 			rightFrontVelPID.setReference(0, ControlType.kVelocity);
@@ -594,10 +626,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		newVectors = SwerveCalculator.fixVectors(newVectors, currentDirections); //gets quickest wheel angle and direction configuration
 		
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 			
 			rightFrontVelPID.setReference(newVectors.rightFront.getMagnitude(), ControlType.kVelocity);
 			leftFrontVelPID.setReference(newVectors.leftFront.getMagnitude(), ControlType.kVelocity);
@@ -630,10 +667,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		newVectors = SwerveCalculator.fixVectors(newVectors, currentDirections); //gets quickest wheel angle and direction configuration
 		
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 			
 			rightFrontVelPID.setReference(newVectors.rightFront.getMagnitude(), ControlType.kVelocity);
 			leftFrontVelPID.setReference(newVectors.leftFront.getMagnitude(), ControlType.kVelocity);
@@ -664,10 +706,15 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		newVectors = SwerveCalculator.fixVectors(newVectors, currentDirections); //gets quickest wheel angle and direction configuration
 		
 		if (rightFrontDrive != null) {
-			rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
+			setPositionPIDReference("lb", leftBackPositionPID, newVectors.leftBack.getDirection());
+			setPositionPIDReference("rb", rightBackPositionPID, newVectors.rightBack.getDirection());
+			setPositionPIDReference("lf", leftFrontPositionPID, newVectors.leftFront.getDirection());
+			setPositionPIDReference("rf", rightFrontPositionPID, newVectors.rightFront.getDirection());
+
+			/*rightFrontPositionPID.setReference(newVectors.rightFront.getDirection(), ControlType.kPosition);
 			leftFrontPositionPID.setReference(newVectors.leftFront.getDirection(), ControlType.kPosition);
 			leftBackPositionPID.setReference(newVectors.leftBack.getDirection(), ControlType.kPosition);
-			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);
+			rightBackPositionPID.setReference(newVectors.rightBack.getDirection(), ControlType.kPosition);*/
 		
 			rightFrontVelPID.setReference(0, ControlType.kVelocity);
 			leftFrontVelPID.setReference(0, ControlType.kVelocity);
