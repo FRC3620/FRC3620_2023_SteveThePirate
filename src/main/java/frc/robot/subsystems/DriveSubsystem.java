@@ -129,11 +129,17 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	private double kSpinP = 0.015; //0.005 works
 	private double kSpinI = 0.00000; //0.0000
 	private double kSpinD = 0.001; //0.000
-	private boolean autoSpinMode;
+	//private boolean autoSpinMode;
 	private boolean forceManualMode = false;
 	private double currentHeading;
 	private double targetHeading;
 	private double spinPower;
+
+	enum SpinState {
+		AUTO, MANUAL, OFF
+	}
+
+	SpinState spinState;
 
 	//***********************************************************************************************************
 	//***********************************************************************************************************
@@ -273,7 +279,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 			}
 		}
 
-		if(!autoSpinMode){
+		if(spinState != SpinState.AUTO){
 			setTargetHeading(currentHeading);
 			commandedSpin = RobotContainer.getDriveSpinJoystick();
 			spinPower = commandedSpin;
@@ -288,7 +294,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		SmartDashboard.putNumber("drive.target_heading", targetHeading);
 		SmartDashboard.putNumber("drive.spin_power", spinPower);
 
-		SmartDashboard.putBoolean("drive.auto_spin_mode", autoSpinMode);
+		SmartDashboard.putString("drive.auto_spin_mode", spinState.toString());
 		SmartDashboard.putBoolean("drive.field_relative", fieldRelative);
 
 		SmartDashboard.putNumber("driver.joy.x", RobotContainer.getDriveHorizontalJoystick());
@@ -998,10 +1004,10 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	}
 
 	public void setManualSpinMode() {
-        if (logSpinTransitions && autoSpinMode){
+        if (logSpinTransitions && (spinState != SpinState.MANUAL)){
            logger.info("Switching to Manual Spin Mode");
         }
-        autoSpinMode = false;
+        spinState = SpinState.MANUAL;
 	}
 
 	public double getTargetHeading(){
@@ -1014,10 +1020,10 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	}
 
 	public void setAutoSpinMode() {
-        if (logSpinTransitions && !autoSpinMode){
+        if (logSpinTransitions && (spinState != SpinState.AUTO)){
            logger.info("Switching to Auto Spin Mode");
         }
-        autoSpinMode = true;
+        spinState = SpinState.AUTO;
 	}
 
 	public void setForcedManualModeTrue(){
