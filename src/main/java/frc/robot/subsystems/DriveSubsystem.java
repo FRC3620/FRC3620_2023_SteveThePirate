@@ -131,6 +131,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 	private double kSpinD = 0.001; //0.000
 	//private boolean autoSpinMode;
 	private boolean forceManualMode = false;
+	private boolean forceOffMode = false;
 	private double currentHeading;
 	private double targetHeading;
 	private double spinPower;
@@ -212,6 +213,7 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 
 	@Override
 	public void periodic() {
+
 		SmartDashboard.putNumber("drive.rf.home_encoder", getHomeEncoderHeading(rightFrontHomeEncoder));
 		SmartDashboard.putNumber("drive.lf.home_encoder", getHomeEncoderHeading(leftFrontHomeEncoder));
 		SmartDashboard.putNumber("drive.lb.home_encoder", getHomeEncoderHeading(leftBackHomeEncoder));
@@ -274,21 +276,25 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		else{
 			if(Math.abs(commandedSpin) != 0){
 				setManualSpinMode();
-			}else{
+			}else if(forceOffMode){
+				setSpinModeOff();
+			} else {
 				setAutoSpinMode();
 			}
 		}
 
-		if(spinState != SpinState.AUTO){
+		if(spinState == SpinState.MANUAL){
 			setTargetHeading(currentHeading);
 			commandedSpin = RobotContainer.getDriveSpinJoystick();
 			spinPower = commandedSpin;
-		}else{
+		}else if(spinState == SpinState.AUTO){
 			spinPIDController.setSetpoint(targetHeading);
 			spinPower = spinPIDController.calculate(currentHeading);
 
 			SmartDashboard.putNumber("drive.spin_pid_error", spinPIDController.getPositionError());
 			SmartDashboard.putNumber("drive.spin_pid_setpoint", spinPIDController.getSetpoint());
+		}else if(spinState == SpinState.OFF){
+			spinPower = 0;
 		}
 
 		SmartDashboard.putNumber("drive.target_heading", targetHeading);
@@ -1026,12 +1032,20 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
         spinState = SpinState.AUTO;
 	}
 
+	public void setSpinModeOff() {
+		spinState = SpinState.OFF;
+	}
+
 	public void setForcedManualModeTrue(){
 		forceManualMode = true;
 	}
 
 	public void setForcedManualModeFalse(){
 		forceManualMode = false;
+	}
+
+	public SpinState getSpinState(){
+		return spinState;
 	}
 
 	public boolean getForcedManualMode(){
