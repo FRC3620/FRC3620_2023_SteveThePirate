@@ -58,6 +58,11 @@ public class FieldLocation {
     public static PoseOnField dragRaceStart = PoseOnField.fromRedAlliancePositionInMeters(11, 7);
     public static PoseOnField dragRaceFinish = PoseOnField.fromRedAlliancePositionInMeters(11, 1.5);
 
+    public static PoseOnField doubleDrag1 = PoseOnField.fromRedAlliancePositionInMeters(11,6.3);
+    public static PoseOnField doubleDrag2 = PoseOnField.fromRedAlliancePositionInMeters(4,6.3);
+    public static PoseOnField doubleDrag3 = PoseOnField.fromRedAlliancePositionInMeters(11,1.5);
+
+
     /*public static PoseOnField humanPickupBehindPreBlue = PoseOnField.fromRedAlliancePositionInMeters(11.768, 4.777 + blueOffset + yOffset);
     public static PoseOnField humanPickupBehindPostBlue = PoseOnField.fromRedAlliancePositionInMeters(10.968, 4.777 + blueOffset + yOffset);
     public static PoseOnField humanGrabSecondPieceBlue = PoseOnField.fromRedAlliancePositionInMeters(10.108, 3.50 + blueOffset); //x was 10.708
