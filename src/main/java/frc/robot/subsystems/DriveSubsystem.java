@@ -454,6 +454,11 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		return sc.calculateEverythingFromVector(strafeVectorAngle, strafeVectorMagnitude, vr);
 	}
 
+	double rfAzimuthRequested;
+	double lfAzimuthRequested;
+	double rbAzimuthRequested;
+	double lbAzimuthRequested;
+
 	public void teleOpDrive(double strafeX, double strafeY, double spinX) {
 		double vx = strafeX*MAX_VELOCITY_IN_PER_SEC;
 		double vy = strafeY*MAX_VELOCITY_IN_PER_SEC;
@@ -536,6 +541,11 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 			double rfAzimuthError = rfCommandedAzimuth - rfCurrentAzimuth;
 			SmartDashboard.putNumber("drive.rf.azimuth.position_requested", rfCommandedAzimuth);
 			SmartDashboard.putNumber("drive.rf.azimuth.position_error", rfAzimuthError);
+
+			rfAzimuthRequested = rfCommandedAzimuth;
+			lfAzimuthRequested = lfCommandedAzimuth;
+			rbAzimuthRequested = rbCommandedAzimuth;
+			lbAzimuthRequested = lbCommandedAzimuth;
 		}
 	}
 
@@ -1131,6 +1141,21 @@ public class DriveSubsystem extends SubsystemBase implements Supplier<SwerveModu
 		double motorEncoderPosition = (motorEncoder) == null ? 0 : motorEncoder.getPosition();
 		double homeEncoderPosition = getHomeEncoderHeading(homeEncoder) - offset;
 		return SwerveCalculator.calculateAngleDifference(motorEncoderPosition, homeEncoderPosition);
+	}
+
+	public double getRequestedAzimuth(Corner corner){
+		switch (corner) {
+			case LF:
+				return lfAzimuthRequested;
+			case RF:
+				return rfAzimuthRequested;
+			case LB:
+				return lbAzimuthRequested;
+			case RB:
+				return rbAzimuthRequested;
+			default:
+				return 0.0;
+		}
 	}
 
 	public double getCornerAzimuthPosition(Corner corner) {

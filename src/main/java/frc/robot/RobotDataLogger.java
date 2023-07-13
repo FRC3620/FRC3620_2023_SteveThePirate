@@ -129,18 +129,28 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("drive.lf.azimuth.home_encoder_angle", () -> DataLogger.f2(driveSubsystem.getHomeEncoderHeading(driveSubsystem.leftFrontHomeEncoder)));
 			dataLogger.addDataProvider("drive.lf.azimuth.encoder", () -> DataLogger.f2(driveSubsystem.leftFrontAzimuthEncoder.getPosition()));
 			dataLogger.addDataProvider("drive.lf.azimuth.encoder_diff", () -> DataLogger.f2(driveSubsystem.encoderDifference(Corner.LF)));
+			dataLogger.addDataProvider("drive.lf.azimuth.encoder_requested", () -> DataLogger.f2(driveSubsystem.getRequestedAzimuth(Corner.LF)));
+
 			dataLogger.addDataProvider("drive.rf.azimuth.home_encoder", () -> DataLogger.f2(driveSubsystem.rightFrontHomeEncoder.getVoltage()));
 			dataLogger.addDataProvider("drive.rf.azimuth.home_encoder_angle", () -> DataLogger.f2(driveSubsystem.getHomeEncoderHeading(driveSubsystem.rightFrontHomeEncoder)));
 			dataLogger.addDataProvider("drive.rf.azimuth.encoder", () -> DataLogger.f2(driveSubsystem.rightFrontAzimuthEncoder.getPosition()));
 			dataLogger.addDataProvider("drive.rf.azimuth.encoder_diff", () -> DataLogger.f2(driveSubsystem.encoderDifference(Corner.RF)));
+			dataLogger.addDataProvider("drive.rf.azimuth.encoder_requested", () -> DataLogger.f2(driveSubsystem.getRequestedAzimuth(Corner.RF)));
+
 			dataLogger.addDataProvider("drive.lb.azimuth.home_encoder", () -> DataLogger.f2(driveSubsystem.leftBackHomeEncoder.getVoltage()));
 			dataLogger.addDataProvider("drive.lb.azimuth.home_encoder_angle", () -> DataLogger.f2(driveSubsystem.getHomeEncoderHeading(driveSubsystem.leftBackHomeEncoder)));
 			dataLogger.addDataProvider("drive.lb.azimuth.encoder", () -> DataLogger.f2(driveSubsystem.leftBackAzimuthEncoder.getPosition()));
 			dataLogger.addDataProvider("drive.lb.azimuth.encoder_diff", () -> DataLogger.f2(driveSubsystem.encoderDifference(Corner.LB)));
+			dataLogger.addDataProvider("drive.lb.azimuth.encoder_requested", () -> DataLogger.f2(driveSubsystem.getRequestedAzimuth(Corner.LB)));
+
 			dataLogger.addDataProvider("drive.rb.azimuth.home_encoder", () -> DataLogger.f2(driveSubsystem.rightBackHomeEncoder.getVoltage()));
 			dataLogger.addDataProvider("drive.rb.azimuth.home_encoder_angle", () -> DataLogger.f2(driveSubsystem.getHomeEncoderHeading(driveSubsystem.leftBackHomeEncoder)));
 			dataLogger.addDataProvider("drive.rb.azimuth.encoder", () -> DataLogger.f2(driveSubsystem.rightBackAzimuthEncoder.getPosition()));
 			dataLogger.addDataProvider("drive.rb.azimuth.encoder_diff", () -> DataLogger.f2(driveSubsystem.encoderDifference(Corner.RB)));
+			dataLogger.addDataProvider("drive.rb.azimuth.encoder_requested", () -> DataLogger.f2(driveSubsystem.getRequestedAzimuth(Corner.RB)));
+
+
+
 
 			if (logDriveMotorCurrent) {
 				dataLogger.addDataProvider("drive.lf.drive.power", () -> DataLogger.f2(driveSubsystem.leftFrontDrive.getAppliedOutput()));
