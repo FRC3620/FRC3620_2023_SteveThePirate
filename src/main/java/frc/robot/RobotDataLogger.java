@@ -144,7 +144,7 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("drive.lb.azimuth.encoder_requested", () -> DataLogger.f2(driveSubsystem.getRequestedAzimuth(Corner.LB)));
 
 			dataLogger.addDataProvider("drive.rb.azimuth.home_encoder_voltage", () -> DataLogger.f2(driveSubsystem.rightBackHomeEncoder.getVoltage()));
-			dataLogger.addDataProvider("drive.rb.azimuth.home_encoder_angle", () -> DataLogger.f2(driveSubsystem.getHomeEncoderHeading(driveSubsystem.leftBackHomeEncoder)));
+			dataLogger.addDataProvider("drive.rb.azimuth.home_encoder_angle", () -> DataLogger.f2(driveSubsystem.getHomeEncoderHeading(driveSubsystem.rightBackHomeEncoder)));
 			dataLogger.addDataProvider("drive.rb.azimuth.encoder", () -> DataLogger.f2(driveSubsystem.rightBackAzimuthEncoder.getPosition()));
 			dataLogger.addDataProvider("drive.rb.azimuth.encoder_diff", () -> DataLogger.f2(driveSubsystem.encoderDifference(Corner.RB)));
 			dataLogger.addDataProvider("drive.rb.azimuth.encoder_requested", () -> DataLogger.f2(driveSubsystem.getRequestedAzimuth(Corner.RB)));
