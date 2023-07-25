@@ -24,8 +24,9 @@ public class DragRaceAuto extends SequentialCommandGroup {
       ,
       new InstantCommand(() -> driveSubsystem.fixRelativeEncoders())
       ,
-      new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
-      ,
+      //take this out???
+      //new InstantCommand(() -> driveSubsystem.setWheelsToStrafe(90))
+      //,
       new ZapOdometryCommand(FieldLocation.dragRaceStart)
       ,
       new WaitCommand(1)
