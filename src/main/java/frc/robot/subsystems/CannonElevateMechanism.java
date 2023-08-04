@@ -25,9 +25,10 @@ public class CannonElevateMechanism  {
 
   int elevateEncoderValueAt90Degrees;
 
-  private static final double kP = 0.016;  //0.0175
-  private static final double kI = 0;
-  private static final double kD = 0;   
+  private static final double kP = 0.032;  //0.016
+  private static final double kI = 0.002;  //0
+  private static final double kD = 0.0005;   //0
+  //private static final double pidTolerance = 30;
 
   private final PIDController m_pidController = new PIDController(kP, kI, kD);
 
@@ -64,6 +65,22 @@ public class CannonElevateMechanism  {
         double motorPower = m_pidController.calculate(currentElevation); // negative power if cannon is moving towards front
         double minPower = -0.75;
         double maxPower = 0.95;
+
+        //m_pidController.setTolerance(pidTolerance);
+
+        /*if(Math.abs(requestedPosition - elevateEncoder.getValue()) > 30){
+          /*kP = 0.04;  //0.016
+          kI = 0.001;  //0
+          kD = 0.02;   //0
+          PIDController.setPID(0.04, 0.001, 0.02);
+        } else {
+          kP = 0.016;
+          kI = 0;
+          kD = 0;
+        }*/
+        //DO NOT UNCOMMENT THIS IT WILL BREAK THINGS
+        //m_pidController = new PIDController(kP, kI, kD);
+
         // TODO put this back
         // motorPower = MathUtil.clamp(motorPower, -0.6, 0.87);
         if (currentElevation < 0) {
